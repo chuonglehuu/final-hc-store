@@ -1,13 +1,9 @@
-import logo from "./logo.svg";
-import "./App.css";
+import Login from "./components/Login";
 
 function App() {
   return (
     <div className="App">
-      <>
-        <h2>HC Store</h2>
-        <p>Đây là testing</p>
-      </>
+      <Login></Login>
     </div>
   );
 }

@@ -1,0 +1,17 @@
+.btn {
+  .google,
+  .facebook {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 93%;
+    height: 40px;
+    border-radius: 5px;
+    background-color: #54c6ed;
+    color: white;
+    margin-top: 5px;
+    p {
+      font-size: 14px;
+    }
+  }
+}
