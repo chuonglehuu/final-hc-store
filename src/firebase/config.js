@@ -8,6 +8,8 @@ import { getDatabase } from "firebase/database";
 const firebaseConfig = {
   apiKey: "AIzaSyAb1EDY7RX36XBpUQIsOXq0Ff2N9lDhG5M",
   authDomain: "hc-store-75829.firebaseapp.com",
+  databaseURL:
+    "https://hc-store-75829-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "hc-store-75829",
   storageBucket: "hc-store-75829.appspot.com",
   messagingSenderId: "719242039093",
@@ -19,3 +21,5 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
+
+export { database };

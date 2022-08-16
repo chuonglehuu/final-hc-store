@@ -1,10 +1,10 @@
-import { getDatabase, ref, child, get } from "firebase/database";
 import Login from "./components/Login";
+import { getDatabase, ref, child, get } from "firebase/database";
+import { database } from "./firebase/config";
 
 function App() {
-  const dbRef = ref(getDatabase());
-  const userId = 1;
-  get(child(dbRef, `users/${userId}`))
+  const dbRef = ref(database);
+  get(child(dbRef, `users/${1}`))
     .then((snapshot) => {
       if (snapshot.exists()) {
         console.log(snapshot.val());
