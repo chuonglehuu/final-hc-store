@@ -6,7 +6,7 @@ import { getDatabase } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAb1EDY7RX36XBpUQIsOXq0Ff2N9lDhG5M",
+  apiKey: process.env.REDIRECT_API_KEY,
   authDomain: "hc-store-75829.firebaseapp.com",
   databaseURL:
     "https://hc-store-75829-default-rtdb.asia-southeast1.firebasedatabase.app",
