@@ -7,6 +7,55 @@
 }
 
 .content {
-  background-color: #333;
+  // background-color: #333;
   width: 1150px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  width: 200px;
+  height: 50px;
+}
+.search {
+  width: 316px;
+  height: 46px;
+  background-color: rgba(22, 24, 35, 0.06);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 12px;
+  border-radius: 92px;
+  border: 1.5px solid transparent;
+  input {
+    flex: 1;
+    height: 46px !important;
+    font-size: 16px;
+    background: transparent;
+    width: 292px;
+    height: 22px;
+    border: none;
+    outline: none;
+    color: #828282;
+  }
+  input:not(:placeholer-show) ~ .search-btn {
+    color: rgba(22, 24, 35, 0.75);
+  }
+  &:focus-within {
+    border-color: rgba(22, 24, 35, 0.2);
+  }
+}
+.search-btn {
+  width: 52px;
+  height: 44px;
+  outline: none;
+  border: none;
+  font-size: 18px;
+  color: rgba(22, 24, 35, 0.34);
+  border-top-right-radius: 92px;
+  border-bottom-right-radius: 92px;
+  &:hover {
+    background-color: rgba(22, 24, 35, 0.03);
+    cursor: pointer;
+  }
 }
