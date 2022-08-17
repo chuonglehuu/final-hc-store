@@ -1,5 +1,3 @@
-import Header from "../components/Layout/DefaultLayout/Header";
-
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Product from "../pages/Product";
