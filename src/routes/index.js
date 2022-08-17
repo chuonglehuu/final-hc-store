@@ -1,3 +1,5 @@
+import Header from "../components/Layout/DefaultLayout/Header";
+
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Product from "../pages/Product";
@@ -6,7 +8,7 @@ import Product from "../pages/Product";
 const publicRoutes = [
   { path: "/", component: Home },
   { path: "/product", component: Product },
-  { path: "/login", component: Login },
+  { path: "/login", component: Login, layout: null },
 ];
 const privateRoutes = [];
 

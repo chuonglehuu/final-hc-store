@@ -1,8 +1,10 @@
-import { ref, child, get } from "firebase/database";
+// import { ref, child, get } from "firebase/database";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Fragment } from "react";
 
 import { database } from "./firebase/config";
 import { publicRoutes } from "./routes";
+import DefaultLayout from "./components/Layout/DefaultLayout";
 
 function App() {
   // const dbRef = ref(database);
@@ -23,7 +25,24 @@ function App() {
         <Routes>
           {publicRoutes.map((route, index) => {
             const Page = route.component;
-            return <Route key={index} path={route.path} element={<Page />} />;
+            //Check Layout
+            let Layout = DefaultLayout;
+            if (route.layout) {
+              Layout = route.layout;
+            } else if (route.layout === null) {
+              Layout = Fragment;
+            }
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
           })}
         </Routes>
       </div>
