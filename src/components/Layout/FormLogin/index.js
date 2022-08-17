@@ -1,11 +1,11 @@
 import classNames from "classnames/bind";
-import styles from "./Login.module.scss";
-import loginImg from "../../assets/Image/loginIP.png";
-import ThirdBtnLogin from "../ThirdBtnLogin";
+import styles from "./FormLogin.module.scss";
+import loginImg from "../../../assets/Image/loginIP.png";
+import ThirdBtnLogin from "../FormLogin/ThirdBtnLogin";
 
 const cx = classNames.bind(styles);
 
-function Login() {
+function FormLogin() {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("content")}>
@@ -39,4 +39,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default FormLogin;
