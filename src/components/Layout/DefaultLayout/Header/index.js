@@ -1,7 +1,8 @@
-import { useState } from "react";
+import React from "react";
 import classNames from "classnames/bind";
 import { Link } from "react-router-dom";
 import Tippy from "@tippyjs/react/headless";
+// import "tippy.js/dist/tippy.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styles from "./Header.module.scss";
@@ -14,33 +15,36 @@ import {
 const cx = classNames.bind(styles);
 
 function Header() {
-  const [searchResult, setSearchResult] = useState([]);
   return (
     <header className={cx("wrapper")}>
       <div className={cx("content")}>
         <Link to="/">
           <img className={cx("logo")} src={images.logo} alt="Logo" />
         </Link>
-
-        <Tippy
-          render={(attrs) => {
-            <div className={cx("search-result")} tabIndex="-1" {...attrs}>
-              kết quả
-            </div>;
-          }}
-        >
-          <div className={cx("search")}>
-            <input placeholder="Search product or item" spellCheck={false} />
-            <button className={cx("clear")} title="Search">
-              <FontAwesomeIcon icon={faCircleXmark} />
-            </button>
-            <button className={cx("search-btn")}>
-              <FontAwesomeIcon icon={faMagnifyingGlass} />
-            </button>
+        <div className={cx("nav")}>
+          <Link to="/">
+            <div className={cx("item")}>Home</div>
+          </Link>
+          <Link to="/product">
+            <div className={cx("item")}>Product</div>
+          </Link>
+          <Link to="/social">
+            <div className={cx("item")}>Social</div>
+          </Link>
+          <Link to="/about">
+            <div className={cx("item")}>About Us</div>
+          </Link>
+        </div>
+        <div className={cx("login")}>
+          <Link to="/register">
+            <div className={cx("register")}>Resigter</div>
+          </Link>
+          <div className={cx("sign-in")}>
+            <Link className={cx("btn-login")} to="/login">
+              <button>Sign In</button>
+            </Link>
           </div>
-        </Tippy>
-
-        <div className={cx("actions")}></div>
+        </div>
       </div>
     </header>
   );

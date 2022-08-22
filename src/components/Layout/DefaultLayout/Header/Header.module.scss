@@ -1,3 +1,6 @@
+a {
+  text-decoration: none;
+}
 .wrapper {
   width: 100%;
   height: 60px;
@@ -17,45 +20,61 @@
   width: 200px;
   height: 50px;
 }
-.search {
-  width: 316px;
-  height: 46px;
-  background-color: rgba(22, 24, 35, 0.06);
+.nav {
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-left: 12px;
-  border-radius: 92px;
-  border: 1.5px solid transparent;
-  input {
-    flex: 1;
-    height: 46px !important;
-    font-size: 16px;
-    background: transparent;
-    width: 292px;
-    height: 22px;
-    border: none;
-    outline: none;
-    color: #828282;
-  }
-  input:not(:placeholer-show) ~ .search-btn {
-    color: rgba(22, 24, 35, 0.75);
-  }
-  &:focus-within {
-    border-color: rgba(22, 24, 35, 0.2);
+  text-transform: uppercase;
+  .item {
+    width: 150px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+    font-weight: 600;
+    &:hover {
+      color: #f54242;
+      transition: all 0.2s linear;
+    }
   }
 }
-.search-btn {
-  width: 52px;
-  height: 44px;
-  outline: none;
-  border: none;
-  font-size: 18px;
-  color: rgba(22, 24, 35, 0.34);
-  border-top-right-radius: 92px;
-  border-bottom-right-radius: 92px;
-  &:hover {
-    background-color: rgba(22, 24, 35, 0.03);
-    cursor: pointer;
+.login {
+  width: 200px;
+  height: 60px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  .register {
+    color: black;
+    &:hover {
+      color: #f54242;
+      transition: all 0.2s linear;
+    }
+  }
+  .sign-in {
+    width: 100px;
+    height: 60px;
+  }
+}
+.btn-login {
+  width: 100px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  button {
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    background-color: #f54242;
+    color: white;
+    &:hover {
+      background-color: #bd3131;
+      transition: all 0.2s linear;
+      cursor: pointer;
+    }
   }
 }
