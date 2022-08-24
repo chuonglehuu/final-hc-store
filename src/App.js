@@ -1,11 +1,8 @@
 // import { ref, child, get } from "firebase/database";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Fragment } from "react";
-
-import { database } from "./firebase/config";
 import { publicRoutes } from "./routes";
 import DefaultLayout from "./components/Layout/DefaultLayout";
-import HomeOnly from "./components/Layout/HomeOnly";
 
 function App() {
   // const dbRef = ref(database);

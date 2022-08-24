@@ -1,16 +1,9 @@
 import React from "react";
 import classNames from "classnames/bind";
 import { Link } from "react-router-dom";
-import Tippy from "@tippyjs/react/headless";
-// import "tippy.js/dist/tippy.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styles from "./Header.module.scss";
 import images from "../../../../assets/Image";
-import {
-  faCircleXmark,
-  faMagnifyingGlass,
-} from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
 
