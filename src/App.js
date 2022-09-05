@@ -1,22 +1,10 @@
 // import { ref, child, get } from "firebase/database";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import { publicRoutes } from "./routes";
 import DefaultLayout from "./components/Layout/DefaultLayout";
 
 function App() {
-  // const dbRef = ref(database);
-  // get(child(dbRef, `users`))
-  //   .then((snapshot) => {
-  //     if (snapshot.exists()) {
-  //       console.log(snapshot.val());
-  //     } else {
-  //       console.log("No data available");
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
   return (
     <Router>
       <div className="App">

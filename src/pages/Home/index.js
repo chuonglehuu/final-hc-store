@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./Home.module.scss";
 import images from "../../assets/Image";
-import Reveal, { Fade, Bounce } from "react-awesome-reveal";
+import Reveal, { Fade } from "react-awesome-reveal";
 
 const cx = classNames.bind(styles);
 function Home() {
   return (
     <div className={cx("main")}>
-      <Bounce delay={300}>
+      <Fade delay={300}>
         <div className={cx("intro")}>
           <div className={cx("wrapper")}>
             <div className={cx("intro-content")}>
@@ -34,7 +34,7 @@ function Home() {
             </div>
           </div>
         </div>
-      </Bounce>
+      </Fade>
       <Reveal delay={300}>
         <div className={cx("take-care")}>
           <div className={cx("wrapper")}>
