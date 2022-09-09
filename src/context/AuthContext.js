@@ -9,8 +9,8 @@ import {
 
 const AuthContext = createContext();
 
-function AuthContextProvider({ children }) {
-  const [user, setUser] = useState[{}];
+export function AuthContextProvider({ children }) {
+  const [user, setUser] = useState({});
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
@@ -34,7 +34,6 @@ function AuthContextProvider({ children }) {
     </AuthContext.Provider>
   );
 }
-function UserAuth() {
+export function UserAuth() {
   return useContext(AuthContext);
 }
-export { AuthContextProvider, UserAuth };
