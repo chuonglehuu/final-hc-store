@@ -1,11 +1,20 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { setDoc, doc } from "firebase/firestore";
+import {
+  setDoc,
+  doc,
+  query,
+  collection,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { auth, db } from "../firebase/config";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 
 const AuthContext = createContext();
@@ -27,6 +36,21 @@ export function AuthContextProvider({ children }) {
   function logOut() {
     return signOut(auth);
   }
+  async function googleSignIn() {
+    const provider = new GoogleAuthProvider();
+    const userCredential = await signInWithPopup(auth, provider);
+    const user = userCredential.user;
+    // console.log(user);
+    const q = query(collection(db, "users"), where("email", "==", user.email));
+    const docs = await getDocs(q);
+    if (docs.docs.length === 0) {
+      setDoc(doc(db, "users", user.email), {
+        name: user.displayName,
+        authProvider: "google",
+        email: user.email,
+      });
+    }
+  }
   useEffect(() => {
     const unSubcribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -36,7 +60,7 @@ export function AuthContextProvider({ children }) {
     };
   });
   return (
-    <AuthContext.Provider value={{ signUp, logIn, logOut, user }}>
+    <AuthContext.Provider value={{ signUp, logIn, logOut, googleSignIn, user }}>
       {children}
     </AuthContext.Provider>
   );
