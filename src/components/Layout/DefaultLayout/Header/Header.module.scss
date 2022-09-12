@@ -47,10 +47,20 @@ a {
   justify-content: space-around;
   align-items: center;
   .register {
-    color: black;
-    &:hover {
-      color: #f54242;
-      transition: all 0.2s linear;
+    width: auto;
+    height: 100%;
+    button {
+      width: auto;
+      height: 60px;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      font-size: 14px;
+      &:hover {
+        color: #f54242;
+        transition: all 0.2s linear;
+      }
     }
   }
   .sign-in {
@@ -75,6 +85,35 @@ a {
       background-color: #bd3131;
       transition: all 0.2s linear;
       cursor: pointer;
+    }
+  }
+}
+.user-logout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .info-user {
+    font-size: 14px;
+    span {
+      margin: 0px 3px;
+    }
+  }
+  .logout {
+    width: auto;
+    height: auto;
+    button {
+      width: 80px;
+      height: 30px;
+      border: none;
+      outline: none;
+      background-color: #5599de;
+      color: white;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #297ed4;
+        transition: all 0.2s ease-in-out;
+      }
     }
   }
 }

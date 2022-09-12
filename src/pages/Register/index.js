@@ -1,37 +1,36 @@
 import { useState } from "react";
-import classNames from "classnames/bind";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./FormLogin.module.scss";
-import loginImg from "../../../assets/Image/loginIP.png";
-import ThirdBtnLogin from "../FormLogin/ThirdBtnLogin";
-import { UserAuth } from "../../../context/AuthContext";
+import classNames from "classnames/bind";
+import styles from "../../components/Layout/FormLogin/FormLogin.module.scss";
+import loginImg from "../../assets/Image/loginIP.png";
+import { UserAuth } from "../../context/AuthContext";
 
 const cx = classNames.bind(styles);
 
-function FormLogin() {
+function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, logIn } = UserAuth();
+  const { user, signUp } = UserAuth();
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await logIn(email, password);
+      await signUp(email, password);
       navigate("/");
     } catch (error) {
       alert(error);
     }
   };
-  const navigate = useNavigate();
   return (
     <div className={cx("wrapper")}>
       <div className={cx("content")}>
         <div className={cx("loginImg")}>
-          <img src={loginImg} alt="Login" />
+          <img src={loginImg} alt="SignUp" />
         </div>
         <div className={cx("loginForm")}>
-          <form onSubmit={handleLogin} className={cx("form")}>
-            <h2 className={cx("loginTitle")}>Login</h2>
+          <h2 className={cx("loginTitle")}>Sign Up</h2>
+          <form onSubmit={handleSubmit} className={cx("form")}>
             <div className={cx("username")}>
               <label>Enter Email</label>
               <input
@@ -51,18 +50,14 @@ function FormLogin() {
               ></input>
             </div>
             <div className={cx("btnLogin")}>
-              <button>Login</button>
+              <button>Sign Up</button>
             </div>
           </form>
           <div className={cx("register")}>
-            <label>Don't have any account?</label>
-            <Link to="/register">
-              <p>Sign up</p>
+            <label>Already subcribed to HC Store ?</label>
+            <Link to="/login">
+              <p>Sign In</p>
             </Link>
-          </div>
-          <p className={cx("another")}>Or</p>
-          <div className={cx("loginThirdParty")}>
-            <ThirdBtnLogin />
           </div>
         </div>
       </div>
@@ -70,4 +65,4 @@ function FormLogin() {
   );
 }
 
-export default FormLogin;
+export default SignUp;

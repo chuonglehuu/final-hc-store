@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "../firebase/config";
+import { setDoc, doc } from "firebase/firestore";
+import { auth, db } from "../firebase/config";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -12,7 +13,13 @@ const AuthContext = createContext();
 export function AuthContextProvider({ children }) {
   const [user, setUser] = useState({});
   function signUp(email, password) {
-    return createUserWithEmailAndPassword(auth, email, password);
+    createUserWithEmailAndPassword(auth, email, password);
+    setDoc(doc(db, "users", email), {
+      name: "Chuong",
+      age: 18,
+      email: email,
+      password: password,
+    });
   }
   function logIn(email, password) {
     return signInWithEmailAndPassword(auth, email, password);

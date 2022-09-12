@@ -4,6 +4,7 @@ import Product from "../pages/Product";
 import About from "../pages/About";
 import Social from "../pages/Social";
 import HomeOnly from "../components/Layout/HomeOnly";
+import SignUp from "../pages/Register";
 
 // Route
 const publicRoutes = [
@@ -12,6 +13,7 @@ const publicRoutes = [
   { path: "/product", component: Product },
   { path: "/social", component: Social },
   { path: "/login", component: Login, layout: null },
+  { path: "/register", component: SignUp, layout: null },
 ];
 const privateRoutes = [];
 
