@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./Header.module.scss";
 import images from "../../../../assets/Image";
 import { UserAuth } from "../../../../context/AuthContext";
-import { async } from "@firebase/util";
 
 const cx = classNames.bind(styles);
 
@@ -44,7 +43,9 @@ function Header() {
           <div className={cx("user-logout")}>
             <div className={cx("info-user")}>
               <span>Welcome</span>
-              <span>{user.email}</span>
+              <Link to="/upload-user">
+                <span>{user.email}</span>
+              </Link>
             </div>
             <div className={cx("logout")}>
               <button onClick={handleLogout}>Logout</button>

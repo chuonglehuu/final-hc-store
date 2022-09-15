@@ -17,7 +17,7 @@ function SignUp() {
     e.preventDefault();
     try {
       await signUp(email, password);
-      navigate("/");
+      navigate("/upload-user");
     } catch (error) {
       alert(error);
     }

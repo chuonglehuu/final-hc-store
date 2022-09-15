@@ -21,8 +21,7 @@ function ThirdBtnLogin() {
   };
   useEffect(() => {
     if (user != null) {
-      navigate("/");
-      console.log(user.email);
+      navigate("/upload-user");
     }
   }, [user]);
 

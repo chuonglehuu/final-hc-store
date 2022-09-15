@@ -7,7 +7,6 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
-import { v4 as uuid } from "uuid";
 import { auth, db } from "../firebase/config";
 import {
   createUserWithEmailAndPassword,
@@ -18,26 +17,12 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
-import { Timestamp } from "firebase/firestore";
-
 const AuthContext = createContext();
-let uid = uuid();
 
 export function AuthContextProvider({ children }) {
   const [user, setUser] = useState({});
   function signUp(email, password) {
-    createUserWithEmailAndPassword(auth, email, password);
-    setDoc(doc(db, "users", uid), {
-      Email: email,
-      Fullname: "",
-      Phone: "",
-      Dob: "",
-      name: "",
-      creatAt: Timestamp.fromDate(new Date()),
-      UpdateAt: "",
-      ListCart_ID: "",
-      Receipt_ID: "",
-    });
+    return createUserWithEmailAndPassword(auth, email, password);
   }
   function logIn(email, password) {
     return signInWithEmailAndPassword(auth, email, password);

@@ -17,7 +17,7 @@ function FormLogin() {
     e.preventDefault();
     try {
       await logIn(email, password);
-      navigate("/");
+      navigate("/upload-user");
     } catch (error) {
       alert(error);
     }
