@@ -4,7 +4,15 @@ import { UserAuth } from "../../context/AuthContext";
 import classNames from "classnames/bind";
 import styles from "./UploadUser.module.scss";
 import { useNavigate } from "react-router-dom";
-import { setDoc, doc, Timestamp } from "firebase/firestore";
+import {
+  setDoc,
+  doc,
+  Timestamp,
+  collection,
+  query,
+  where,
+  onSnapshot,
+} from "firebase/firestore";
 
 const cx = classNames.bind(styles);
 
@@ -15,35 +23,38 @@ function UploadUser() {
   const [dob, setDob] = useState("");
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (!user?.email) {
-  //     navigate("/");
-  //   }
-  // }, [user]);
-  // console.log(user);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(fullName);
-      console.log(phone);
-      console.log(dob);
-      console.log(user.uid);
-      // setDoc(doc(db, "users", user.auth.lastNotifiedUid), {
-      //   Email: user.email,
-      //   Fullname: "",
-      //   Phone: "",
-      //   Dob: "",
-      //   creatAt: Timestamp.fromDate(new Date()),
-      //   UpdateAt: "",
-      //   ListCart_ID: "",
-      //   Receipt_ID: "",
-      // });
+      await setDoc(doc(db, "users", user.uid), {
+        Email: user.email,
+        Fullname: fullName,
+        Phone: phone,
+        Dob: dob,
+        createAt: Timestamp.fromDate(new Date()),
+        ListCart_ID: "",
+        Receipt_ID: "",
+      });
+      navigate("/");
     } catch (error) {
       alert(error.message);
     }
   };
 
+  useEffect(() => {
+    const userRef = collection(db, "users");
+    const userQuery = query(userRef, where("Email", "==", user.email));
+    onSnapshot(userQuery, (snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      if (user.email === data[0].Email) {
+        navigate("/");
+      }
+    });
+  }, [user]);
+  console.log(user);
   return (
     <div className={cx("upload")}>
       <form onSubmit={handleSubmit} className={cx("form-upload")}>

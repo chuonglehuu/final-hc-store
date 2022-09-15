@@ -43,9 +43,7 @@ function Header() {
           <div className={cx("user-logout")}>
             <div className={cx("info-user")}>
               <span>Welcome</span>
-              <Link to="/upload-user">
-                <span>{user.email}</span>
-              </Link>
+              <span>{user.email}</span>
             </div>
             <div className={cx("logout")}>
               <button onClick={handleLogout}>Logout</button>
