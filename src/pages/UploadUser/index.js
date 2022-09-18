@@ -10,8 +10,8 @@ import {
   Timestamp,
   collection,
   query,
-  where,
   onSnapshot,
+  where,
 } from "firebase/firestore";
 
 const cx = classNames.bind(styles);
@@ -26,35 +26,34 @@ function UploadUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await setDoc(doc(db, "users", user.uid), {
-        Email: user.email,
-        Fullname: fullName,
-        Phone: phone,
-        Dob: dob,
+      await setDoc(doc(db, "users", user.email), {
+        email: user.email,
+        uid: user.uid,
+        fullname: fullName,
+        phone: phone,
+        dob: dob,
         createAt: Timestamp.fromDate(new Date()),
-        ListCart_ID: "",
-        Receipt_ID: "",
+        listCart_ID: "",
+        receipt_ID: "",
       });
       navigate("/");
     } catch (error) {
       alert(error.message);
     }
   };
-
   useEffect(() => {
     const userRef = collection(db, "users");
-    const userQuery = query(userRef, where("Email", "==", user.email));
+    const userQuery = query(userRef, where("email", "==", user.email));
     onSnapshot(userQuery, (snapshot) => {
       let data = [];
       snapshot.docs.forEach((doc) => {
         data.push({ ...doc.data(), id: doc.id });
       });
-      if (user.email === data[0].Email) {
+      if (user.email === data[0].email) {
         navigate("/");
       }
     });
-  }, [user]);
-  console.log(user);
+  }, []);
   return (
     <div className={cx("upload")}>
       <form onSubmit={handleSubmit} className={cx("form-upload")}>

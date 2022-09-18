@@ -6,6 +6,7 @@ import {
   collection,
   where,
   getDocs,
+  Timestamp,
 } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
 import {
@@ -15,6 +16,7 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 
 const AuthContext = createContext();
@@ -26,6 +28,11 @@ export function AuthContextProvider({ children }) {
   }
   function logIn(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
+  }
+  function forgotPassword(email) {
+    return sendPasswordResetEmail(auth, email, {
+      url: "http://localhost:3000",
+    });
   }
   function logOut() {
     return signOut(auth);
@@ -39,9 +46,15 @@ export function AuthContextProvider({ children }) {
     const docs = await getDocs(q);
     if (docs.docs.length === 0) {
       setDoc(doc(db, "users", user.email), {
-        name: user.displayName,
-        authProvider: "google",
         email: user.email,
+        uid: user.uid,
+        authProvider: "google",
+        fullname: user.displayName,
+        phone: "",
+        dob: "",
+        createAt: Timestamp.fromDate(new Date()),
+        listCart_ID: "",
+        receipt_ID: "",
       });
     }
   }
@@ -54,7 +67,9 @@ export function AuthContextProvider({ children }) {
     };
   });
   return (
-    <AuthContext.Provider value={{ signUp, logIn, logOut, googleSignIn, user }}>
+    <AuthContext.Provider
+      value={{ signUp, logIn, logOut, googleSignIn, forgotPassword, user }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -50,6 +50,9 @@
         font-size: 18px;
         color: white;
         margin: 10px 0 20px 0;
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
   }

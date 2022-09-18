@@ -84,8 +84,18 @@
         margin-top: 10px;
         font-size: 14px;
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
         align-items: center;
+        a {
+          color: black;
+          &:hover {
+            color: red;
+            transition: all 0.2s linear;
+          }
+          p {
+            font-size: 14px;
+          }
+        }
       }
       .another {
         display: flex;

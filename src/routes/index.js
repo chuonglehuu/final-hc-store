@@ -6,6 +6,7 @@ import Social from "../pages/Social";
 import HomeOnly from "../components/Layout/HomeOnly";
 import SignUp from "../pages/Register";
 import UploadUser from "../pages/UploadUser";
+import ForgotPassword from "../pages/ForgotPassword";
 
 // Route
 const publicRoutes = [
@@ -21,6 +22,7 @@ const publicRoutes = [
     protected: true,
     layout: HomeOnly,
   },
+  { path: "/forgot-password", component: ForgotPassword, layout: HomeOnly },
 ];
 const privateRoutes = [];
 

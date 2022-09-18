@@ -12,6 +12,7 @@ function FormLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { user, logIn } = UserAuth();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,7 +23,7 @@ function FormLogin() {
       alert(error);
     }
   };
-  const navigate = useNavigate();
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("content")}>
@@ -55,7 +56,9 @@ function FormLogin() {
             </div>
           </form>
           <div className={cx("register")}>
-            <label>Don't have any account?</label>
+            <Link to="/forgot-password">
+              <p>Forgot password?</p>
+            </Link>
             <Link to="/register">
               <p>Sign up</p>
             </Link>
