@@ -7,6 +7,8 @@ import HomeOnly from "../components/Layout/HomeOnly";
 import SignUp from "../pages/Register";
 import UploadUser from "../pages/UploadUser";
 import ForgotPassword from "../pages/ForgotPassword";
+import AdminProduct from "../pages/Admin/AdminProduct";
+import DefaultLayout from "../components/AdminLayout/DefaultLayout";
 
 // Route
 const publicRoutes = [
@@ -23,6 +25,11 @@ const publicRoutes = [
     layout: HomeOnly,
   },
   { path: "/forgot-password", component: ForgotPassword, layout: HomeOnly },
+  {
+    path: "/admin/product",
+    component: AdminProduct,
+    layout: DefaultLayout,
+  },
 ];
 const privateRoutes = [];
 
