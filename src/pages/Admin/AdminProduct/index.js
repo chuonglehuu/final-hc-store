@@ -13,6 +13,7 @@ import {
   TableCell,
 } from "@mui/material";
 import { red, grey } from "@mui/material/colors";
+import { Link, useNavigate } from "react-router-dom";
 
 import styles from "./AdminProduct.module.scss";
 import { db } from "../../../firebase/config";
@@ -26,6 +27,7 @@ function AdminProduct() {
   const [open, setOpen] = useState(false);
   const [del, setDel] = useState(false);
   const [update, setUpdate] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     onSnapshot(collection(db, "products"), (snapshot) => {
       setProducts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
@@ -44,24 +46,29 @@ function AdminProduct() {
   function handleCloseDel() {
     setDel(false);
   }
-  function handleOpenUpdate() {
-    setUpdate(true);
-  }
-  function handleCloseUpdate() {
-    setUpdate(false);
-  }
 
   async function deleteProduct(id) {
     try {
       await deleteDoc(doc(db, "products", id));
+      await handleCloseDel();
       alert("delete success");
     } catch (error) {
       alert(error.message);
     }
   }
 
-  function updateProduct(id) {
-    <UpdateProduct id={id}></UpdateProduct>;
+  function updateProduct(id, name, type, desc, price, promo, new_price) {
+    navigate("/admin/product/update-product", {
+      state: {
+        id: id,
+        name: name,
+        type: type,
+        desc: desc,
+        price: price,
+        promo: promo,
+        new_price: new_price,
+      },
+    });
   }
 
   return (
@@ -117,7 +124,17 @@ function AdminProduct() {
                   <TableCell>{data.new_price}</TableCell>
                   <TableCell>
                     <Button
-                      onClick={handleOpenUpdate}
+                      onClick={() => {
+                        updateProduct(
+                          data.id,
+                          data.name,
+                          data.type,
+                          data.description,
+                          data.old_price,
+                          data.promotion,
+                          data.new_price
+                        );
+                      }}
                       variant="contained"
                       startIcon={<ModeEditOutlineOutlinedIcon />}
                       size="small"
@@ -131,22 +148,7 @@ function AdminProduct() {
                     >
                       Edit
                     </Button>
-                    <Dialog
-                      open={update}
-                      onClose={() => {
-                        handleCloseUpdate();
-                      }}
-                    >
-                      <UpdateProduct
-                        id={data.id}
-                        name={data.name}
-                        type={data.type}
-                        des={data.description}
-                        oldPrice={data.old_price}
-                        promo={data.promotion}
-                        price={data.new_price}
-                      />
-                    </Dialog>
+
                     <Button
                       onClick={handleOpenDel}
                       variant="contained"
@@ -183,7 +185,6 @@ function AdminProduct() {
                         <Button
                           onClick={() => {
                             deleteProduct(data.id);
-                            handleCloseDel();
                           }}
                           variant="contained"
                           startIcon={<DeleteOutlineOutlinedIcon />}

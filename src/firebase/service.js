@@ -1,4 +1,10 @@
-import { Timestamp, addDoc, collection } from "firebase/firestore";
+import {
+  Timestamp,
+  addDoc,
+  collection,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "./config";
 
@@ -24,4 +30,26 @@ export const addProduct = async (
     create_at: Timestamp.fromDate(new Date()),
   });
   await uploadBytes(imgRef, image);
+  console.log(ref(storage, `products/${image.name}`));
+};
+
+export const updateProduct = async (
+  id,
+  name,
+  catagory,
+  desc,
+  price,
+  promo,
+  currentPrice
+) => {
+  const docRef = doc(db, "products", id);
+  await updateDoc(docRef, {
+    name: name,
+    type: catagory,
+    description: desc,
+    old_price: price.toString(),
+    promotion: promo.toString(),
+    new_price: currentPrice.toString(),
+    update_at: Timestamp.fromDate(new Date()),
+  });
 };

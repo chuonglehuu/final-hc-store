@@ -1,69 +1,34 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import classNames from "classnames/bind";
 import { TextField, Button } from "@mui/material";
 import BookmarkAddedOutlinedIcon from "@mui/icons-material/BookmarkAddedOutlined";
-import {
-  Timestamp,
-  onSnapshot,
-  updateDoc,
-  doc,
-  getDoc,
-} from "firebase/firestore";
 
+import { updateProduct } from "../../../../firebase/service";
 import styles from "../AddProduct/AddProduct.module.scss";
-import { db } from "../../../../firebase/config";
 
 const cx = classNames.bind(styles);
-function UpdateProduct(id) {
-  const [name, setName] = useState("");
-  const [catagory, setCatagory] = useState("");
-  const [des, setDes] = useState("");
-  const [price, setPrice] = useState("");
-  const [promo, setPromo] = useState("");
-  const [currentPrice, setCurrentPrice] = useState("");
+function UpdateProduct() {
   const navigate = useNavigate();
-  console.log(id);
-  // useEffect(() => {
-  //   onSnapshot(doc(db, "products", id), (docs) => {
-  //     // setName(docs.data().name);
-  //     // setCatagory(docs.data().type);
-  //     // setDes(docs.data().description);
-  //     // setPrice(docs.data().old_price);
-  //     // setPromo(docs.data().promotion);
-  //     console.log(docs.data());
-  //   });
-  // }, []);
+  const location = useLocation();
+  const data = location.state;
 
-  // const docSnap = getDoc(doc(db, "products", id));
-  // console.log(docSnap.data());
-
-  useEffect(() => {
-    const queryInfo = async () => {
-      await onSnapshot(doc(db, "products", id), (docs) => {
-        console.log(docs.data());
-      });
-    };
-    queryInfo();
-  }, []);
+  const [name, setName] = useState("" || data.name);
+  const [catagory, setCatagory] = useState(data.type);
+  const [desc, setDesc] = useState(data.desc);
+  const [price, setPrice] = useState(data.price);
+  const [promo, setPromo] = useState(data.promo);
+  const [currentPrice, setCurrentPrice] = useState(data.new_price);
 
   useEffect(() => {
     const total = price - (price * promo) / 100;
     setCurrentPrice(total);
   }, [promo, price]);
 
-  const updateProduct = async (Id) => {
+  const update = async (id, name, type, desc, price, promo, new_price) => {
     try {
-      const docRef = doc(db, "products", id);
-      await updateDoc(docRef, {
-        name: name,
-        type: catagory,
-        description: des,
-        old_price: price.toString(),
-        promotion: promo.toString(),
-        new_price: currentPrice.toString(),
-        update_at: Timestamp.fromDate(new Date()),
-      });
+      updateProduct(id, name, type, desc, price, promo, new_price);
+      navigate("/admin/product");
     } catch (error) {
       alert(error.message);
     }
@@ -73,7 +38,7 @@ function UpdateProduct(id) {
     <div className={cx("main")}>
       <div className={cx("content")}>
         <h2 className={cx("title")}>Update Product</h2>
-        <form className={cx("form-add")} onClick={() => updateProduct(id)}>
+        <form className={cx("form-add")}>
           <TextField
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -94,8 +59,8 @@ function UpdateProduct(id) {
             required
           />
           <TextField
-            value={des}
-            onChange={(e) => setDes(e.target.value)}
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
             id="outlined-basic"
             label="Description"
             variant="outlined"
@@ -138,7 +103,9 @@ function UpdateProduct(id) {
             sx={{ width: "80%", marginTop: 2 }}
             variant="contained"
             startIcon={<BookmarkAddedOutlinedIcon />}
-            type="submit"
+            onClick={() => {
+              update(data.id, name, catagory, desc, price, promo, currentPrice);
+            }}
           >
             Save Product
           </Button>

@@ -4,6 +4,7 @@ import { TextField, Button } from "@mui/material";
 import BookmarkAddedOutlinedIcon from "@mui/icons-material/BookmarkAddedOutlined";
 import styles from "./AddProduct.module.scss";
 import { addProduct } from "../../../../firebase/service";
+import { ref } from "firebase/storage";
 
 const cx = classNames.bind(styles);
 function AddProduct() {
