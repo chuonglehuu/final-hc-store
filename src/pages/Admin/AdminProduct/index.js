@@ -25,6 +25,7 @@ function AdminProduct() {
   const [products, setProducts] = useState([]);
   const [open, setOpen] = useState(false);
   const [del, setDel] = useState(false);
+  const [update, setUpdate] = useState(false);
   useEffect(() => {
     onSnapshot(collection(db, "products"), (snapshot) => {
       setProducts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
@@ -42,6 +43,12 @@ function AdminProduct() {
   }
   function handleCloseDel() {
     setDel(false);
+  }
+  function handleOpenUpdate() {
+    setUpdate(true);
+  }
+  function handleCloseUpdate() {
+    setUpdate(false);
   }
 
   async function deleteProduct(id) {
@@ -110,9 +117,7 @@ function AdminProduct() {
                   <TableCell>{data.new_price}</TableCell>
                   <TableCell>
                     <Button
-                      onClick={() => {
-                        updateProduct(data.id);
-                      }}
+                      onClick={handleOpenUpdate}
                       variant="contained"
                       startIcon={<ModeEditOutlineOutlinedIcon />}
                       size="small"
@@ -126,11 +131,24 @@ function AdminProduct() {
                     >
                       Edit
                     </Button>
+                    <Dialog
+                      open={update}
+                      onClose={() => {
+                        handleCloseUpdate();
+                      }}
+                    >
+                      <UpdateProduct
+                        id={data.id}
+                        name={data.name}
+                        type={data.type}
+                        des={data.description}
+                        oldPrice={data.old_price}
+                        promo={data.promotion}
+                        price={data.new_price}
+                      />
+                    </Dialog>
                     <Button
                       onClick={handleOpenDel}
-                      // onClick={() => {
-                      //   deleteProduct(data.id);
-                      // }}
                       variant="contained"
                       startIcon={<DeleteOutlineOutlinedIcon />}
                       size="small"

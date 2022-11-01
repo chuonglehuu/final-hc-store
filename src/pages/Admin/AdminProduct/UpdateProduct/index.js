@@ -3,7 +3,13 @@ import { useNavigate } from "react-router-dom";
 import classNames from "classnames/bind";
 import { TextField, Button } from "@mui/material";
 import BookmarkAddedOutlinedIcon from "@mui/icons-material/BookmarkAddedOutlined";
-import { Timestamp, onSnapshot, updateDoc, doc } from "firebase/firestore";
+import {
+  Timestamp,
+  onSnapshot,
+  updateDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 
 import styles from "../AddProduct/AddProduct.module.scss";
 import { db } from "../../../../firebase/config";
@@ -18,24 +24,37 @@ function UpdateProduct(id) {
   const [currentPrice, setCurrentPrice] = useState("");
   const navigate = useNavigate();
   console.log(id);
+  // useEffect(() => {
+  //   onSnapshot(doc(db, "products", id), (docs) => {
+  //     // setName(docs.data().name);
+  //     // setCatagory(docs.data().type);
+  //     // setDes(docs.data().description);
+  //     // setPrice(docs.data().old_price);
+  //     // setPromo(docs.data().promotion);
+  //     console.log(docs.data());
+  //   });
+  // }, []);
+
+  // const docSnap = getDoc(doc(db, "products", id));
+  // console.log(docSnap.data());
+
   useEffect(() => {
-    onSnapshot(doc(db, "products", id), (docs) => {
-      setName(docs.data().name);
-      setCatagory(docs.data().type);
-      setDes(docs.data().description);
-      setPrice(docs.data().old_price);
-      setPromo(docs.data().promotion);
-    });
+    const queryInfo = async () => {
+      await onSnapshot(doc(db, "products", id), (docs) => {
+        console.log(docs.data());
+      });
+    };
+    queryInfo();
   }, []);
-  console.log(name);
+
   useEffect(() => {
     const total = price - (price * promo) / 100;
     setCurrentPrice(total);
   }, [promo, price]);
 
-  const updateProduct = async (productId) => {
+  const updateProduct = async (Id) => {
     try {
-      const docRef = doc(db, "products", productId);
+      const docRef = doc(db, "products", id);
       await updateDoc(docRef, {
         name: name,
         type: catagory,

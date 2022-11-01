@@ -1,11 +1,9 @@
 import classNames from "classnames/bind";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Timestamp, addDoc, collection } from "firebase/firestore";
 import { TextField, Button } from "@mui/material";
 import BookmarkAddedOutlinedIcon from "@mui/icons-material/BookmarkAddedOutlined";
-import { db } from "../../../../firebase/config";
 import styles from "./AddProduct.module.scss";
+import { addProduct } from "../../../../firebase/service";
 
 const cx = classNames.bind(styles);
 function AddProduct() {
@@ -15,22 +13,12 @@ function AddProduct() {
   const [price, setPrice] = useState("");
   const [promo, setPromo] = useState("");
   const [currentPrice, setCurrentPrice] = useState("");
-  const navigate = useNavigate();
+  const [imgUpload, setImgUpload] = useState(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const docRef = collection(db, "products");
-      await addDoc(docRef, {
-        name: name,
-        type: catagory,
-        description: des,
-        old_price: price.toString(),
-        promotion: promo.toString(),
-        new_price: currentPrice.toString(),
-        create_at: Timestamp.fromDate(new Date()),
-      });
-      alert("success");
-      navigate("/admin/product");
+      addProduct(name, catagory, des, price, promo, currentPrice, imgUpload);
+      alert("Create new product successfully");
     } catch (error) {
       console.log(error);
     }
@@ -103,6 +91,14 @@ function AddProduct() {
             sx={{ width: "25%", marginTop: "20px", marginLeft: 1 }}
             required
             type="number"
+          />
+          <input
+            className={styles.input_img}
+            type="file"
+            onChange={(e) => {
+              setImgUpload(e.target.files[0]);
+            }}
+            required
           />
           <Button
             sx={{ width: "80%", marginTop: 2 }}
