@@ -57,6 +57,7 @@ export function AuthContextProvider({ children }) {
         createAt: Timestamp.fromDate(new Date()),
         listCart_ID: "",
         receipt_ID: "",
+        role: 2
       });
     }
   }

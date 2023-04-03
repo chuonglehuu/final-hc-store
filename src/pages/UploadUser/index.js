@@ -17,7 +17,7 @@ import {
 const cx = classNames.bind(styles);
 
 function UploadUser() {
-  const { user } = UserAuth();
+  const { user, setRole } = UserAuth();
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [dob, setDob] = useState("");
@@ -35,7 +35,9 @@ function UploadUser() {
         createAt: Timestamp.fromDate(new Date()),
         listCart_ID: "",
         receipt_ID: "",
+        role: 2,
       });
+      setRole(2);
       navigate("/");
     } catch (error) {
       alert(error.message);

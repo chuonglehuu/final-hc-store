@@ -10,13 +10,14 @@ const cx = classNames.bind(styles);
 function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, signUp } = UserAuth();
+  const { signUp } = UserAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await signUp(email, password);
+      navigate("/upload-user");
     } catch (error) {
       alert(error);
     }
