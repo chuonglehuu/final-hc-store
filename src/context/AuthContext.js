@@ -61,21 +61,6 @@ export function AuthContextProvider({ children }) {
     }
   }
 
-  const fetchUserRole = async () => {
-    const email = user.email;
-    const querySnapshot = await getDocs(
-      query(collection(db, "users"), where("email", "==", email))
-    );
-    if (querySnapshot.docs.length > 0) {
-      // Lấy thông tin role của người dùng từ tài liệu đầu tiên
-      const userDoc = querySnapshot.docs[0];
-      const userRole = userDoc.data().role;
-      setRole(userRole);
-    } else {
-      console.log("User not found");
-    }
-  };
-
   useEffect(() => {
     const unSubcribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -85,9 +70,6 @@ export function AuthContextProvider({ children }) {
     };
   });
 
-  useEffect(() => {
-    fetchUserRole();
-  }, [user]);
   return (
     <AuthContext.Provider
       value={{
@@ -98,6 +80,7 @@ export function AuthContextProvider({ children }) {
         forgotPassword,
         user,
         role,
+        setRole,
       }}
     >
       {children}

@@ -1,9 +1,24 @@
 import classNames from "classnames/bind";
-import styles from "./Header.module.scss";
+import { useNavigate } from "react-router-dom";
 import images from "../../../../assets/Image";
+import { UserAuth } from "../../../../context/AuthContext";
+import styles from "./Header.module.scss";
 
 const cx = classNames.bind(styles);
+
 function Header() {
+  const navigate = useNavigate();
+  const { logOut } = UserAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      navigate("/");
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   return (
     <header>
       <div className={cx("main")}>
@@ -17,7 +32,7 @@ function Header() {
           </div>
           <div className={cx("button-logout")}>
             <span>Welcome Admin!</span>
-            <button>Logout</button>
+            <button onClick={handleLogout}>Logout</button>
           </div>
         </div>
       </div>

@@ -1,8 +1,8 @@
+import classNames from "classnames/bind";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import classNames from "classnames/bind";
-import styles from "../../components/Layout/FormLogin/FormLogin.module.scss";
 import loginImg from "../../assets/Image/loginIP.png";
+import styles from "../../components/Layout/FormLogin/FormLogin.module.scss";
 import { UserAuth } from "../../context/AuthContext";
 
 const cx = classNames.bind(styles);
@@ -17,7 +17,6 @@ function SignUp() {
     e.preventDefault();
     try {
       await signUp(email, password);
-      navigate("/upload-user");
     } catch (error) {
       alert(error);
     }

@@ -19,11 +19,6 @@ function ThirdBtnLogin() {
       console.log(error);
     }
   };
-  useEffect(() => {
-    if (user != null) {
-      navigate("/upload-user");
-    }
-  }, [user]);
 
   return (
     <div className={cx("btn")}>

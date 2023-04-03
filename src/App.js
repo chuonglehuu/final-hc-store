@@ -1,56 +1,17 @@
-// import { ref, child, get } from "firebase/database";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import React, { Fragment } from "react";
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext";
-import { publicRoutes } from "./routes";
-import DefaultLayout from "./components/Layout/DefaultLayout";
-import ProtecedRoute from "./routes/ProtecedRoute";
+import Router from "./routes";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <div className="App">
         <AuthContextProvider>
-          <Routes>
-            {publicRoutes.map((route, index) => {
-              const Page = route.component;
-              //Check Layout
-              let Layout = DefaultLayout;
-              let protectedRoute = route.protected;
-              if (route.layout) {
-                Layout = route.layout;
-              } else if (route.layout === null) {
-                Layout = Fragment;
-              }
-              const ProtecedPage = () => {
-                if (protectedRoute) {
-                  return (
-                    <Layout>
-                      <ProtecedRoute>
-                        <Page />
-                      </ProtecedRoute>
-                    </Layout>
-                  );
-                } else {
-                  return (
-                    <Layout>
-                      <Page />
-                    </Layout>
-                  );
-                }
-              };
-              return (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={<ProtecedPage />}
-                />
-              );
-            })}
-          </Routes>
+          <Router />
         </AuthContextProvider>
       </div>
-    </Router>
+    </BrowserRouter>
   );
 }
 
