@@ -10,7 +10,7 @@ import { db, storage } from "./config";
 
 export const addProduct = async (
   name,
-  catagory,
+  category,
   des,
   price,
   promo,
@@ -21,7 +21,7 @@ export const addProduct = async (
   const imgRef = ref(storage, `products/${image.name}`);
   await addDoc(docRef, {
     name: name,
-    type: catagory,
+    type: category,
     description: des,
     old_price: price.toString(),
     promotion: promo.toString(),
@@ -36,7 +36,7 @@ export const addProduct = async (
 export const updateProduct = async (
   id,
   name,
-  catagory,
+  category,
   desc,
   price,
   promo,
@@ -45,11 +45,42 @@ export const updateProduct = async (
   const docRef = doc(db, "products", id);
   await updateDoc(docRef, {
     name: name,
-    type: catagory,
+    type: category,
     description: desc,
     old_price: price.toString(),
     promotion: promo.toString(),
     new_price: currentPrice.toString(),
     update_at: Timestamp.fromDate(new Date()),
+  });
+};
+
+export const addCategory = async (name, description) => {
+  const docRef = collection(db, "categories");
+  await addDoc(docRef, {
+    name: name,
+    description: description,
+    create_at: Timestamp.fromDate(new Date()),
+  });
+};
+
+export const updateCategory = async (id, name, description) => {
+  const docRef = doc(db, "categories", id);
+  await updateDoc(docRef, {
+    name: name,
+    description: description,
+    update_at: Timestamp.fromDate(new Date()),
+  });
+};
+
+export const addManager = async (name, email, phone, address, uid) => {
+  const docRef = collection(db, "users");
+  await addDoc(docRef, {
+    fullname: name,
+    email: email,
+    phone: phone,
+    address: address,
+    create_at: Timestamp.fromDate(new Date()),
+    uid: uid,
+    role: 1,
   });
 };

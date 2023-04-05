@@ -1,21 +1,26 @@
-import classNames from "classnames/bind";
-import styles from "./Sidebar.module.scss";
+import CategoryIcon from "@mui/icons-material/Category";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import CategoryIcon from "@mui/icons-material/Category";
 import { green } from "@mui/material/colors";
+import classNames from "classnames/bind";
 import { useNavigate } from "react-router-dom";
+import styles from "./Sidebar.module.scss";
 
 const cx = classNames.bind(styles);
 function Sidebar() {
   const navigate = useNavigate();
   const menuItems = [
     {
-      text: "Product",
+      text: "Products",
       icon: <CategoryIcon sx={{ color: green[500] }} />,
-      path: "/admin/product",
+      path: "/manager",
+    },
+    {
+      text: "Categories",
+      icon: <CategoryIcon sx={{ color: green[500] }} />,
+      path: "/manager/categories",
     },
   ];
   return (

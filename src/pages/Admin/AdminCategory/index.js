@@ -17,30 +17,34 @@ import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../../firebase/config";
-import AddProduct from "./AddProduct";
-import styles from "./AdminProduct.module.scss";
+import AddCategory from "./AddCategory";
+import styles from "./AdminCategory.module.scss";
 
 const cx = classNames.bind(styles);
 
-function AdminProduct() {
-  const [products, setProducts] = useState([]);
+function AdminCategory() {
+  const [categories, setCategories] = useState([]);
   const [open, setOpen] = useState(false);
   const [del, setDel] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    onSnapshot(collection(db, "products"), (snapshot) => {
-      setProducts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    onSnapshot(collection(db, "categories"), (snapshot) => {
+      setCategories(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
     });
   }, []);
 
   function handleOpenAdd() {
     setOpen(true);
   }
+
   function handleCloseAdd() {
     setOpen(false);
   }
+
   function handleOpenDel() {
     setDel(true);
   }
@@ -48,9 +52,9 @@ function AdminProduct() {
     setDel(false);
   }
 
-  async function deleteProduct(id) {
+  async function deleteCategory(id) {
     try {
-      await deleteDoc(doc(db, "products", id));
+      await deleteDoc(doc(db, "categories", id));
       handleCloseDel();
       alert("delete success");
     } catch (error) {
@@ -58,16 +62,12 @@ function AdminProduct() {
     }
   }
 
-  function updateProduct(id, name, type, desc, price, promo, new_price) {
-    navigate("/manager/update-product", {
+  function updateCategory(id, name, description) {
+    navigate("/manager/update-category", {
       state: {
         id: id,
         name: name,
-        type: type,
-        desc: desc,
-        price: price,
-        promo: promo,
-        new_price: new_price,
+        description: description,
       },
     });
   }
@@ -75,7 +75,7 @@ function AdminProduct() {
   return (
     <div className={cx("main")}>
       <div className={cx("content")}>
-        <h2 className={cx("title")}>List of Products</h2>
+        <h2 className={cx("title")}>List of Categories</h2>
         <div className={cx("add-btn")}>
           <Button
             variant="contained"
@@ -84,7 +84,7 @@ function AdminProduct() {
               handleOpenAdd();
             }}
           >
-            Add Product
+            Add Category
           </Button>
           <Dialog
             open={open}
@@ -92,7 +92,7 @@ function AdminProduct() {
               handleCloseAdd();
             }}
           >
-            <AddProduct setOpen={setOpen} />
+            <AddCategory setOpen={setOpen} />
           </Dialog>
         </div>
         <div className={cx("table")}>
@@ -100,39 +100,19 @@ function AdminProduct() {
             <TableHead>
               <TableRow>
                 <TableCell className={cx("style-col")}>Name</TableCell>
-                <TableCell className={cx("style-col")}>Type</TableCell>
                 <TableCell className={cx("style-col")}>Description</TableCell>
-                <TableCell className={cx("style-col")}>Price (VND)</TableCell>
-                <TableCell className={cx("style-col")}>Promo (%)</TableCell>
-                <TableCell className={cx("style-col")}>
-                  Currrent Price (VND)
-                </TableCell>
                 <TableCell className={cx("style-col")}>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {products.map((data, index) => (
+              {categories.map((data, index) => (
                 <TableRow key={index}>
                   <TableCell>{data.name}</TableCell>
-                  <TableCell>{data.type}</TableCell>
-                  <TableCell className={cx("style-display")}>
-                    {data.description}
-                  </TableCell>
-                  <TableCell>{data.old_price}</TableCell>
-                  <TableCell sx={{ width: "10px" }}>{data.promotion}</TableCell>
-                  <TableCell>{data.new_price}</TableCell>
+                  <TableCell>{data.description}</TableCell>
                   <TableCell>
                     <Button
                       onClick={() => {
-                        updateProduct(
-                          data.id,
-                          data.name,
-                          data.type,
-                          data.description,
-                          data.old_price,
-                          data.promotion,
-                          data.new_price
-                        );
+                        updateCategory(data.id, data.name, data.description);
                       }}
                       variant="contained"
                       startIcon={<ModeEditOutlineOutlinedIcon />}
@@ -176,14 +156,14 @@ function AdminProduct() {
                           lineHeight: "50px",
                         }}
                       >
-                        Do you want to delete this product?
+                        Do you want to delete this category?
                       </h4>
                       <DialogActions
                         style={{ display: "block", margin: "20px  auto" }}
                       >
                         <Button
                           onClick={() => {
-                            deleteProduct(data.id);
+                            deleteCategory(data.id);
                           }}
                           variant="contained"
                           startIcon={<DeleteOutlineOutlinedIcon />}
@@ -210,4 +190,4 @@ function AdminProduct() {
   );
 }
 
-export default AdminProduct;
+export default AdminCategory;
