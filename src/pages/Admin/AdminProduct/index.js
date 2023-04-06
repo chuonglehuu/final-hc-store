@@ -58,7 +58,7 @@ function AdminProduct() {
     }
   }
 
-  function updateProduct(id, name, type, desc, price, promo, new_price) {
+  function navigateUpdateProductPage(id, name, type, desc, price, promo, new_price) {
     navigate("/manager/update-product", {
       state: {
         id: id,
@@ -124,7 +124,7 @@ function AdminProduct() {
                   <TableCell>
                     <Button
                       onClick={() => {
-                        updateProduct(
+                        navigateUpdateProductPage(
                           data.id,
                           data.name,
                           data.type,
