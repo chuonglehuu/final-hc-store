@@ -29,9 +29,7 @@ function AdminOrder() {
 
   useEffect(() => {
     onSnapshot(collection(db, "orders"), (snapshot) => {
-      setOrders(
-        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-      );
+      setOrders(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
   }, []);
 
@@ -71,23 +69,29 @@ function AdminOrder() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell className={cx("style-col")}>Name</TableCell>
-                <TableCell className={cx("style-col")}>Description</TableCell>
+                <TableCell className={cx("style-col")}>Orderer</TableCell>
+                <TableCell className={cx("style-col")}>Phone</TableCell>
+                <TableCell className={cx("style-col")}>Address</TableCell>
+                <TableCell className={cx("style-col")}>Product</TableCell>
+                <TableCell className={cx("style-col")}>Price</TableCell>
                 <TableCell className={cx("style-col")}>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {orders.map((data, index) => (
                 <TableRow key={index}>
-                  <TableCell>{data.name}</TableCell>
-                  <TableCell>{data.description}</TableCell>
+                  <TableCell>{data.userName}</TableCell>
+                  <TableCell>{data.userPhone}</TableCell>
+                  <TableCell>{data.address}</TableCell>
+                  <TableCell>{data.productName}</TableCell>
+                  <TableCell>{data.productPrice}</TableCell>
+
                   <TableCell>
                     <Button
                       onClick={() => {
                         acceptOrder();
                       }}
                       variant="contained"
-                      startIcon={<ModeEditOutlineOutlinedIcon />}
                       size="small"
                       sx={{
                         marginRight: 1,
@@ -103,7 +107,6 @@ function AdminOrder() {
                     <Button
                       onClick={handleOpenDel}
                       variant="contained"
-                      startIcon={<DeleteOutlineOutlinedIcon />}
                       size="small"
                       sx={{
                         backgroundColor: red[500],

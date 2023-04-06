@@ -10,6 +10,7 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { UserAuth } from "../../context/AuthContext";
 import { db, storage } from "../../firebase/config";
+import { addOrder } from "../../firebase/service";
 import styles from "./Product.module.scss";
 
 const cx = classNames.bind(styles);
@@ -17,7 +18,7 @@ const cx = classNames.bind(styles);
 const ITEMS_PER_PAGE = 6;
 
 function Product() {
-  const { role } = UserAuth();
+  const { role, user } = UserAuth();
 
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,9 +47,20 @@ function Product() {
     });
   }, []);
 
-  const buyProduct = () => {
-
-  }
+  const buyProduct = async (
+    userName,
+    userPhone,
+    address,
+    productName,
+    productPrice
+  ) => {
+    try {
+      await addOrder(userName, userPhone, address, productName, productPrice);
+      alert("Đã đặt hàng thành công");
+    } catch (e) {
+      console.log("Error order: ", e);
+    }
+  };
 
   return (
     <div className={cx("main")}>
@@ -78,7 +90,22 @@ function Product() {
             </CardContent>
             {role === 2 && (
               <CardActions>
-                <Button size="small" onClick={() => buyProduct()}>Buy</Button>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    if (user.providerData.length) {
+                      buyProduct(
+                        user.providerData[0].displayName,
+                        user.providerData[0].phoneNumber,
+                        user.providerData[0].email,
+                        item.name,
+                        item.new_price
+                      );
+                    }
+                  }}
+                >
+                  Buy
+                </Button>
               </CardActions>
             )}
           </Card>
