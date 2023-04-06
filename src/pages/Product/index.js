@@ -18,7 +18,7 @@ const cx = classNames.bind(styles);
 const ITEMS_PER_PAGE = 6;
 
 function Product() {
-  const { role, user } = UserAuth();
+  const { role, user, userDetail } = UserAuth();
 
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);

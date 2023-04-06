@@ -36,7 +36,7 @@ const MANAGER_PATHS = [
 const ADMIN_PATHS = ["/admin", "/admin/update-manager", "/admin/dashboard"];
 
 export default function Router() {
-  const { user, role, setRole } = UserAuth();
+  const { user, role, setRole, setUserDetail } = UserAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -47,6 +47,7 @@ export default function Router() {
     if (querySnapshot.docs.length > 0) {
       const userDoc = querySnapshot.docs[0];
       const userRole = userDoc.data().role;
+      setUserDetail(userDoc.data());
       setRole(userRole);
     } else {
       console.log("User not found");

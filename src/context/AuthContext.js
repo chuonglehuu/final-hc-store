@@ -23,6 +23,7 @@ const AuthContext = createContext();
 
 export function AuthContextProvider({ children }) {
   const [user, setUser] = useState({});
+  const [userDetail, setUserDetail] = useState({});
   const [role, setRole] = useState();
 
   function signUp(email, password) {
@@ -57,7 +58,8 @@ export function AuthContextProvider({ children }) {
         createAt: Timestamp.fromDate(new Date()),
         listCart_ID: "",
         receipt_ID: "",
-        role: 2
+        role: 2,
+        address: "",
       });
     }
   }
@@ -82,6 +84,8 @@ export function AuthContextProvider({ children }) {
         user,
         role,
         setRole,
+        userDetail,
+        setUserDetail,
       }}
     >
       {children}
