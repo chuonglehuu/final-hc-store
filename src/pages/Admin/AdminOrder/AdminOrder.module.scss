@@ -1,0 +1,25 @@
+.main {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    .content {
+      .title {
+        text-align: center;
+      }
+      .add-btn {
+        margin: 20px;
+        float: right;
+      }
+      .style-col {
+        font-weight: 600;
+      }
+      .style-display {
+        display: table-cell;
+        width: 50px;
+        white-space: nowrap;
+        overflow: hidden !important;
+        text-overflow: ellipsis;
+        line-height: 1.43;
+      }
+    }
+  }

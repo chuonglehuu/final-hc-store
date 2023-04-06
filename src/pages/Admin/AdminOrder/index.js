@@ -1,4 +1,3 @@
-import ControlPointOutlinedIcon from "@mui/icons-material/ControlPointOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import {
@@ -17,26 +16,22 @@ import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../../firebase/config";
-import AddManager from "./AddManager";
-import styles from "./AdminUser.module.scss";
+import styles from "./AdminOrder.module.scss";
 
 const cx = classNames.bind(styles);
 
-function AdminUser() {
-  const [users, setUsers] = useState([]);
+function AdminOrder() {
+  const [orders, setOrders] = useState([]);
   const [open, setOpen] = useState(false);
   const [del, setDel] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    onSnapshot(collection(db, "users"), (snapshot) => {
-      const listUsers = snapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      const filterAdminUser = listUsers.filter((item) => item.role !== 0);
-      setUsers(filterAdminUser);
+    onSnapshot(collection(db, "orders"), (snapshot) => {
+      setOrders(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
     });
   }, []);
 
@@ -55,9 +50,9 @@ function AdminUser() {
     setDel(false);
   }
 
-  async function deleteUser(id) {
+  async function deleteCategory(id) {
     try {
-      await deleteDoc(doc(db, "users", id));
+      await deleteDoc(doc(db, "orders", id));
       handleCloseDel();
       alert("delete success");
     } catch (error) {
@@ -65,85 +60,45 @@ function AdminUser() {
     }
   }
 
-  function updateUser(id, name, phone, address) {
-    navigate("/admin/update-manager", {
-      state: {
-        id: id,
-        name: name,
-        phone: phone,
-        address: address,
-      },
-    });
-  }
+  function acceptOrder() {}
 
   return (
     <div className={cx("main")}>
       <div className={cx("content")}>
-        <h2 className={cx("title")}>List of users</h2>
-        <div className={cx("add-btn")}>
-          <Button
-            variant="contained"
-            startIcon={<ControlPointOutlinedIcon />}
-            onClick={() => {
-              handleOpenAdd();
-            }}
-          >
-            Create new manager
-          </Button>
-          <Dialog
-            open={open}
-            onClose={() => {
-              handleCloseAdd();
-            }}
-          >
-            <AddManager setOpen={setOpen} />
-          </Dialog>
-        </div>
+        <h2 className={cx("title")}>List of Orders</h2>
+
         <div className={cx("table")}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell className={cx("style-col")}>Name</TableCell>
-                <TableCell className={cx("style-col")}>Role</TableCell>
-                <TableCell className={cx("style-col")}>Email</TableCell>
-                <TableCell className={cx("style-col")}>Phone Number</TableCell>
-                <TableCell className={cx("style-col")}>Address</TableCell>
+                <TableCell className={cx("style-col")}>Description</TableCell>
                 <TableCell className={cx("style-col")}>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map((data, index) => (
+              {orders.map((data, index) => (
                 <TableRow key={index}>
-                  <TableCell>{data.fullname}</TableCell>
-                  <TableCell>{data.role === 1 ? "Manager" : "User"}</TableCell>
-                  <TableCell>{data.email}</TableCell>
-                  <TableCell>{data.phone}</TableCell>
-                  <TableCell>{data.address}</TableCell>
+                  <TableCell>{data.name}</TableCell>
+                  <TableCell>{data.description}</TableCell>
                   <TableCell>
-                    {data.role === 1 && (
-                      <Button
-                        onClick={() => {
-                          updateUser(
-                            data.id,
-                            data.fullname,
-                            data.phone,
-                            data.address
-                          );
-                        }}
-                        variant="contained"
-                        startIcon={<ModeEditOutlineOutlinedIcon />}
-                        size="small"
-                        sx={{
-                          marginRight: 1,
-                          backgroundColor: grey[500],
-                          "&:hover": {
-                            backgroundColor: grey[700],
-                          },
-                        }}
-                      >
-                        Edit
-                      </Button>
-                    )}
+                    <Button
+                      onClick={() => {
+                        acceptOrder();
+                      }}
+                      variant="contained"
+                      startIcon={<ModeEditOutlineOutlinedIcon />}
+                      size="small"
+                      sx={{
+                        marginRight: 1,
+                        backgroundColor: grey[500],
+                        "&:hover": {
+                          backgroundColor: grey[700],
+                        },
+                      }}
+                    >
+                      Accept
+                    </Button>
 
                     <Button
                       onClick={handleOpenDel}
@@ -157,7 +112,7 @@ function AdminUser() {
                         },
                       }}
                     >
-                      Delete
+                      Cancel
                     </Button>
                     <Dialog
                       open={del}
@@ -173,14 +128,14 @@ function AdminUser() {
                           lineHeight: "50px",
                         }}
                       >
-                        Do you want to delete this user?
+                        Do you want to cancel this order?
                       </h4>
                       <DialogActions
                         style={{ display: "block", margin: "20px  auto" }}
                       >
                         <Button
                           onClick={() => {
-                            deleteUser(data.id);
+                            deleteCategory(data.id);
                           }}
                           variant="contained"
                           startIcon={<DeleteOutlineOutlinedIcon />}
@@ -192,7 +147,7 @@ function AdminUser() {
                             },
                           }}
                         >
-                          Delete
+                          Cancel
                         </Button>
                       </DialogActions>
                     </Dialog>
@@ -207,4 +162,4 @@ function AdminUser() {
   );
 }
 
-export default AdminUser;
+export default AdminOrder;

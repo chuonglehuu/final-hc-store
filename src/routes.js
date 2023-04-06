@@ -9,9 +9,11 @@ import { db } from "./firebase/config";
 import About from "./pages/About";
 import AdminCategory from "./pages/Admin/AdminCategory";
 import UpdateCategory from "./pages/Admin/AdminCategory/UpdateCategory";
+import AdminOrder from "./pages/Admin/AdminOrder";
 import AdminProduct from "./pages/Admin/AdminProduct";
 import UpdateProduct from "./pages/Admin/AdminProduct/UpdateProduct";
 import AdminUser from "./pages/Admin/AdminUser";
+import UpdateManager from "./pages/Admin/AdminUser/UpdateManager";
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -28,7 +30,10 @@ const MANAGER_PATHS = [
   "/manager/categories",
   "/manager/update-product",
   "/manager/update-category",
+  "/manager/dashboard",
+  "/manager/orders",
 ];
+const ADMIN_PATHS = ["/admin", "/admin/update-manager", "/admin/dashboard"];
 
 export default function Router() {
   const { user, role, setRole } = UserAuth();
@@ -66,7 +71,7 @@ export default function Router() {
     if (
       role === 0 &&
       !DEFAULT_PATHS.includes(location.pathname) &&
-      location.pathname !== "/admin"
+      !ADMIN_PATHS.includes(location.pathname)
     ) {
       navigate("/admin");
     }
@@ -149,6 +154,28 @@ export default function Router() {
         ),
     },
     {
+      path: "/admin/update-manager",
+      element:
+        role === 0 ? (
+          <AdminLayout>
+            <UpdateManager />
+          </AdminLayout>
+        ) : (
+          <NotFound />
+        ),
+    },
+    {
+      path: "/admin/dashboard",
+      element:
+        role === 0 ? (
+          <AdminLayout>
+            <>dashboard</>
+          </AdminLayout>
+        ) : (
+          <NotFound />
+        ),
+    },
+    {
       path: "/manager",
       element:
         role === 1 ? (
@@ -187,6 +214,28 @@ export default function Router() {
         role === 1 ? (
           <AdminLayout>
             <UpdateCategory />
+          </AdminLayout>
+        ) : (
+          <NotFound />
+        ),
+    },
+    {
+      path: "/manager/dashboard",
+      element:
+        role === 1 ? (
+          <AdminLayout>
+            <>dashboard</>
+          </AdminLayout>
+        ) : (
+          <NotFound />
+        ),
+    },
+    {
+      path: "/manager/orders",
+      element:
+        role === 1 ? (
+          <AdminLayout>
+            <AdminOrder />
           </AdminLayout>
         ) : (
           <NotFound />

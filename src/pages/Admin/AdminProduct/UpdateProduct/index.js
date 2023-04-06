@@ -1,9 +1,17 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import classNames from "classnames/bind";
-import { TextField, Button } from "@mui/material";
 import BookmarkAddedOutlinedIcon from "@mui/icons-material/BookmarkAddedOutlined";
-
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
+import classNames from "classnames/bind";
+import { collection, onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { db } from "../../../../firebase/config";
 import { updateProduct } from "../../../../firebase/service";
 import styles from "../AddProduct/AddProduct.module.scss";
 
@@ -13,6 +21,7 @@ function UpdateProduct() {
   const location = useLocation();
   const data = location.state;
 
+  const [categories, setCategories] = useState([]);
   const [name, setName] = useState("" || data.name);
   const [category, setCategory] = useState(data.type);
   const [desc, setDesc] = useState(data.desc);
@@ -28,11 +37,19 @@ function UpdateProduct() {
   const update = async (id, name, type, desc, price, promo, new_price) => {
     try {
       await updateProduct(id, name, type, desc, price, promo, new_price);
-      navigate("/manager")
+      navigate("/manager");
     } catch (error) {
       alert(error.message);
     }
   };
+
+  useEffect(() => {
+    onSnapshot(collection(db, "categories"), (snapshot) => {
+      setCategories(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+    });
+  }, []);
 
   return (
     <div className={cx("main")}>
@@ -49,15 +66,26 @@ function UpdateProduct() {
             required
             autoFocus
           />
-          <TextField
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            id="outlined-basic"
-            label="Category"
-            variant="outlined"
-            sx={{ width: "80%", marginTop: "20px" }}
-            required
-          />
+
+          <FormControl sx={{ width: "80%", marginTop: "20px" }}>
+            <InputLabel id="demo-simple-select-label">Category</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={category}
+              label="Choose a category"
+              onChange={(e) => setCategory(e.target.value)}
+              required
+              sx={{ textAlign: "start" }}
+            >
+              {categories.map((item) => (
+                <MenuItem key={item.id} value={item.name}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
           <TextField
             value={desc}
             onChange={(e) => setDesc(e.target.value)}

@@ -84,3 +84,25 @@ export const addManager = async (name, email, phone, address, uid) => {
     role: 1,
   });
 };
+
+export const updateManager = async (id, name, phone, address) => {
+  const docRef = doc(db, "users", id);
+  await updateDoc(docRef, {
+    fullname: name,
+    phone: phone,
+    address: address,
+    update_at: Timestamp.fromDate(new Date()),
+  });
+};
+
+export const addOrder = async (userName, userPhone, address, productName, productPrice) => {
+  const docRef = collection(db, "orders");
+  await addDoc(docRef, {
+    userName: userName,
+    userPhone: userPhone,
+    address: address,
+    productName: productName,
+    productPrice: productPrice,
+    create_at: Timestamp.fromDate(new Date()),
+  });
+};

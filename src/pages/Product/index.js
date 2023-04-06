@@ -46,6 +46,10 @@ function Product() {
     });
   }, []);
 
+  const buyProduct = () => {
+
+  }
+
   return (
     <div className={cx("main")}>
       {products
@@ -74,7 +78,7 @@ function Product() {
             </CardContent>
             {role === 2 && (
               <CardActions>
-                <Button size="small">Buy</Button>
+                <Button size="small" onClick={() => buyProduct()}>Buy</Button>
               </CardActions>
             )}
           </Card>
