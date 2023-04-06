@@ -48,6 +48,7 @@ function Product() {
   }, []);
 
   const buyProduct = async (
+    id,
     userName,
     userPhone,
     address,
@@ -55,7 +56,14 @@ function Product() {
     productPrice
   ) => {
     try {
-      await addOrder(userName, userPhone, address, productName, productPrice);
+      await addOrder(
+        id,
+        userName,
+        userPhone,
+        address,
+        productName,
+        productPrice
+      );
       alert("Đã đặt hàng thành công");
     } catch (e) {
       console.log("Error order: ", e);
@@ -69,7 +77,14 @@ function Product() {
         .map((item) => (
           <Card
             key={item.id}
-            sx={{ maxWidth: 345 }}
+            sx={{
+              maxWidth: 345,
+              maxHeight: 400,
+              ":hover": {
+                boxShadow: 20, // theme.shadows[20]
+                cursor: "pointer",
+              },
+            }}
             style={{ border: "1px solid #999" }}
           >
             <CardMedia
@@ -84,7 +99,11 @@ function Product() {
               <Typography gutterBottom variant="h6" component="div">
                 {item.new_price}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ maxHeight: "40px" }}
+              >
                 {item.description}
               </Typography>
             </CardContent>
@@ -93,15 +112,22 @@ function Product() {
                 <Button
                   size="small"
                   onClick={() => {
-                    if (user.providerData.length) {
+                    if (user && user.providerData.length) {
                       buyProduct(
-                        user.providerData[0].displayName,
-                        user.providerData[0].phoneNumber,
-                        user.providerData[0].email,
+                        user.uid,
+                        user.providerData[0].displayName || "",
+                        user.providerData[0].phoneNumber || "",
+                        user.providerData[0].address || "",
                         item.name,
                         item.new_price
                       );
                     }
+                  }}
+                  sx={{
+                    ":hover": {
+                      cursor: "pointer",
+                      backgroundColor: " #b3ffe0",
+                    },
                   }}
                 >
                   Buy

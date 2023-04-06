@@ -3,6 +3,8 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   padding: 20px 0px;
+  position: relative;
+  height: 100%;
 }
 
 @media (max-width: 1200px) {
@@ -19,7 +21,7 @@
 
 .pagination {
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
   .page_number {
     width: 28px;
     height: 28px;

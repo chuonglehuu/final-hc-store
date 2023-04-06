@@ -95,14 +95,23 @@ export const updateManager = async (id, name, phone, address) => {
   });
 };
 
-export const addOrder = async (userName, userPhone, address, productName, productPrice) => {
+export const addOrder = async (
+  uid,
+  userName,
+  userPhone,
+  address,
+  productName,
+  productPrice
+) => {
   const docRef = collection(db, "orders");
   await addDoc(docRef, {
+    userId: uid,
     userName: userName,
     userPhone: userPhone,
     address: address,
     productName: productName,
     productPrice: productPrice,
     create_at: Timestamp.fromDate(new Date()),
+    status: "pending",
   });
 };
