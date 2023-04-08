@@ -5,6 +5,10 @@ import {
   Button,
   Dialog,
   DialogActions,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -26,6 +30,7 @@ function AdminUser() {
   const [users, setUsers] = useState([]);
   const [open, setOpen] = useState(false);
   const [del, setDel] = useState(false);
+  const [filter, setFilter] = useState(0);
 
   const navigate = useNavigate();
 
@@ -36,9 +41,19 @@ function AdminUser() {
         id: doc.id,
       }));
       const filterAdminUser = listUsers.filter((item) => item.role !== 0);
-      setUsers(filterAdminUser);
+      if (filter === 0) {
+        setUsers(filterAdminUser);
+      }
+      if (filter === 1) {
+        const newArr = listUsers.filter((item) => item.role === 1);
+        setUsers(newArr);
+      }
+      if (filter === 2) {
+        const newArr = listUsers.filter((item) => item.role === 2);
+        setUsers(newArr);
+      }
     });
-  }, []);
+  }, [filter]);
 
   function handleOpenAdd() {
     setOpen(true);
@@ -80,7 +95,21 @@ function AdminUser() {
     <div className={cx("main")}>
       <div className={cx("content")}>
         <h2 className={cx("title")}>List of users</h2>
-        <div className={cx("add-btn")}>
+        <div className={cx("action-button-filter")}>
+          <FormControl sx={{ width: "200px" }}>
+            <InputLabel id="demo-simple-select-label">Filter by</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={filter}
+              label="Filter by"
+              onChange={(e) => setFilter(e.target.value)}
+            >
+              <MenuItem value={0}>All</MenuItem>
+              <MenuItem value={1}>Manager</MenuItem>
+              <MenuItem value={2}>User</MenuItem>
+            </Select>
+          </FormControl>
           <Button
             variant="contained"
             startIcon={<ControlPointOutlinedIcon />}

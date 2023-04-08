@@ -6,9 +6,10 @@
       .title {
         text-align: center;
       }
-      .add-btn {
-        margin: 20px;
-        float: right;
+      .action-button-filter{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
       }
       .style-col {
         font-weight: 600;

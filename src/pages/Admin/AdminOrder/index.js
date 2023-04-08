@@ -1,5 +1,9 @@
 import {
   Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -17,12 +21,33 @@ const cx = classNames.bind(styles);
 
 function AdminOrder() {
   const [orders, setOrders] = useState([]);
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     onSnapshot(collection(db, "orders"), (snapshot) => {
-      setOrders(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      const listOrders = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+
+      if (filter === "all") setOrders(listOrders);
+
+      if (filter === "pending") {
+        const newArr = listOrders.filter((item) => item.status === "pending");
+        setOrders(newArr);
+      }
+
+      if (filter === "accepted") {
+        const newArr = listOrders.filter((item) => item.status === "accepted");
+        setOrders(newArr);
+      }
+
+      if (filter === "canceled") {
+        const newArr = listOrders.filter((item) => item.status === "canceled");
+        setOrders(newArr);
+      }
     });
-  }, []);
+  }, [filter]);
 
   async function acceptOrder(id) {
     const docRef = doc(db, "orders", id);
@@ -42,6 +67,22 @@ function AdminOrder() {
     <div className={cx("main")}>
       <div className={cx("content")}>
         <h2 className={cx("title")}>List of Orders</h2>
+
+        <FormControl sx={{ width: "200px" }}>
+          <InputLabel id="demo-simple-select-label">Filter by</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={filter}
+            label="Filter by"
+            onChange={(e) => setFilter(e.target.value)}
+          >
+            <MenuItem value="all">All</MenuItem>
+            <MenuItem value="pending">Pending</MenuItem>
+            <MenuItem value="accepted">Accepted</MenuItem>
+            <MenuItem value="canceled">canceled</MenuItem>
+          </Select>
+        </FormControl>
 
         <div className={cx("table")}>
           <Table>
