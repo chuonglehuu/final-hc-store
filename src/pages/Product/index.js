@@ -1,4 +1,10 @@
-import { Dialog } from "@mui/material";
+import {
+  Dialog,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -29,8 +35,18 @@ function Product() {
   const [userPhoneBuy, setUserPhoneBuy] = useState();
   const [productNameBuy, setProductNameBuy] = useState("");
   const [productPriceBuy, setProductPriceBuy] = useState();
+  const [filter, setFilter] = useState("all");
+  const [categories, setCategories] = useState([]);
 
   const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
+
+  useEffect(() => {
+    onSnapshot(collection(db, "categories"), (snapshot) => {
+      setCategories(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+    });
+  }, []);
 
   useEffect(() => {
     onSnapshot(collection(db, "products"), async (snapshot) => {
@@ -50,9 +66,15 @@ function Product() {
           temp.push({ ...data, id });
         }
       }
-      setProducts(temp);
+      if (filter === "all") {
+        setProducts(temp);
+      }
+      if (filter !== "all") {
+        const newArr = temp.filter((item) => item.type === filter);
+        setProducts(newArr);
+      }
     });
-  }, []);
+  }, [filter]);
 
   const handleOpenConfirmAddress = (
     id,
@@ -74,103 +96,125 @@ function Product() {
   }
 
   return (
-    <div className={cx("main")}>
-      {products
-        .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
-        .map((item) => (
-          <Card
-            key={item.id}
-            sx={{
-              maxWidth: 345,
-              maxHeight: 400,
-              ":hover": {
-                boxShadow: 20, // theme.shadows[20]
-                cursor: "pointer",
-              },
-            }}
-            style={{ border: "1px solid #999" }}
-          >
-            <CardMedia
-              sx={{ height: 140 }}
-              image={item.url_img}
-              title="green iguana"
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {item.name}
-              </Typography>
-              <Typography gutterBottom variant="h6" component="div">
-                {item.new_price}
-              </Typography>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ maxHeight: "40px" }}
-              >
-                {item.description}
-              </Typography>
-            </CardContent>
-            {role === 2 && (
-              <>
-                <CardActions>
-                  <Button
-                    size="small"
-                    onClick={() => {
-                      if (user && user.providerData.length) {
-                        handleOpenConfirmAddress(
-                          item.id,
-                          user.providerData[0].displayName || "",
-                          user.providerData[0].phoneNumber || "",
-                          item.name,
-                          item.new_price
-                        );
-                      }
-                    }}
-                    sx={{
-                      ":hover": {
-                        cursor: "pointer",
-                        backgroundColor: " #b3ffe0",
-                      },
-                    }}
-                  >
-                    Buy
-                  </Button>
-                </CardActions>
-              </>
-            )}
-          </Card>
-        ))}
-      <div className={cx("pagination")}>
-        {Array.from(Array(totalPages).keys()).map((pageNumber) => (
-          <button
-            className={cx("page_number")}
-            style={{
-              backgroundColor:
-                pageNumber + 1 === currentPage ? "bisque" : "#ffffff",
-            }}
-            key={pageNumber}
-            onClick={() => setCurrentPage(pageNumber + 1)}
-          >
-            {pageNumber + 1}
-          </button>
-        ))}
+    <>
+      <FormControl sx={{ width: "200px", marginTop: "12px" }}>
+        <InputLabel id="demo-simple-select-label">Filter by</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={filter}
+          label="Filter by"
+          onChange={(e) => setFilter(e.target.value)}
+        >
+          {[{ name: "all", id: "all-id" }].concat(categories).map((item) => (
+            <MenuItem key={item.id} value={item.name}>
+              {item.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <div className={cx("main")}>
+        {products
+          .slice(
+            (currentPage - 1) * ITEMS_PER_PAGE,
+            currentPage * ITEMS_PER_PAGE
+          )
+          .map((item) => (
+            <Card
+              key={item.id}
+              sx={{
+                maxWidth: 345,
+                maxHeight: 400,
+                ":hover": {
+                  boxShadow: 20, // theme.shadows[20]
+                  cursor: "pointer",
+                },
+                marginBottom: "24px"
+              }}
+              style={{ border: "1px solid #999" }}
+            >
+              <CardMedia
+                sx={{ height: 140 }}
+                image={item.url_img}
+                title="green iguana"
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {item.name}
+                </Typography>
+                <Typography gutterBottom variant="h6" component="div">
+                  {item.new_price}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ maxHeight: "40px" }}
+                >
+                  {item.description}
+                </Typography>
+              </CardContent>
+              {role === 2 && (
+                <>
+                  <CardActions>
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        if (user && user.providerData.length) {
+                          handleOpenConfirmAddress(
+                            item.id,
+                            user.providerData[0].displayName || "",
+                            user.providerData[0].phoneNumber || "",
+                            item.name,
+                            item.new_price
+                          );
+                        }
+                      }}
+                      sx={{
+                        ":hover": {
+                          cursor: "pointer",
+                          backgroundColor: " #b3ffe0",
+                        },
+                      }}
+                    >
+                      Buy
+                    </Button>
+                  </CardActions>
+                </>
+              )}
+            </Card>
+          ))}
+        <div className={cx("pagination")}>
+          {Array.from(Array(totalPages).keys()).map((pageNumber) => (
+            <button
+              className={cx("page_number")}
+              style={{
+                backgroundColor:
+                  pageNumber + 1 === currentPage ? "bisque" : "#ffffff",
+              }}
+              key={pageNumber}
+              onClick={() => setCurrentPage(pageNumber + 1)}
+            >
+              {pageNumber + 1}
+            </button>
+          ))}
+        </div>
+        <Dialog
+          open={openConfirmAddress}
+          onClose={() => {
+            handleCloseAdd();
+          }}
+        >
+          <ConfirmAddress
+            setOpen={setOpenConfirmAddress}
+            id={idUser}
+            userName={userNameBuy}
+            userPhone={userPhoneBuy}
+            productName={productNameBuy}
+            productPrice={productPriceBuy}
+          />
+        </Dialog>
       </div>
-      <Dialog
-        open={openConfirmAddress}
-        onClose={() => {
-          handleCloseAdd();
-        }}
-      >
-        <ConfirmAddress
-          setOpen={setOpenConfirmAddress}
-          id={idUser}
-          userName={userNameBuy}
-          userPhone={userPhoneBuy}
-          productName={productNameBuy}
-          productPrice={productPriceBuy}
-        />
-      </Dialog>
-    </div>
+    </>
   );
 }
 

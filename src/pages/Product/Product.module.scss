@@ -1,7 +1,7 @@
 .main {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-auto-rows: 400px;
   padding: 20px 0px;
   position: relative;
   height: 100%;
@@ -21,7 +21,7 @@
 
 .pagination {
   position: absolute;
-  bottom: 10px;
+  bottom: 100px;
   .page_number {
     width: 28px;
     height: 28px;
