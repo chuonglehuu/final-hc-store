@@ -1,3 +1,4 @@
+import { Dialog } from "@mui/material";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -10,7 +11,7 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { UserAuth } from "../../context/AuthContext";
 import { db, storage } from "../../firebase/config";
-import { addOrder } from "../../firebase/service";
+import ConfirmAddress from "./ConfirmAddress";
 import styles from "./Product.module.scss";
 
 const cx = classNames.bind(styles);
@@ -18,10 +19,16 @@ const cx = classNames.bind(styles);
 const ITEMS_PER_PAGE = 6;
 
 function Product() {
-  const { role, user, userDetail } = UserAuth();
+  const { role, user } = UserAuth();
 
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [openConfirmAddress, setOpenConfirmAddress] = useState(false);
+  const [idUser, setIdUser] = useState("");
+  const [userNameBuy, setUserNameBuy] = useState("");
+  const [userPhoneBuy, setUserPhoneBuy] = useState();
+  const [productNameBuy, setProductNameBuy] = useState("");
+  const [productPriceBuy, setProductPriceBuy] = useState();
 
   const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
 
@@ -47,28 +54,24 @@ function Product() {
     });
   }, []);
 
-  const buyProduct = async (
+  const handleOpenConfirmAddress = (
     id,
     userName,
     userPhone,
-    address,
     productName,
     productPrice
   ) => {
-    try {
-      await addOrder(
-        id,
-        userName,
-        userPhone,
-        address,
-        productName,
-        productPrice
-      );
-      alert("Đã đặt hàng thành công");
-    } catch (e) {
-      console.log("Error order: ", e);
-    }
+    setOpenConfirmAddress(true);
+    setIdUser(id);
+    setUserNameBuy(userName);
+    setUserPhoneBuy(userPhone);
+    setProductNameBuy(productName);
+    setProductPriceBuy(productPrice);
   };
+
+  function handleCloseAdd() {
+    setOpenConfirmAddress(false);
+  }
 
   return (
     <div className={cx("main")}>
@@ -108,31 +111,32 @@ function Product() {
               </Typography>
             </CardContent>
             {role === 2 && (
-              <CardActions>
-                <Button
-                  size="small"
-                  onClick={() => {
-                    if (user && user.providerData.length) {
-                      buyProduct(
-                        user.uid,
-                        user.providerData[0].displayName || "",
-                        user.providerData[0].phoneNumber || "",
-                        user.providerData[0].address || "",
-                        item.name,
-                        item.new_price
-                      );
-                    }
-                  }}
-                  sx={{
-                    ":hover": {
-                      cursor: "pointer",
-                      backgroundColor: " #b3ffe0",
-                    },
-                  }}
-                >
-                  Buy
-                </Button>
-              </CardActions>
+              <>
+                <CardActions>
+                  <Button
+                    size="small"
+                    onClick={() => {
+                      if (user && user.providerData.length) {
+                        handleOpenConfirmAddress(
+                          item.id,
+                          user.providerData[0].displayName || "",
+                          user.providerData[0].phoneNumber || "",
+                          item.name,
+                          item.new_price
+                        );
+                      }
+                    }}
+                    sx={{
+                      ":hover": {
+                        cursor: "pointer",
+                        backgroundColor: " #b3ffe0",
+                      },
+                    }}
+                  >
+                    Buy
+                  </Button>
+                </CardActions>
+              </>
             )}
           </Card>
         ))}
@@ -151,6 +155,21 @@ function Product() {
           </button>
         ))}
       </div>
+      <Dialog
+        open={openConfirmAddress}
+        onClose={() => {
+          handleCloseAdd();
+        }}
+      >
+        <ConfirmAddress
+          setOpen={setOpenConfirmAddress}
+          id={idUser}
+          userName={userNameBuy}
+          userPhone={userPhoneBuy}
+          productName={productNameBuy}
+          productPrice={productPriceBuy}
+        />
+      </Dialog>
     </div>
   );
 }

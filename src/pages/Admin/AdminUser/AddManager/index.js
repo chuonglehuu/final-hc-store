@@ -3,6 +3,7 @@ import { Button, TextField } from "@mui/material";
 import classNames from "classnames/bind";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../../../context/AuthContext";
 import { auth } from "../../../../firebase/config";
 import { addManager } from "../../../../firebase/service";
@@ -12,7 +13,8 @@ const cx = classNames.bind(styles);
 
 function AddCategory({ setOpen }) {
   const { logOut, logIn, setRole } = UserAuth();
-  
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -25,6 +27,7 @@ function AddCategory({ setOpen }) {
       await addManager(name, email, phone, address, data.user.uid);
       await logOut();
       await logIn("hcadmin@gmail.com", "123123");
+      navigate("/admin");
       setRole(0);
       setOpen(false);
     } catch (error) {
