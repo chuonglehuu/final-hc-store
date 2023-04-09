@@ -24,11 +24,13 @@ function Header() {
       <div className={cx("main")}>
         <div className={cx("content")}>
           <div className={cx("logo")}>
-            <img
-              className={cx("logo-img")}
-              src={images.logo}
-              alt="Logo-HC Store"
-            ></img>
+            <a href="/">
+              <img
+                className={cx("logo-img")}
+                src={images.logo}
+                alt="Logo-HC Store"
+              />
+            </a>
           </div>
           <div className={cx("button-logout")}>
             <span>Welcome Admin!</span>
