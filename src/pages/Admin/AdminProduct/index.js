@@ -26,6 +26,7 @@ function AdminProduct() {
   const [products, setProducts] = useState([]);
   const [open, setOpen] = useState(false);
   const [del, setDel] = useState(false);
+  const [idDelete, setIdDelete] = useState("");
 
   const navigate = useNavigate();
 
@@ -41,24 +42,36 @@ function AdminProduct() {
   function handleCloseAdd() {
     setOpen(false);
   }
-  function handleOpenDel() {
+  function handleOpenDel(id) {
+    setIdDelete(id);
     setDel(true);
   }
   function handleCloseDel() {
     setDel(false);
+    setIdDelete("");
   }
 
-  async function deleteProduct(id) {
-    try {
-      await deleteDoc(doc(db, "products", id));
-      handleCloseDel();
-      alert("delete success");
-    } catch (error) {
-      alert(error.message);
+  async function deleteProduct() {
+    if (idDelete) {
+      try {
+        await deleteDoc(doc(db, "products", idDelete));
+        handleCloseDel();
+        alert("delete success");
+      } catch (error) {
+        alert(error.message);
+      }
     }
   }
 
-  function navigateUpdateProductPage(id, name, type, desc, price, promo, new_price) {
+  function navigateUpdateProductPage(
+    id,
+    name,
+    type,
+    desc,
+    price,
+    promo,
+    new_price
+  ) {
     navigate("/manager/update-product", {
       state: {
         id: id,
@@ -149,7 +162,7 @@ function AdminProduct() {
                     </Button>
 
                     <Button
-                      onClick={handleOpenDel}
+                      onClick={() => handleOpenDel(data.id)}
                       variant="contained"
                       startIcon={<DeleteOutlineOutlinedIcon />}
                       size="small"
@@ -183,7 +196,7 @@ function AdminProduct() {
                       >
                         <Button
                           onClick={() => {
-                            deleteProduct(data.id);
+                            deleteProduct();
                           }}
                           variant="contained"
                           startIcon={<DeleteOutlineOutlinedIcon />}

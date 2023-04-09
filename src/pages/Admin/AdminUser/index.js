@@ -31,6 +31,7 @@ function AdminUser() {
   const [open, setOpen] = useState(false);
   const [del, setDel] = useState(false);
   const [filter, setFilter] = useState(0);
+  const [idDelete, setIdDelete] = useState("");
 
   const navigate = useNavigate();
 
@@ -63,20 +64,23 @@ function AdminUser() {
     setOpen(false);
   }
 
-  function handleOpenDel() {
+  function handleOpenDel(id) {
+    setIdDelete(id);
     setDel(true);
   }
   function handleCloseDel() {
     setDel(false);
   }
 
-  async function deleteUser(id) {
-    try {
-      await deleteDoc(doc(db, "users", id));
-      handleCloseDel();
-      alert("delete success");
-    } catch (error) {
-      alert(error.message);
+  async function deleteUser() {
+    if (idDelete) {
+      try {
+        await deleteDoc(doc(db, "users", idDelete));
+        handleCloseDel();
+        alert("delete success");
+      } catch (error) {
+        alert(error.message);
+      }
     }
   }
 
@@ -175,7 +179,7 @@ function AdminUser() {
                     )}
 
                     <Button
-                      onClick={handleOpenDel}
+                      onClick={() => handleOpenDel(data.id)}
                       variant="contained"
                       startIcon={<DeleteOutlineOutlinedIcon />}
                       size="small"
@@ -209,7 +213,7 @@ function AdminUser() {
                       >
                         <Button
                           onClick={() => {
-                            deleteUser(data.id);
+                            deleteUser();
                           }}
                           variant="contained"
                           startIcon={<DeleteOutlineOutlinedIcon />}

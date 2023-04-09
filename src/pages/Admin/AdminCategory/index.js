@@ -26,6 +26,7 @@ function AdminCategory() {
   const [categories, setCategories] = useState([]);
   const [open, setOpen] = useState(false);
   const [del, setDel] = useState(false);
+  const [idDelete, setIdDelete] = useState("");
 
   const navigate = useNavigate();
 
@@ -45,20 +46,23 @@ function AdminCategory() {
     setOpen(false);
   }
 
-  function handleOpenDel() {
+  function handleOpenDel(id) {
+    setIdDelete(id);
     setDel(true);
   }
   function handleCloseDel() {
     setDel(false);
   }
 
-  async function deleteCategory(id) {
-    try {
-      await deleteDoc(doc(db, "categories", id));
-      handleCloseDel();
-      alert("delete success");
-    } catch (error) {
-      alert(error.message);
+  async function deleteCategory() {
+    if (idDelete) {
+      try {
+        await deleteDoc(doc(db, "categories", idDelete));
+        handleCloseDel();
+        alert("delete success");
+      } catch (error) {
+        alert(error.message);
+      }
     }
   }
 
@@ -129,7 +133,7 @@ function AdminCategory() {
                     </Button>
 
                     <Button
-                      onClick={handleOpenDel}
+                      onClick={() => handleOpenDel(data.id)}
                       variant="contained"
                       startIcon={<DeleteOutlineOutlinedIcon />}
                       size="small"
@@ -163,7 +167,7 @@ function AdminCategory() {
                       >
                         <Button
                           onClick={() => {
-                            deleteCategory(data.id);
+                            deleteCategory();
                           }}
                           variant="contained"
                           startIcon={<DeleteOutlineOutlinedIcon />}
