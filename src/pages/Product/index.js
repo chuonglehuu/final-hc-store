@@ -32,7 +32,6 @@ function Product() {
   const [openConfirmAddress, setOpenConfirmAddress] = useState(false);
   const [idUser, setIdUser] = useState("");
   const [userNameBuy, setUserNameBuy] = useState("");
-  const [userPhoneBuy, setUserPhoneBuy] = useState();
   const [productNameBuy, setProductNameBuy] = useState("");
   const [productPriceBuy, setProductPriceBuy] = useState();
   const [filter, setFilter] = useState("all");
@@ -86,7 +85,6 @@ function Product() {
     setOpenConfirmAddress(true);
     setIdUser(id);
     setUserNameBuy(userName);
-    setUserPhoneBuy(userPhone);
     setProductNameBuy(productName);
     setProductPriceBuy(productPrice);
   };
@@ -129,7 +127,7 @@ function Product() {
                   boxShadow: 20, // theme.shadows[20]
                   cursor: "pointer",
                 },
-                marginBottom: "24px"
+                marginBottom: "24px",
               }}
               style={{ border: "1px solid #999" }}
             >
@@ -208,7 +206,6 @@ function Product() {
             setOpen={setOpenConfirmAddress}
             id={idUser}
             userName={userNameBuy}
-            userPhone={userPhoneBuy}
             productName={productNameBuy}
             productPrice={productPriceBuy}
           />

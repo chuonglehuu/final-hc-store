@@ -12,13 +12,13 @@ function ConfirmAddress({
   setOpen,
   id,
   userName,
-  userPhone,
   productName,
   productPrice,
 }) {
   const { userDetail } = UserAuth();
 
   const [address, setAddress] = useState(userDetail.address || "");
+  const [phoneNumber, setPhoneNumber] = useState(userDetail.phone || "");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ function ConfirmAddress({
       await addOrder(
         id,
         userName,
-        userPhone,
+        phoneNumber,
         address,
         productName,
         productPrice
@@ -41,13 +41,23 @@ function ConfirmAddress({
   return (
     <div className={cx("main")}>
       <div className={cx("content")}>
-        <h2 className={cx("title")}>Confirm Address</h2>
+        <h2 className={cx("title")}>Confirm Order</h2>
         <form className={cx("form-add")} onSubmit={handleSubmit}>
           <TextField
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             id="outlined-basic"
             label="Address"
+            variant="outlined"
+            sx={{ width: "80%", marginTop: "20px" }}
+            required
+            autoFocus
+          />
+          <TextField
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            id="outlined-basic"
+            label="Phone number"
             variant="outlined"
             sx={{ width: "80%", marginTop: "20px" }}
             required
