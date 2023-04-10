@@ -17,6 +17,13 @@ function UpdateProduct() {
   const [phone, setPhone] = useState("" || data.phone);
   const [address, setAddress] = useState("" || data.address);
 
+  const handleChangePhoneNumber = (e) => {
+    const regex = /^[0-9\b]+$/;
+    if (e.target.value === "" || regex.test(e.target.value)) {
+      setPhone(e.target.value);
+    }
+  };
+
   const update = async (id, name, phone, address) => {
     try {
       await updateManager(id, name, phone, address);
@@ -43,7 +50,7 @@ function UpdateProduct() {
           />
           <TextField
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={handleChangePhoneNumber}
             id="outlined-basic"
             label="Phone number"
             variant="outlined"

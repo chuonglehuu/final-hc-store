@@ -20,6 +20,13 @@ function ConfirmAddress({
   const [address, setAddress] = useState(userDetail.address || "");
   const [phoneNumber, setPhoneNumber] = useState(userDetail.phone || "");
 
+  const handleChangePhoneNumber = (e) => {
+    const regex = /^[0-9\b]+$/;
+    if (e.target.value === "" || regex.test(e.target.value)) {
+      setPhoneNumber(e.target.value);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -55,13 +62,13 @@ function ConfirmAddress({
           />
           <TextField
             value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onChange={handleChangePhoneNumber}
             id="outlined-basic"
             label="Phone number"
             variant="outlined"
             sx={{ width: "80%", marginTop: "20px" }}
             required
-            autoFocus
+            type="text"
           />
 
           <Button

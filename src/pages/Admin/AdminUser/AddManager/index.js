@@ -20,6 +20,13 @@ function AddCategory({ setOpen }) {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
+  const handleChangePhoneNumber = (e) => {
+    const regex = /^[0-9\b]+$/;
+    if (e.target.value === "" || regex.test(e.target.value)) {
+      setPhone(e.target.value);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -63,7 +70,8 @@ function AddCategory({ setOpen }) {
 
           <TextField
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={handleChangePhoneNumber}
+            type="text"
             id="outlined-basic"
             label="Phone number"
             variant="outlined"
