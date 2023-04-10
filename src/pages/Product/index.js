@@ -15,6 +15,7 @@ import classNames from "classnames/bind";
 import { collection, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import { db, storage } from "../../firebase/config";
 import ConfirmAddress from "./ConfirmAddress";
@@ -25,6 +26,7 @@ const cx = classNames.bind(styles);
 const ITEMS_PER_PAGE = 6;
 
 function Product() {
+  const navigate = useNavigate();
   const { role, user } = UserAuth();
 
   const [products, setProducts] = useState([]);
@@ -129,6 +131,7 @@ function Product() {
                 marginBottom: "24px",
               }}
               style={{ border: "1px solid #999" }}
+              onClick={() => navigate("/product/detail")}
             >
               <CardMedia
                 sx={{ height: 140 }}

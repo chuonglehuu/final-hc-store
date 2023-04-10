@@ -20,11 +20,19 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Order from "./pages/Order";
 import Product from "./pages/Product";
+import ProductDetail from "./pages/ProductDetail";
 import Register from "./pages/Register";
 import Social from "./pages/Social";
 import UploadUser from "./pages/UploadUser";
 
-const DEFAULT_PATHS = ["/", "/about", "/product", "/social", "/orders"];
+const DEFAULT_PATHS = [
+  "/",
+  "/about",
+  "/product",
+  "/social",
+  "/orders",
+  "/product/detail",
+];
 const PATHS = ["/", "/about", "/product", "/social", "/login", "/register"];
 const MANAGER_PATHS = [
   "/manager",
@@ -117,6 +125,14 @@ export default function Router() {
       element: (
         <DefaultLayout>
           <Product />
+        </DefaultLayout>
+      ),
+    },
+    {
+      path: "/product/detail",
+      element: (
+        <DefaultLayout>
+          <ProductDetail />
         </DefaultLayout>
       ),
     },
