@@ -10,18 +10,20 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { grey, red } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import classNames from "classnames/bind";
 import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "../../../firebase/config";
-import styles from "./AdminOrder.module.scss";
+import { UserAuth } from "../../context/AuthContext";
+import { db } from "../../firebase/config";
+import styles from "./Order.module.scss";
 
 const cx = classNames.bind(styles);
 
-function AdminOrder() {
+function Order() {
   const [orders, setOrders] = useState([]);
   const [filter, setFilter] = useState("all");
+  const { user } = UserAuth();
 
   useEffect(() => {
     onSnapshot(collection(db, "orders"), (snapshot) => {
@@ -30,25 +32,34 @@ function AdminOrder() {
         id: doc.id,
       }));
 
-      if (filter === "all") setOrders(listOrders);
+      const filterOrders = listOrders.filter(
+        (item) => item.emailUser === user.email
+      );
+
+      if (filter === "all") setOrders(filterOrders);
 
       if (filter === "pending") {
-        const newArr = listOrders.filter((item) => item.status === "pending");
+        const newArr = filterOrders.filter((item) => item.status === "pending");
         setOrders(newArr);
       }
 
       if (filter === "accepted") {
-        const newArr = listOrders.filter((item) => item.status === "accepted");
+        const newArr = filterOrders.filter(
+          (item) => item.status === "accepted"
+        );
         setOrders(newArr);
       }
 
       if (filter === "canceled") {
-        const newArr = listOrders.filter((item) => item.status === "canceled");
+        const newArr = filterOrders.filter(
+          (item) => item.status === "canceled"
+        );
         setOrders(newArr);
       }
-
       if (filter === "received") {
-        const newArr = listOrders.filter((item) => item.status === "received");
+        const newArr = filterOrders.filter(
+          (item) => item.status === "received"
+        );
         setOrders(newArr);
       }
     });
@@ -57,14 +68,7 @@ function AdminOrder() {
   async function acceptOrder(id) {
     const docRef = doc(db, "orders", id);
     await updateDoc(docRef, {
-      status: "accepted",
-    });
-  }
-
-  async function cancelOrder(id) {
-    const docRef = doc(db, "orders", id);
-    await updateDoc(docRef, {
-      status: "canceled",
+      status: "received",
     });
   }
 
@@ -111,10 +115,8 @@ function AdminOrder() {
                   <TableCell>{data.address}</TableCell>
                   <TableCell>{data.productName}</TableCell>
                   <TableCell>{data.productPrice}</TableCell>
-                  <TableCell>
-                    {data.status === "received" ? "Success" : data.status}
-                  </TableCell>
-                  {data.status === "pending" && (
+                  <TableCell>{data.status}</TableCell>
+                  {data.status === "accepted" && (
                     <TableCell>
                       <Button
                         onClick={() => {
@@ -130,23 +132,7 @@ function AdminOrder() {
                           },
                         }}
                       >
-                        Accept
-                      </Button>
-
-                      <Button
-                        onClick={() => {
-                          cancelOrder(data.id);
-                        }}
-                        variant="contained"
-                        size="small"
-                        sx={{
-                          backgroundColor: red[500],
-                          "&:hover": {
-                            backgroundColor: red[700],
-                          },
-                        }}
-                      >
-                        Cancel
+                        Received
                       </Button>
                     </TableCell>
                   )}
@@ -160,4 +146,4 @@ function AdminOrder() {
   );
 }
 
-export default AdminOrder;
+export default Order;

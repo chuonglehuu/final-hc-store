@@ -1,15 +1,15 @@
-import React from "react";
 import classNames from "classnames/bind";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import styles from "./Header.module.scss";
 import images from "../../../../assets/Image";
 import { UserAuth } from "../../../../context/AuthContext";
+import styles from "./Header.module.scss";
 
 const cx = classNames.bind(styles);
 
 function Header() {
-  const { user, logOut } = UserAuth();
+  const { user, logOut, role } = UserAuth();
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
@@ -38,6 +38,11 @@ function Header() {
           <Link to="/about">
             <div className={cx("item")}>About Us</div>
           </Link>
+          {role === 2 && (
+            <Link to="/orders">
+              <div className={cx("item")}>Orders</div>
+            </Link>
+          )}
         </div>
         {user?.email ? (
           <div className={cx("user-logout")}>

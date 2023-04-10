@@ -10,7 +10,7 @@ const cx = classNames.bind(styles);
 
 function ConfirmAddress({
   setOpen,
-  id,
+  emailUser,
   userName,
   productName,
   productPrice,
@@ -24,7 +24,7 @@ function ConfirmAddress({
     e.preventDefault();
     try {
       await addOrder(
-        id,
+        emailUser,
         userName,
         phoneNumber,
         address,

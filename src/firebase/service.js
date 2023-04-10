@@ -96,7 +96,7 @@ export const updateManager = async (id, name, phone, address) => {
 };
 
 export const addOrder = async (
-  uid,
+  emailUser,
   userName,
   userPhone,
   address,
@@ -105,7 +105,7 @@ export const addOrder = async (
 ) => {
   const docRef = collection(db, "orders");
   await addDoc(docRef, {
-    userId: uid,
+    emailUser: emailUser,
     userName: userName,
     userPhone: userPhone,
     address: address,

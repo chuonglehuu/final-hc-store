@@ -18,12 +18,13 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import Order from "./pages/Order";
 import Product from "./pages/Product";
 import Register from "./pages/Register";
 import Social from "./pages/Social";
 import UploadUser from "./pages/UploadUser";
 
-const DEFAULT_PATHS = ["/", "/about", "/product", "/social"];
+const DEFAULT_PATHS = ["/", "/about", "/product", "/social", "/orders"];
 const PATHS = ["/", "/about", "/product", "/social", "/login", "/register"];
 const MANAGER_PATHS = [
   "/manager",
@@ -142,6 +143,17 @@ export default function Router() {
           <UploadUser />
         </HomeOnly>
       ),
+    },
+    {
+      path: "/orders",
+      element:
+        role === 2 ? (
+          <DefaultLayout>
+            <Order />
+          </DefaultLayout>
+        ) : (
+          <NotFound />
+        ),
     },
     {
       path: "/admin",

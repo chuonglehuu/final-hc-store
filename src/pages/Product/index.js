@@ -30,7 +30,7 @@ function Product() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [openConfirmAddress, setOpenConfirmAddress] = useState(false);
-  const [idUser, setIdUser] = useState("");
+  const [emailUser, setEmailUser] = useState("");
   const [userNameBuy, setUserNameBuy] = useState("");
   const [productNameBuy, setProductNameBuy] = useState("");
   const [productPriceBuy, setProductPriceBuy] = useState();
@@ -76,14 +76,13 @@ function Product() {
   }, [filter]);
 
   const handleOpenConfirmAddress = (
-    id,
+    emailUser,
     userName,
-    userPhone,
     productName,
     productPrice
   ) => {
     setOpenConfirmAddress(true);
-    setIdUser(id);
+    setEmailUser(emailUser);
     setUserNameBuy(userName);
     setProductNameBuy(productName);
     setProductPriceBuy(productPrice);
@@ -159,9 +158,8 @@ function Product() {
                       onClick={() => {
                         if (user && user.providerData.length) {
                           handleOpenConfirmAddress(
-                            item.id,
+                            user.providerData[0].email,
                             user.providerData[0].displayName || "",
-                            user.providerData[0].phoneNumber || "",
                             item.name,
                             item.new_price
                           );
@@ -204,7 +202,7 @@ function Product() {
         >
           <ConfirmAddress
             setOpen={setOpenConfirmAddress}
-            id={idUser}
+            emailUser={emailUser}
             userName={userNameBuy}
             productName={productNameBuy}
             productPrice={productPriceBuy}
