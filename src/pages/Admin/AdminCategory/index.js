@@ -13,7 +13,15 @@ import {
 } from "@mui/material";
 import { grey, red } from "@mui/material/colors";
 import classNames from "classnames/bind";
-import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../../firebase/config";
@@ -27,6 +35,7 @@ function AdminCategory() {
   const [open, setOpen] = useState(false);
   const [del, setDel] = useState(false);
   const [idDelete, setIdDelete] = useState("");
+  const [typeDelete, setTypeDelete] = useState("");
 
   const navigate = useNavigate();
 
@@ -46,8 +55,9 @@ function AdminCategory() {
     setOpen(false);
   }
 
-  function handleOpenDel(id) {
+  function handleOpenDel(id, type) {
     setIdDelete(id);
+    setTypeDelete(type);
     setDel(true);
   }
   function handleCloseDel() {
@@ -57,9 +67,17 @@ function AdminCategory() {
   async function deleteCategory() {
     if (idDelete) {
       try {
-        await deleteDoc(doc(db, "categories", idDelete));
-        handleCloseDel();
-        alert("delete success");
+        const productsRef = collection(db, "products");
+        const querySnapshot = await getDocs(
+          query(productsRef, where("type", "==", typeDelete))
+        );
+        if (!querySnapshot.empty) {
+          alert("This category cannot be deleted");
+        } else {
+          await deleteDoc(doc(db, "categories", idDelete));
+          handleCloseDel();
+          alert("delete success");
+        }
       } catch (error) {
         alert(error.message);
       }
@@ -133,7 +151,7 @@ function AdminCategory() {
                     </Button>
 
                     <Button
-                      onClick={() => handleOpenDel(data.id)}
+                      onClick={() => handleOpenDel(data.id, data.name)}
                       variant="contained"
                       startIcon={<DeleteOutlineOutlinedIcon />}
                       size="small"
