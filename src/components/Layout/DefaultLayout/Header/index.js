@@ -32,11 +32,8 @@ function Header() {
           <Link to="/product">
             <div className={cx("item")}>Product</div>
           </Link>
-          <Link to="/social">
-            <div className={cx("item")}>Social</div>
-          </Link>
-          <Link to="/about">
-            <div className={cx("item")}>About Us</div>
+          <Link to="/chat">
+            <div className={cx("item")}>Chat</div>
           </Link>
           {role === 2 && (
             <Link to="/orders">

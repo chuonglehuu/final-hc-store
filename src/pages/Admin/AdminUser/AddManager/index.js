@@ -38,7 +38,10 @@ function AddCategory({ setOpen }) {
       setRole(0);
       setOpen(false);
     } catch (error) {
-      console.log(error);
+      if (error.code === "auth/email-already-in-use") {
+        alert("The email address has been used");
+      }
+      console.log({ error });
     }
   };
 

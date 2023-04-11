@@ -29,11 +29,11 @@ const DEFAULT_PATHS = [
   "/",
   "/about",
   "/product",
-  "/social",
+  "/chat",
   "/orders",
   "/product/detail",
 ];
-const PATHS = ["/", "/about", "/product", "/social", "/login", "/register"];
+const PATHS = ["/", "/about", "/product", "/chat", "/login", "/register", "/upload-user"];
 const MANAGER_PATHS = [
   "/manager",
   "/manager/categories",
@@ -137,7 +137,7 @@ export default function Router() {
       ),
     },
     {
-      path: "/social",
+      path: "/chat",
       element: (
         <DefaultLayout>
           <Social />
