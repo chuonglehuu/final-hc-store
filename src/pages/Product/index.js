@@ -131,7 +131,11 @@ function Product() {
                 marginBottom: "24px",
               }}
               style={{ border: "1px solid #999" }}
-              onClick={() => navigate("/product/detail")}
+              onClick={() =>
+                navigate("/product/detail", {
+                  state: item,
+                })
+              }
             >
               <CardMedia
                 sx={{ height: 140 }}
