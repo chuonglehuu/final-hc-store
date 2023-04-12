@@ -39,7 +39,7 @@ const ProductPrice = styled(Typography)({
 
 const ProductDetail = () => {
   const location = useLocation();
-  const { user } = UserAuth();
+  const { user, userDetail } = UserAuth();
 
   const [products, setProducts] = useState([]);
   const [openConfirmAddress, setOpenConfirmAddress] = useState(false);
@@ -112,8 +112,10 @@ const ProductDetail = () => {
               onClick={() => {
                 if (user && user.providerData.length) {
                   handleOpenConfirmAddress(
-                    user.providerData[0].email,
-                    user.providerData[0].displayName || "",
+                    user.providerData[0].email || userDetail.email || "",
+                    user.providerData[0].displayName ||
+                      userDetail.fullname ||
+                      "",
                     product.name,
                     product.new_price
                   );
