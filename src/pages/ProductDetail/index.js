@@ -39,7 +39,7 @@ const ProductPrice = styled(Typography)({
 
 const ProductDetail = () => {
   const location = useLocation();
-  const { user, userDetail } = UserAuth();
+  const { user, userDetail, role } = UserAuth();
 
   const [products, setProducts] = useState([]);
   const [openConfirmAddress, setOpenConfirmAddress] = useState(false);
@@ -106,24 +106,26 @@ const ProductDetail = () => {
             <ProductName variant="h5">{product.name}</ProductName>
             <ProductCategory variant="body1">{product.type}</ProductCategory>
             <ProductPrice variant="h6">{product.new_price} VNĐ</ProductPrice>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                if (user && user.providerData.length) {
-                  handleOpenConfirmAddress(
-                    user.providerData[0].email || userDetail.email || "",
-                    user.providerData[0].displayName ||
-                      userDetail.fullname ||
-                      "",
-                    product.name,
-                    product.new_price
-                  );
-                }
-              }}
-            >
-              Buy
-            </Button>
+            {(role === 2 || userDetail.role === 2) && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  if (user && user.providerData.length) {
+                    handleOpenConfirmAddress(
+                      user.providerData[0].email || userDetail.email || "",
+                      user.providerData[0].displayName ||
+                        userDetail.fullname ||
+                        "",
+                      product.name,
+                      product.new_price
+                    );
+                  }
+                }}
+              >
+                Buy
+              </Button>
+            )}
           </ProductDetails>
         </Grid>
         <Grid item xs={12}>
