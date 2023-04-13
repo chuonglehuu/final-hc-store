@@ -115,3 +115,27 @@ export const addOrder = async (
     status: "pending",
   });
 };
+
+export const createConversation = async (members) => {
+  const docRef = collection(db, "conversations");
+  await addDoc(docRef, {
+    members: members,
+    createAt: Timestamp.fromDate(new Date()),
+  });
+};
+
+export const createMessage = async (
+  idConversation,
+  collectionNameChildren,
+  senderId,
+  text
+) => {
+  const docRef = doc(db, "conversations", idConversation).collection(
+    collectionNameChildren
+  );
+  await addDoc(docRef, {
+    createAt: Timestamp.fromDate(new Date()),
+    sender: senderId,
+    text: text,
+  });
+};

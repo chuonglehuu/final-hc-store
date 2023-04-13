@@ -50,7 +50,7 @@ function Social() {
   }, [role, userDetail]);
 
   return (
-    <Box sx={{ height: "90vh", flexGrow: 1 }}>
+    <Box sx={{ height: "92vh", flexGrow: 1, marginTop: "2px" }}>
       <Grid container spacing={2}>
         <Grid item xs={3}>
           <Box sx={{ height: "100%", bgcolor: "#f5f5f5" }}>
