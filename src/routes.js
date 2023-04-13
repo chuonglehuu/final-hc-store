@@ -32,8 +32,9 @@ const DEFAULT_PATHS = [
   "/chat",
   "/orders",
   "/product/detail",
+  "/upload-user",
 ];
-const PATHS = ["/", "/about", "/product", "/chat", "/login", "/register", "/upload-user"];
+const PATHS = ["/", "/about", "/product", "/chat", "/login", "/register"];
 const MANAGER_PATHS = [
   "/manager",
   "/manager/categories",

@@ -1,18 +1,19 @@
-import { db } from "../../firebase/config";
-import { useState, useEffect } from "react";
-import { UserAuth } from "../../context/AuthContext";
 import classNames from "classnames/bind";
-import styles from "./UploadUser.module.scss";
-import { useNavigate } from "react-router-dom";
 import {
-  setDoc,
-  doc,
   Timestamp,
   collection,
-  query,
+  doc,
   onSnapshot,
+  query,
+  setDoc,
   where,
 } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserAuth } from "../../context/AuthContext";
+import { db } from "../../firebase/config";
+import { createConversation } from "../../firebase/service";
+import styles from "./UploadUser.module.scss";
 
 const cx = classNames.bind(styles);
 
@@ -37,6 +38,12 @@ function UploadUser() {
         receipt_ID: "",
         role: 2,
       });
+      const data = await createConversation([
+        user.uid,
+        "DpN1SsnTCXbAacR802db2dDCAv73",
+      ]);
+      console.log({ data });
+      // await createMessage()
       setRole(2);
       navigate("/");
     } catch (error) {
