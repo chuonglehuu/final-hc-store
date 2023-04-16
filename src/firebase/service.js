@@ -3,6 +3,7 @@ import {
   addDoc,
   collection,
   doc,
+  runTransaction,
   updateDoc,
 } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
@@ -116,26 +117,35 @@ export const addOrder = async (
   });
 };
 
-export const createConversation = async (members) => {
-  const docRef = collection(db, "conversations");
-  await addDoc(docRef, {
-    members: members,
-    createAt: Timestamp.fromDate(new Date()),
+export const createConversation = async (members, senderId) => {
+  const conversationsRef = collection(db, "conversations");
+
+  await runTransaction(db, async (transaction) => {
+    // Tạo document mới trong collection conversations
+    const newConversationRef = await addDoc(conversationsRef, {
+      members: members,
+      createAt: Timestamp.fromDate(new Date()),
+    });
+
+    // Tạo collection messages trong document mới được tạo
+    const messagesRef = collection(newConversationRef, "messages");
+
+    // Thêm document mới vào collection messages
+    await addDoc(messagesRef, {
+      text: "Created contact with ADMIN",
+      senderId: senderId,
+      timestamp: Timestamp.fromDate(new Date()),
+      type: "notify",
+    });
   });
 };
 
-export const createMessage = async (
-  idConversation,
-  collectionNameChildren,
-  senderId,
-  text
-) => {
-  const docRef = doc(db, "conversations", idConversation).collection(
-    collectionNameChildren
-  );
-  await addDoc(docRef, {
-    createAt: Timestamp.fromDate(new Date()),
-    sender: senderId,
+export const addMessage = async (conversationId, senderId, text) => {
+  const conversationRef = doc(db, "conversations", conversationId);
+  const messagesRef = collection(conversationRef, "messages");
+  await addDoc(messagesRef, {
     text: text,
+    senderId: senderId,
+    timestamp: Timestamp.fromDate(new Date()),
   });
 };

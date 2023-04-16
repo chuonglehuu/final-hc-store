@@ -38,12 +38,7 @@ function UploadUser() {
         receipt_ID: "",
         role: 2,
       });
-      const data = await createConversation([
-        user.uid,
-        "DpN1SsnTCXbAacR802db2dDCAv73",
-      ]);
-      console.log({ data });
-      // await createMessage()
+      await createConversation([user.uid, "DpN1SsnTCXbAacR802db2dDCAv73"], user.uid);
       setRole(2);
       navigate("/");
     } catch (error) {

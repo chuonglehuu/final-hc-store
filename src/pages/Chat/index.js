@@ -6,30 +6,45 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDocs, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { UserAuth } from "../../context/AuthContext";
 import { db } from "../../firebase/config";
+import { addMessage } from "../../firebase/service";
 
 function Chat() {
-  const { userDetail, role } = UserAuth();
+  const { userDetail, role, user } = UserAuth();
 
-  const [messages, setMessages] = useState([
-    { id: "1", sender: "ADMIN", text: "1" },
-    { id: "2", sender: "ADMIN", text: "1" },
-    { id: "3", sender: "ADMIN", text: "1" },
-    { id: "4", sender: "ADMIN", text: "1" },
-    { id: "5", sender: "ADMIN", text: "1" },
-    { id: "6", sender: "Hieu Lv", text: "2" },
-    { id: "7", sender: "Hieu Lv", text: "2" },
-    { id: "8", sender: "Hieu Lv", text: "2" },
-    { id: "9", sender: "Hieu Lv", text: "2" },
-    { id: "10", sender: "Hieu Lv", text: "2" },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [users, setUsersChat] = useState([]);
+  const [conversations, setConversations] = useState([]);
 
-  const handleSendMessage = () => {};
+  const handleFetchMessages = async () => {
+    if (role !== 0 && userDetail !== 0) {
+      const conversationRef = doc(db, "conversations", conversations[0].id);
+      const messagesRef = collection(conversationRef, "messages");
+      const querySnapshot = await getDocs(messagesRef);
+      let tempMessages = [];
+      querySnapshot.forEach((doc) => {
+        tempMessages.push({ ...doc.data(), id: doc.id });
+      });
+      setMessages(tempMessages);
+    }
+
+    if (role === 0 && userDetail === 0) {
+    }
+  };
+
+  const handleSendMessage = async () => {
+    if (role !== 0 && userDetail !== 0) {
+      await addMessage(conversations[0].id, user.uid, inputValue);
+    }
+
+    if (role === 0 && userDetail === 0) {
+      //
+    }
+  };
 
   useEffect(() => {
     onSnapshot(collection(db, "users"), (snapshot) => {
@@ -47,7 +62,30 @@ function Chat() {
         setUsersChat(filterUsers);
       }
     });
+
+    onSnapshot(collection(db, "conversations"), (snapshot) => {
+      const listConversations = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+
+      if (role !== 0 && userDetail.role !== 0) {
+        const filterConversationUserWithAdmin = listConversations.filter(
+          (item) =>
+            JSON.stringify(item.members) ===
+            JSON.stringify([user.uid, "DpN1SsnTCXbAacR802db2dDCAv73"])
+        );
+        setConversations(filterConversationUserWithAdmin);
+      }
+
+      if (role === 0 && userDetail.role !== 0)
+        setConversations(listConversations);
+    });
   }, [role, userDetail]);
+
+  useEffect(() => {
+    handleFetchMessages();
+  }, [conversations]);
 
   return (
     <Box sx={{ height: "92vh", flexGrow: 1, marginTop: "2px" }}>
@@ -74,7 +112,7 @@ function Chat() {
             >
               {messages.map((message, index) => (
                 <div key={message.id}>
-                  <strong>{message.sender}</strong>: {message.text}
+                  <strong>{message.senderId}</strong>: {message.text}
                 </div>
               ))}
             </Box>
