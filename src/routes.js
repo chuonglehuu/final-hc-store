@@ -14,6 +14,7 @@ import AdminProduct from "./pages/Admin/AdminProduct";
 import UpdateProduct from "./pages/Admin/AdminProduct/UpdateProduct";
 import AdminUser from "./pages/Admin/AdminUser";
 import UpdateManager from "./pages/Admin/AdminUser/UpdateManager";
+import Chat from "./pages/Chat";
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -22,7 +23,6 @@ import Order from "./pages/Order";
 import Product from "./pages/Product";
 import ProductDetail from "./pages/ProductDetail";
 import Register from "./pages/Register";
-import Social from "./pages/Social";
 import UploadUser from "./pages/UploadUser";
 
 const DEFAULT_PATHS = [
@@ -141,7 +141,7 @@ export default function Router() {
       path: "/chat",
       element: (
         <DefaultLayout>
-          <Social />
+          <Chat />
         </DefaultLayout>
       ),
     },

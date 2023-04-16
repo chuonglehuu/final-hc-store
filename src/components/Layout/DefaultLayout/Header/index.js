@@ -9,7 +9,8 @@ import styles from "./Header.module.scss";
 const cx = classNames.bind(styles);
 
 function Header() {
-  const { user, logOut, role } = UserAuth();
+  const { user, logOut, role, userDetail } = UserAuth();
+
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
@@ -32,10 +33,12 @@ function Header() {
           <Link to="/product">
             <div className={cx("item")}>Product</div>
           </Link>
-          <Link to="/chat">
-            <div className={cx("item")}>Chat</div>
-          </Link>
-          {role === 2 && (
+          {user && (
+            <Link to="/chat">
+              <div className={cx("item")}>Chat</div>
+            </Link>
+          )}
+          {user && role === 2 && (
             <Link to="/orders">
               <div className={cx("item")}>Orders</div>
             </Link>

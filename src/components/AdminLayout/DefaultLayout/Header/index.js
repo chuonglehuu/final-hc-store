@@ -1,14 +1,14 @@
+import ChatIcon from "@mui/icons-material/Chat";
 import classNames from "classnames/bind";
 import { useNavigate } from "react-router-dom";
 import images from "../../../../assets/Image";
 import { UserAuth } from "../../../../context/AuthContext";
 import styles from "./Header.module.scss";
-
 const cx = classNames.bind(styles);
 
 function Header() {
   const navigate = useNavigate();
-  const { logOut } = UserAuth();
+  const { logOut, userDetail } = UserAuth();
 
   const handleLogout = async () => {
     try {
@@ -17,6 +17,10 @@ function Header() {
     } catch (error) {
       alert(error);
     }
+  };
+
+  const navigateChatPage = () => {
+    navigate("/chat");
   };
 
   return (
@@ -33,7 +37,10 @@ function Header() {
             </a>
           </div>
           <div className={cx("button-logout")}>
-            <span>Welcome Admin!</span>
+            <span>Welcome {userDetail.role === 0 ? "Admin" : "Manager"}!</span>
+            <div className={cx("button-chat")} onClick={navigateChatPage}>
+              <ChatIcon />
+            </div>
             <button onClick={handleLogout}>Logout</button>
           </div>
         </div>

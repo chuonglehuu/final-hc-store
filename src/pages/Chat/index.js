@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { UserAuth } from "../../context/AuthContext";
 import { db } from "../../firebase/config";
 
-function Social() {
+function Chat() {
   const { userDetail, role } = UserAuth();
 
   const [messages, setMessages] = useState([
@@ -107,4 +107,4 @@ function Social() {
   );
 }
 
-export default Social;
+export default Chat;
