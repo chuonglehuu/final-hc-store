@@ -19,9 +19,22 @@ function Chat() {
   const [inputValue, setInputValue] = useState("");
   const [users, setUsersChat] = useState([]);
   const [conversations, setConversations] = useState([]);
+  const [conversationSelected, setConversationSelected] = useState(null);
+  const [messagesFormat, setMessagesFormat] = useState([]);
+
+  const onSelect = (userId) => {
+    if (conversations.length && role === 0) {
+      const findConversation = conversations.find(
+        (item) =>
+          JSON.stringify(item.members) ===
+          JSON.stringify([userId, "DpN1SsnTCXbAacR802db2dDCAv73"])
+      );
+      setConversationSelected(findConversation);
+    }
+  };
 
   const handleFetchMessages = async () => {
-    if (role !== 0 && userDetail !== 0) {
+    if (role !== 0) {
       const conversationRef = doc(db, "conversations", conversations[0].id);
       const messagesRef = collection(conversationRef, "messages");
       const querySnapshot = await getDocs(messagesRef);
@@ -29,21 +42,53 @@ function Chat() {
       querySnapshot.forEach((doc) => {
         tempMessages.push({ ...doc.data(), id: doc.id });
       });
-      setMessages(tempMessages);
+
+      onSnapshot(messagesRef, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            const data = change.doc.data();
+            // let exists = messages.some((item) => item.id === data.id);
+            if (data.type === "text") {
+              setMessages((pre) => [...pre, data]);
+            }
+          }
+        });
+      });
     }
 
-    if (role === 0 && userDetail === 0) {
+    if (role === 0) {
+      const conversationRef = doc(db, "conversations", conversationSelected.id);
+      const messagesRef = collection(conversationRef, "messages");
+      const querySnapshot = await getDocs(messagesRef);
+      let tempMessages = [];
+      querySnapshot.forEach((doc) => {
+        tempMessages.push({ ...doc.data(), id: doc.id });
+      });
+
+      onSnapshot(messagesRef, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            const data = change.doc.data();
+            // let exists = messages.some((item) => item.id === data.id);
+            if (data.type === "text") {
+              setMessages((pre) => [...pre, data]);
+            }
+          }
+        });
+      });
     }
   };
 
   const handleSendMessage = async () => {
-    if (role !== 0 && userDetail !== 0) {
+    if (role !== 0 && inputValue) {
       await addMessage(conversations[0].id, user.uid, inputValue);
     }
 
-    if (role === 0 && userDetail === 0) {
-      //
+    if (conversationSelected && role === 0 && inputValue) {
+      await addMessage(conversationSelected.id, user.uid, inputValue);
     }
+
+    setInputValue("");
   };
 
   useEffect(() => {
@@ -52,12 +97,12 @@ function Chat() {
         ...doc.data(),
         id: doc.id,
       }));
-      if (role === 2 && userDetail.role === 2) {
+      if (role === 2) {
         const filterAdmin = listUsers.filter((item) => item.role === 0);
         setUsersChat(filterAdmin);
       }
 
-      if (role === 0 && userDetail.role === 0) {
+      if (role === 0) {
         const filterUsers = listUsers.filter((item) => item.role === 2);
         setUsersChat(filterUsers);
       }
@@ -69,7 +114,7 @@ function Chat() {
         id: doc.id,
       }));
 
-      if (role !== 0 && userDetail.role !== 0) {
+      if (role !== 0) {
         const filterConversationUserWithAdmin = listConversations.filter(
           (item) =>
             JSON.stringify(item.members) ===
@@ -78,14 +123,13 @@ function Chat() {
         setConversations(filterConversationUserWithAdmin);
       }
 
-      if (role === 0 && userDetail.role !== 0)
-        setConversations(listConversations);
+      if (role === 0) setConversations(listConversations);
     });
   }, [role, userDetail]);
 
   useEffect(() => {
     handleFetchMessages();
-  }, [conversations]);
+  }, [conversations, conversationSelected]);
 
   return (
     <Box sx={{ height: "92vh", flexGrow: 1, marginTop: "2px" }}>
@@ -94,7 +138,11 @@ function Chat() {
           <Box sx={{ height: "100%", bgcolor: "#f5f5f5" }}>
             <List sx={{ height: "100%" }}>
               {users.map((user) => (
-                <ListItem button key={user.uid}>
+                <ListItem
+                  button
+                  key={user.uid}
+                  onClick={() => onSelect(user.uid)}
+                >
                   <ListItemAvatar>
                     <Avatar alt="User 1" src="/static/images/avatar/1.jpg" />
                   </ListItemAvatar>

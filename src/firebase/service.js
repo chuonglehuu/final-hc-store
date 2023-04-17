@@ -147,5 +147,6 @@ export const addMessage = async (conversationId, senderId, text) => {
     text: text,
     senderId: senderId,
     timestamp: Timestamp.fromDate(new Date()),
+    type: "text",
   });
 };
