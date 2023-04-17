@@ -131,6 +131,36 @@ function Chat() {
     handleFetchMessages();
   }, [conversations, conversationSelected]);
 
+  useEffect(() => {
+    if (role !== 0) {
+      const newMessages = messages.map((item) => {
+        return {
+          ...item,
+          senderName:
+            item.senderId === userDetail.uid ? userDetail?.fullname : "ADMIN",
+        };
+      });
+      setMessagesFormat(newMessages);
+    }
+    if (role === 0) {
+      const newMessages = messages.map((item) => {
+        if (userDetail.uid === item.senderId) {
+          return {
+            ...item,
+            senderName: "ADMIN",
+          };
+        } else {
+          const findUser = users.find((user) => user.uid === item.senderId);
+          return {
+            ...item,
+            senderName: findUser?.fullname || "NULL",
+          };
+        }
+      });
+      setMessagesFormat(newMessages);
+    }
+  }, [role, userDetail, users, messages]);
+
   return (
     <Box sx={{ height: "92vh", flexGrow: 1, marginTop: "2px" }}>
       <Grid container spacing={2}>
@@ -146,7 +176,7 @@ function Chat() {
                   <ListItemAvatar>
                     <Avatar alt="User 1" src="/static/images/avatar/1.jpg" />
                   </ListItemAvatar>
-                  <ListItemText primary={user.fullname} />
+                  <ListItemText primary={user?.fullname} />
                 </ListItem>
               ))}
             </List>
@@ -158,9 +188,9 @@ function Chat() {
             <Box
               sx={{ p: 2, height: "calc(100% - 76px)", overflowY: "scroll" }}
             >
-              {messages.map((message, index) => (
+              {messagesFormat.map((message, index) => (
                 <div key={message.id}>
-                  <strong>{message.senderId}</strong>: {message.text}
+                  <strong>{message.senderName}</strong>: {message.text}
                 </div>
               ))}
             </Box>
