@@ -23,6 +23,7 @@ function Chat() {
   const [messagesFormat, setMessagesFormat] = useState([]);
 
   const onSelect = (userId) => {
+    setMessages([]);
     if (conversations.length && role === 0) {
       const findConversation = conversations.find(
         (item) =>

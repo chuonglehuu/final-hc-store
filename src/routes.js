@@ -25,7 +25,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Register from "./pages/Register";
 import UploadUser from "./pages/UploadUser";
 
-const DEFAULT_PATHS = [
+const USER_PATHS = [
   "/",
   "/about",
   "/product",
@@ -34,7 +34,16 @@ const DEFAULT_PATHS = [
   "/product/detail",
   "/upload-user",
 ];
-const PATHS = ["/", "/about", "/product", "/chat", "/login", "/register"];
+
+const DEFAULT_PATHS = [
+  "/",
+  "/about",
+  "/product",
+  "/orders",
+  "/product/detail",
+  "/upload-user",
+];
+const PATHS = ["/", "/about", "/product", "/login", "/register"];
 const MANAGER_PATHS = [
   "/manager",
   "/manager/categories",
@@ -43,7 +52,12 @@ const MANAGER_PATHS = [
   "/manager/dashboard",
   "/manager/orders",
 ];
-const ADMIN_PATHS = ["/admin", "/admin/update-manager", "/admin/dashboard"];
+const ADMIN_PATHS = [
+  "/admin",
+  "/admin/update-manager",
+  "/admin/dashboard",
+  "/chat",
+];
 
 export default function Router() {
   const { user, role, setRole, setUserDetail } = UserAuth();
@@ -87,7 +101,7 @@ export default function Router() {
       navigate("/admin");
     }
 
-    if (role === 2 && !DEFAULT_PATHS.includes(location.pathname)) {
+    if (role === 2 && !USER_PATHS.includes(location.pathname)) {
       navigate("/");
     }
 
@@ -139,11 +153,14 @@ export default function Router() {
     },
     {
       path: "/chat",
-      element: (
-        <DefaultLayout>
-          <Chat />
-        </DefaultLayout>
-      ),
+      element:
+        role === 0 || role === 2 ? (
+          <DefaultLayout>
+            <Chat />
+          </DefaultLayout>
+        ) : (
+          <NotFound />
+        ),
     },
     {
       path: "/forgot-password",

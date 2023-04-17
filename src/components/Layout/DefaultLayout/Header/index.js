@@ -33,7 +33,20 @@ function Header() {
           <Link to="/product">
             <div className={cx("item")}>Product</div>
           </Link>
-          {user && (
+
+          {user && role === 1 && (
+            <Link to="/manager/dashboard">
+              <div className={cx("item")}>Dashboard</div>
+            </Link>
+          )}
+
+          {user && role === 0 && (
+            <Link to="/admin/dashboard">
+              <div className={cx("item")}>Dashboard</div>
+            </Link>
+          )}
+
+          {user && (role === 0 || role === 2) && (
             <Link to="/chat">
               <div className={cx("item")}>Chat</div>
             </Link>
