@@ -24,6 +24,7 @@ import Product from "./pages/Product";
 import ProductDetail from "./pages/ProductDetail";
 import Register from "./pages/Register";
 import UploadUser from "./pages/UploadUser";
+import Dashboard from "./pages/Dashboard";
 
 const USER_PATHS = [
   "/",
@@ -216,7 +217,7 @@ export default function Router() {
       element:
         role === 0 ? (
           <AdminLayout>
-            <>dashboard</>
+            <Dashboard />
           </AdminLayout>
         ) : (
           <NotFound />
@@ -271,7 +272,7 @@ export default function Router() {
       element:
         role === 1 ? (
           <AdminLayout>
-            <>dashboard</>
+            <Dashboard />
           </AdminLayout>
         ) : (
           <NotFound />
