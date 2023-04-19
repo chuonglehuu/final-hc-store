@@ -132,7 +132,7 @@ function Product() {
               className={cx("page_number")}
               style={{
                 backgroundColor:
-                  pageNumber + 1 === currentPage ? "bisque" : "#ffffff",
+                  pageNumber + 1 === currentPage ? "#1cbfda" : "#ffffff",
               }}
               key={pageNumber}
               onClick={() => setCurrentPage(pageNumber + 1)}
