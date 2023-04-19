@@ -105,7 +105,9 @@ const ProductDetail = () => {
           <ProductDetails>
             <ProductName variant="h5">{product.name}</ProductName>
             <ProductCategory variant="body1">{product.type}</ProductCategory>
-            <ProductPrice variant="h6">{Number(product.new_price).toLocaleString("en-US")} VNĐ</ProductPrice>
+            <ProductPrice variant="h6">
+              {Number(product.new_price).toLocaleString("en-US")} VNĐ
+            </ProductPrice>
             {(role === 2 || userDetail.role === 2) && (
               <Button
                 variant="contained"
@@ -128,13 +130,15 @@ const ProductDetail = () => {
             )}
           </ProductDetails>
         </Grid>
+
         <Grid item xs={12}>
-          <Typography variant="h6">Other Information</Typography>
+          <Typography variant="h4">Other Information</Typography>
           <Typography variant="body1">{product.description}</Typography>
         </Grid>
-        <Grid container spacing={2} mt={4}>
+
+        <Grid container spacing={2} mt={4} sx={{ paddingLeft: "16px" }}>
           <Grid item xs={12}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h4" gutterBottom>
               Similar products
             </Typography>
           </Grid>

@@ -129,8 +129,14 @@ function AdminCategory() {
             <TableBody>
               {categories.map((data, index) => (
                 <TableRow key={index}>
-                  <TableCell>{data.name}</TableCell>
-                  <TableCell>{data.description}</TableCell>
+                  <TableCell style={{ maxWidth: "200px" }}>
+                    <div className={cx("style-display")}>{data.name}</div>
+                  </TableCell>
+                  <TableCell style={{ maxWidth: "300px" }}>
+                    <div className={cx("style-display")}>
+                      {data.description}
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <Button
                       onClick={() => {

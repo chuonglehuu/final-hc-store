@@ -14,9 +14,13 @@
       font-weight: 600;
     }
     .style-display {
-      white-space: pre-line;
+      max-height: 72px;
       overflow: hidden;
       text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      vertical-align: middle;
     }
   }
 }

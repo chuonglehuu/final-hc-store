@@ -119,9 +119,8 @@ function Product() {
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  sx={{ maxHeight: "40px" }}
                 >
-                  {item.description}
+                  <div className={cx("style-display")}>{item.description}</div>
                 </Typography>
               </CardContent>
             </Card>

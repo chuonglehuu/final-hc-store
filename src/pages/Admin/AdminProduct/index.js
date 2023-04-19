@@ -126,14 +126,22 @@ function AdminProduct() {
             <TableBody>
               {products.map((data, index) => (
                 <TableRow key={index}>
-                  <TableCell>{data.name}</TableCell>
-                  <TableCell>{data.type}</TableCell>
-                  <TableCell className={cx("style-display")}>
-                    {data.description}
+                  <TableCell style={{ maxWidth: "200px" }}>
+                    <div className={cx("style-display")}>{data.name}</div>
                   </TableCell>
-                  <TableCell>{Number(data.old_price).toLocaleString("en-US")}</TableCell>
-                  <TableCell sx={{ width: "10px" }}>{data.promotion}</TableCell>
-                  <TableCell>{Number(data.new_price).toLocaleString("en-US")}</TableCell>
+                  <TableCell>{data.type}</TableCell>
+                  <TableCell style={{ maxWidth: "300px" }}>
+                    <div className={cx("style-display")}>
+                      {data.description}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {Number(data.old_price).toLocaleString("en-US")}
+                  </TableCell>
+                  <TableCell>{data.promotion}</TableCell>
+                  <TableCell>
+                    {Number(data.new_price).toLocaleString("en-US")}
+                  </TableCell>
                   <TableCell>
                     <Button
                       onClick={() => {
@@ -152,6 +160,7 @@ function AdminProduct() {
                       size="small"
                       sx={{
                         marginRight: 1,
+                        marginTop: "6px",
                         backgroundColor: grey[500],
                         "&:hover": {
                           backgroundColor: grey[700],
@@ -168,6 +177,7 @@ function AdminProduct() {
                       size="small"
                       sx={{
                         backgroundColor: red[500],
+                        marginTop: "6px",
                         "&:hover": {
                           backgroundColor: red[700],
                         },

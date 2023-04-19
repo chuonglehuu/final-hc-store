@@ -109,8 +109,14 @@ function AdminOrder() {
                   <TableCell>{data.userName}</TableCell>
                   <TableCell>{data.userPhone}</TableCell>
                   <TableCell>{data.address}</TableCell>
-                  <TableCell>{data.productName}</TableCell>
-                  <TableCell>{Number(data.productPrice).toLocaleString("en-US")}</TableCell>
+                  <TableCell style={{ maxWidth: "300px" }}>
+                    <div className={cx("style-display")}>
+                      {data.productName}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {Number(data.productPrice).toLocaleString("en-US")}
+                  </TableCell>
                   <TableCell>
                     {data.status === "received" ? "Success" : data.status}
                   </TableCell>

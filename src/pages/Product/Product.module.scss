@@ -5,6 +5,15 @@
   padding: 20px 0px;
   position: relative;
   height: 100%;
+  .style-display {
+    max-height: 72px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    vertical-align: middle;
+  }
 }
 
 @media (max-width: 1200px) {
