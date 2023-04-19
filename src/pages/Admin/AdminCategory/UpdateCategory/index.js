@@ -1,9 +1,9 @@
 import BookmarkAddedOutlinedIcon from "@mui/icons-material/BookmarkAddedOutlined";
 import { Button, TextField } from "@mui/material";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 import classNames from "classnames/bind";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { updateCategory } from "../../../../firebase/service";
 import styles from "../AddCategory/AddCategory.module.scss";
 
@@ -19,7 +19,7 @@ function UpdateProduct() {
   const update = async (id, name, description) => {
     try {
       await updateCategory(id, name, description);
-      navigate("/manager/categories")
+      navigate("/manager/categories");
     } catch (error) {
       alert(error.message);
     }
@@ -41,13 +41,18 @@ function UpdateProduct() {
             autoFocus
           />
 
-          <TextField
+          <TextareaAutosize
+            aria-label="minimum height"
+            minRows={3}
+            placeholder="Description"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            id="outlined-basic"
-            label="Description"
-            variant="outlined"
-            sx={{ width: "80%", marginTop: "20px" }}
+            onChange={(event) => setDescription(event.target.value)}
+            style={{
+              width: "80%",
+              marginTop: "20px",
+              resize: "none",
+              padding: "6px",
+            }}
             required
           />
 

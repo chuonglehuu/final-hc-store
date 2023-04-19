@@ -14,6 +14,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { db } from "../../../../firebase/config";
 import { updateProduct } from "../../../../firebase/service";
 import styles from "../AddProduct/AddProduct.module.scss";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 
 const cx = classNames.bind(styles);
 function UpdateProduct() {
@@ -86,15 +87,21 @@ function UpdateProduct() {
             </Select>
           </FormControl>
 
-          <TextField
+          <TextareaAutosize
+            aria-label="minimum height"
+            minRows={3}
+            placeholder="Description"
             value={desc}
-            onChange={(e) => setDesc(e.target.value)}
-            id="outlined-basic"
-            label="Description"
-            variant="outlined"
-            sx={{ width: "80%", marginTop: "20px" }}
+            onChange={(event) => setDesc(event.target.value)}
+            style={{
+              width: "80%",
+              marginTop: "20px",
+              resize: "none",
+              padding: "6px",
+            }}
             required
           />
+
           <TextField
             value={price}
             onChange={(e) => setPrice(e.target.value)}

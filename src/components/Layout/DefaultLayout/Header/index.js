@@ -57,11 +57,11 @@ function Header() {
             </Link>
           )}
         </div>
-        {user?.email ? (
+        {user && userDetail ? (
           <div className={cx("user-logout")}>
             <div className={cx("info-user")}>
               <span>Welcome</span>
-              <span>{user.email}</span>
+              <span>{userDetail?.fullname}</span>
             </div>
             <div className={cx("logout")}>
               <button onClick={handleLogout}>Logout</button>

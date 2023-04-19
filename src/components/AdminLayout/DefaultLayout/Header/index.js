@@ -37,7 +37,7 @@ function Header() {
             </a>
           </div>
           <div className={cx("button-logout")}>
-            <span>Welcome {userDetail.role === 0 ? "Admin" : "Manager"}!</span>
+            <span>Welcome {userDetail.fullname}!</span>
             {userDetail.role === 0 && (
               <div className={cx("button-chat")} onClick={navigateChatPage}>
                 <ChatIcon />
