@@ -114,7 +114,9 @@ function Order() {
                   <TableCell>{data.userPhone}</TableCell>
                   <TableCell>{data.address}</TableCell>
                   <TableCell>{data.productName}</TableCell>
-                  <TableCell>{data.productPrice}</TableCell>
+                  <TableCell>
+                    {Number(data.productPrice).toLocaleString("en-US")}
+                  </TableCell>
                   <TableCell>{data.status}</TableCell>
                   {data.status === "accepted" && (
                     <TableCell>

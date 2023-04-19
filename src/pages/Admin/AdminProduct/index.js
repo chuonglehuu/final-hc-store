@@ -131,9 +131,9 @@ function AdminProduct() {
                   <TableCell className={cx("style-display")}>
                     {data.description}
                   </TableCell>
-                  <TableCell>{data.old_price}</TableCell>
+                  <TableCell>{Number(data.old_price).toLocaleString("en-US")}</TableCell>
                   <TableCell sx={{ width: "10px" }}>{data.promotion}</TableCell>
-                  <TableCell>{data.new_price}</TableCell>
+                  <TableCell>{Number(data.new_price).toLocaleString("en-US")}</TableCell>
                   <TableCell>
                     <Button
                       onClick={() => {

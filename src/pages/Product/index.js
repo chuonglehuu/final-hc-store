@@ -114,7 +114,7 @@ function Product() {
                   {item.name}
                 </Typography>
                 <Typography gutterBottom variant="h6" component="div">
-                  {item.new_price}
+                  {Number(item.new_price).toLocaleString("en-US")}
                 </Typography>
                 <Typography
                   variant="body2"

@@ -105,7 +105,7 @@ const ProductDetail = () => {
           <ProductDetails>
             <ProductName variant="h5">{product.name}</ProductName>
             <ProductCategory variant="body1">{product.type}</ProductCategory>
-            <ProductPrice variant="h6">{product.new_price} VNĐ</ProductPrice>
+            <ProductPrice variant="h6">{Number(product.new_price).toLocaleString("en-US")} VNĐ</ProductPrice>
             {(role === 2 || userDetail.role === 2) && (
               <Button
                 variant="contained"
@@ -167,7 +167,7 @@ const ProductDetail = () => {
                 {ele.type}
               </Typography>
               <Typography variant="h6" mt={1}>
-                {ele.new_price}
+                {Number(ele.new_price).toLocaleString("en-US")}
               </Typography>
               <Typography variant="body2" color="textSecondary" mt={1}>
                 {ele.description}
