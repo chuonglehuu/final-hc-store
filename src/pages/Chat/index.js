@@ -31,7 +31,6 @@ function Chat() {
 
   const onSelect = (userId) => {
     // khi select một conversation khác thì clean list messages hiện tại
-    setMessages([]);
     if (conversations.length && role === 0) {
       // convert sang string để so sánh dựa vào uid của user và uid của admin -> conversation
       const findConversation = conversations.find(
@@ -55,7 +54,7 @@ function Chat() {
         tempMessages.push({ ...doc.data(), id: doc.id });
       });
 
-      // docChanges với change type action -> api của firebase check xem mỗi lần 
+      // docChanges với change type action -> api của firebase check xem mỗi lần
       // data được thêm mới vào một collection -> cụ thể là thêm mới vào messages
       onSnapshot(messagesRef, (snapshot) => {
         snapshot.docChanges().forEach((change) => {
@@ -106,6 +105,14 @@ function Chat() {
     }
 
     setInputValue("");
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSendMessage();
+      setInputValue("");
+    }
   };
 
   useEffect(() => {
@@ -170,12 +177,13 @@ function Chat() {
   }, [role, userDetail]);
 
   useEffect(() => {
+    setMessages([]);
     handleFetchMessages();
   }, [conversations, conversationSelected]);
 
   useEffect(() => {
     if (role !== 0) {
-      // foramt lại message -> thêm vào mỗi object message một key senderName -> render UI 
+      // foramt lại message -> thêm vào mỗi object message một key senderName -> render UI
       // sau đó là sort tin nhắn
       const newMessages = messages
         .map((item) => {
@@ -249,6 +257,11 @@ function Chat() {
                   button
                   key={user.uid}
                   onClick={() => onSelect(user.uid)}
+                  sx={{
+                    border: "1px solid gray",
+                    marginBottom: "8px",
+                    borderRadius: "6px",
+                  }}
                 >
                   <ListItemAvatar>
                     <Avatar alt="User 1" src="/static/images/avatar/1.jpg" />
@@ -285,9 +298,10 @@ function Chat() {
                 placeholder="Nhập tin nhắn của bạn..."
                 value={inputValue}
                 onChange={(event) => setInputValue(event.target.value)}
-                style={{ width: "100%", resize: "none" }}
+                style={{ width: "100%", resize: "none", padding: "6px" }}
+                onKeyDown={handleKeyDown}
               />
-              <Box sx={{ mt: 1 }}>
+              <Box sx={{ mt: 1, ml: 2 }}>
                 <Button variant="contained" onClick={handleSendMessage}>
                   Gửi
                 </Button>
