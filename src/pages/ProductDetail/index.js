@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
+import classNames from "classnames/bind";
 import { collection, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import React, { useEffect, useState } from "react";
@@ -11,6 +12,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import { db, storage } from "../../firebase/config";
 import ConfirmAddress from "../Product/ConfirmAddress";
+import styles from "./ProductDetail.module.scss";
+
+const cx = classNames.bind(styles);
 
 const ProductImage = styled("img")({
   width: "100%",
@@ -35,6 +39,14 @@ const ProductCategory = styled(Typography)({
 const ProductPrice = styled(Typography)({
   fontWeight: "bold",
   fontSize: "24px",
+});
+
+const OldPrice = styled(Typography)({
+  fontSize: "20px",
+  marginLeft: "24px",
+  fontStyle: "italic",
+  color: "gray",
+  textDecoration: "line-through",
 });
 
 const ProductDetail = () => {
@@ -104,10 +116,24 @@ const ProductDetail = () => {
         <Grid item xs={12} md={6}>
           <ProductDetails>
             <ProductName variant="h5">{product.name}</ProductName>
-            <ProductCategory variant="body1">{product.type}</ProductCategory>
-            <ProductPrice variant="h6">
-              {Number(product.new_price).toLocaleString("en-US")} VNĐ
-            </ProductPrice>
+            <ProductCategory variant="body1">
+              <span style={{ fontWeight: "bold" }}>Category:</span>{" "}
+              {product.type}
+            </ProductCategory>
+            <Grid
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <ProductPrice variant="h6">
+                {Number(product.new_price).toLocaleString("en-US")} VNĐ
+              </ProductPrice>
+              <OldPrice>
+                {Number(product.old_price).toLocaleString("en-US")} VNĐ
+              </OldPrice>
+            </Grid>
             {(role === 2 || userDetail.role === 2) && (
               <Button
                 variant="contained"
@@ -157,6 +183,8 @@ const ProductDetail = () => {
                   boxShadow: 20, // theme.shadows[20]
                   cursor: "pointer",
                 },
+                paddingRight: "8px",
+                paddingBottom: "8px"
               }}
             >
               <img
@@ -174,7 +202,7 @@ const ProductDetail = () => {
                 {Number(ele.new_price).toLocaleString("en-US")}
               </Typography>
               <Typography variant="body2" color="textSecondary" mt={1}>
-                {ele.description}
+                <div className={cx("style-display")}>{ele.description}</div>
               </Typography>
             </Grid>
           ))}
