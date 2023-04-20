@@ -2,7 +2,9 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
 import classNames from "classnames/bind";
 import { collection, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
@@ -13,7 +15,20 @@ import styles from "./Product.module.scss";
 
 const cx = classNames.bind(styles);
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 4;
+
+const ProductPrice = styled(Typography)({
+  fontWeight: "bold",
+  fontSize: "16px",
+});
+
+const OldPrice = styled(Typography)({
+  fontSize: "12px",
+  marginLeft: "24px",
+  fontStyle: "italic",
+  color: "gray",
+  textDecoration: "line-through",
+});
 
 function Product() {
   const navigate = useNavigate();
@@ -89,13 +104,17 @@ function Product() {
             <Card
               key={item.id}
               sx={{
-                maxWidth: 345,
-                maxHeight: 400,
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "stretch",
+                maxWidth: 540,
+                height: 340,
+                marginBottom: "24px",
                 ":hover": {
                   boxShadow: 20, // theme.shadows[20]
                   cursor: "pointer",
                 },
-                marginBottom: "24px",
+                padding: "12px",
               }}
               style={{ border: "1px solid #999" }}
               onClick={() =>
@@ -105,23 +124,57 @@ function Product() {
               }
             >
               <CardMedia
-                sx={{ height: 140 }}
+                sx={{
+                  flex: { xs: "none", md: "5 0 0" },
+                  height: { xs: 140, md: "100%" },
+                  maxHeight: { xs: 140, md: "100%" },
+                  width: { xs: "100%", md: "auto" },
+                }}
                 image={item.url_img}
-                title="green iguana"
+                title="Product image"
               />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {item.name}
-                </Typography>
-                <Typography gutterBottom variant="h6" component="div">
-                  {Number(item.new_price).toLocaleString("en-US")}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                >
-                  <div className={cx("style-display")}>{item.description}</div>
-                </Typography>
+              <CardContent
+                sx={{
+                  flex: "5 0 0",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  padding: "16px",
+                }}
+              >
+                <div>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {item.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    <span>{item.category}</span>
+                  </Typography>
+                  <Grid
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ProductPrice variant="h6">
+                      {Number(item.new_price).toLocaleString("en-US")} VNĐ
+                    </ProductPrice>
+                    <OldPrice>
+                      {Number(item.old_price).toLocaleString("en-US")} VNĐ
+                    </OldPrice>
+                  </Grid>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      height: "50%",
+                      overflow: "hidden",
+                      marginTop: "6px",
+                    }}
+                  >
+                    <span>{item.description}</span>
+                  </Typography>
+                </div>
               </CardContent>
             </Card>
           ))}
