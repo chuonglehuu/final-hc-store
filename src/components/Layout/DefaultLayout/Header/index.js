@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import images from "../../../../assets/Image";
 import { UserAuth } from "../../../../context/AuthContext";
+import { toastMessage } from "../../../../utils/toast";
 import styles from "./Header.module.scss";
 
 const cx = classNames.bind(styles);
@@ -17,7 +18,7 @@ function Header() {
       await logOut();
       navigate("/");
     } catch (error) {
-      alert(error);
+      toastMessage("error", error.message);
     }
   };
   return (

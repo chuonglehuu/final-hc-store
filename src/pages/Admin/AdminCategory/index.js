@@ -25,6 +25,7 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../../firebase/config";
+import { toastMessage } from "../../../utils/toast";
 import AddCategory from "./AddCategory";
 import styles from "./AdminCategory.module.scss";
 
@@ -72,14 +73,14 @@ function AdminCategory() {
           query(productsRef, where("type", "==", typeDelete))
         );
         if (!querySnapshot.empty) {
-          alert("This category cannot be deleted");
+          toastMessage("error", "This category cannot be deleted");
         } else {
           await deleteDoc(doc(db, "categories", idDelete));
           handleCloseDel();
-          alert("delete success");
+          toastMessage("success", "Delete success");
         }
       } catch (error) {
-        alert(error.message);
+        toastMessage("error", error.message);
       }
     }
   }

@@ -5,6 +5,7 @@ import classNames from "classnames/bind";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { updateCategory } from "../../../../firebase/service";
+import { toastMessage } from "../../../../utils/toast";
 import styles from "../AddCategory/AddCategory.module.scss";
 
 const cx = classNames.bind(styles);
@@ -21,7 +22,7 @@ function UpdateProduct() {
       await updateCategory(id, name, description);
       navigate("/manager/categories");
     } catch (error) {
-      alert(error.message);
+      toastMessage("error", error.message);
     }
   };
 

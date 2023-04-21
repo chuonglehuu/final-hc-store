@@ -21,6 +21,7 @@ import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../../firebase/config";
+import { toastMessage } from "../../../utils/toast";
 import AddManager from "./AddManager";
 import styles from "./AdminUser.module.scss";
 
@@ -77,9 +78,9 @@ function AdminUser() {
       try {
         await deleteDoc(doc(db, "users", idDelete));
         handleCloseDel();
-        alert("delete success");
+        toastMessage("success", "delete success");
       } catch (error) {
-        alert(error.message);
+        toastMessage("error", error.message);
       }
     }
   }

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { updateManager } from "../../../../firebase/service";
+import { toastMessage } from "../../../../utils/toast";
 import styles from "../AddManager/AddManager.module.scss";
 
 const cx = classNames.bind(styles);
@@ -29,7 +30,7 @@ function UpdateProduct() {
       await updateManager(id, name, phone, address);
       navigate("/admin");
     } catch (error) {
-      alert(error.message);
+      toastMessage("error", error.message);
     }
   };
 

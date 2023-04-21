@@ -4,6 +4,7 @@ import TextareaAutosize from "@mui/material/TextareaAutosize";
 import classNames from "classnames/bind";
 import { useState } from "react";
 import { addCategory } from "../../../../firebase/service";
+import { toastMessage } from "../../../../utils/toast";
 import styles from "./AddCategory.module.scss";
 
 const cx = classNames.bind(styles);
@@ -16,9 +17,9 @@ function AddCategory({ setOpen }) {
     try {
       addCategory(name, description);
       setOpen(false);
-      alert("Create new product successfully");
+      toastMessage("success", "Create new product successfully");
     } catch (error) {
-      console.log(error);
+      toastMessage("error", error.message);
     }
   };
 

@@ -7,14 +7,15 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 import classNames from "classnames/bind";
 import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { db } from "../../../../firebase/config";
 import { updateProduct } from "../../../../firebase/service";
+import { toastMessage } from "../../../../utils/toast";
 import styles from "../AddProduct/AddProduct.module.scss";
-import TextareaAutosize from "@mui/material/TextareaAutosize";
 
 const cx = classNames.bind(styles);
 function UpdateProduct() {
@@ -40,7 +41,7 @@ function UpdateProduct() {
       await updateProduct(id, name, type, desc, price, promo, new_price);
       navigate("/manager");
     } catch (error) {
-      alert(error.message);
+      toastMessage("error", error.message);
     }
   };
 

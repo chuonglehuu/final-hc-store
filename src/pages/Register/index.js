@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import loginImg from "../../assets/Image/loginIP.png";
 import styles from "../../components/Layout/FormLogin/FormLogin.module.scss";
 import { UserAuth } from "../../context/AuthContext";
+import { toastMessage } from "../../utils/toast";
 
 const cx = classNames.bind(styles);
 
@@ -19,7 +20,7 @@ function SignUp() {
       await signUp(email, password);
       navigate("/upload-user");
     } catch (error) {
-      alert(error);
+      toastMessage("error", error.message);
     }
   };
   return (

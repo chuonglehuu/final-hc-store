@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../../../context/AuthContext";
 import { auth } from "../../../../firebase/config";
 import { addManager } from "../../../../firebase/service";
+import { toastMessage } from "../../../../utils/toast";
 import styles from "./AddManager.module.scss";
 
 const cx = classNames.bind(styles);
@@ -39,7 +40,7 @@ function AddCategory({ setOpen }) {
       setOpen(false);
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
-        alert("The email address has been used");
+        toastMessage("error", "The email address has been used");
       }
       console.log({ error });
     }

@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import loginImg from "../../../assets/Image/loginIP.png";
 import { UserAuth } from "../../../context/AuthContext";
 import { db } from "../../../firebase/config";
+import { toastMessage } from "../../../utils/toast";
 import ThirdBtnLogin from "../FormLogin/ThirdBtnLogin";
 import styles from "./FormLogin.module.scss";
 
@@ -36,7 +37,7 @@ function FormLogin() {
         console.log("User not found");
       }
     } catch (error) {
-      alert(error);
+      toastMessage("error", error.message);
     }
   };
 

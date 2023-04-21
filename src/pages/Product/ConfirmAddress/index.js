@@ -4,6 +4,7 @@ import classNames from "classnames/bind";
 import { useState } from "react";
 import { UserAuth } from "../../../context/AuthContext";
 import { addOrder } from "../../../firebase/service";
+import { toastMessage } from "../../../utils/toast";
 import styles from "./ConfirmAddress.module.scss";
 
 const cx = classNames.bind(styles);
@@ -38,10 +39,10 @@ function ConfirmAddress({
         productName,
         productPrice
       );
-      alert("Đã đặt hàng thành công");
+      toastMessage("success", "Đã đặt hàng thành công");
       setOpen(false);
     } catch (e) {
-      console.log("Error order: ", e);
+      toastMessage("error", e.message);
     }
   };
 

@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import { db } from "../../firebase/config";
 import { createConversation } from "../../firebase/service";
+import { toastMessage } from "../../utils/toast";
 import styles from "./UploadUser.module.scss";
 
 const cx = classNames.bind(styles);
@@ -38,11 +39,14 @@ function UploadUser() {
         receipt_ID: "",
         role: 2,
       });
-      await createConversation([user.uid, "DpN1SsnTCXbAacR802db2dDCAv73"], user.uid);
+      await createConversation(
+        [user.uid, "DpN1SsnTCXbAacR802db2dDCAv73"],
+        user.uid
+      );
       setRole(2);
       navigate("/");
     } catch (error) {
-      alert(error.message);
+      toastMessage("error", error.message);
     }
   };
   useEffect(() => {

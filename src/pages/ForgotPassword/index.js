@@ -1,8 +1,9 @@
-import styles from "./ForgotPassword.module.scss";
 import classNames from "classnames/bind";
-import { Link } from "react-router-dom";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
+import { toastMessage } from "../../utils/toast";
+import styles from "./ForgotPassword.module.scss";
 
 const cx = classNames.bind(styles);
 function ForgotPassword() {
@@ -15,7 +16,7 @@ function ForgotPassword() {
       await forgotPassword(email);
       console.log("send your email");
     } catch (error) {
-      console.log(error.message);
+      toastMessage("error", error.message);
     }
   };
   return (

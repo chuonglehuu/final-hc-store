@@ -13,6 +13,7 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../../../../firebase/config";
 import { addProduct } from "../../../../firebase/service";
+import { toastMessage } from "../../../../utils/toast";
 import styles from "./AddProduct.module.scss";
 
 const cx = classNames.bind(styles);
@@ -31,9 +32,9 @@ function AddProduct({ setOpen }) {
     try {
       addProduct(name, category, des, price, promo, currentPrice, imgUpload);
       setOpen(false);
-      alert("Create new product successfully");
+      toastMessage("success", "Create new product successfully");
     } catch (error) {
-      console.log(error);
+      toastMessage("error", error.message);
     }
   };
 

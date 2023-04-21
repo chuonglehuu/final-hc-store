@@ -17,6 +17,7 @@ import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../../firebase/config";
+import { toastMessage } from "../../../utils/toast";
 import AddProduct from "./AddProduct";
 import styles from "./AdminProduct.module.scss";
 
@@ -56,9 +57,9 @@ function AdminProduct() {
       try {
         await deleteDoc(doc(db, "products", idDelete));
         handleCloseDel();
-        alert("delete success");
+        toastMessage("success", "delete success");
       } catch (error) {
-        alert(error.message);
+        toastMessage("error", error.message);
       }
     }
   }

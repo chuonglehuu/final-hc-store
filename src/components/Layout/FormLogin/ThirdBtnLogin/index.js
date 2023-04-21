@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames/bind";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../../../context/AuthContext";
+import { toastMessage } from "../../../../utils/toast";
 import styles from "./ThirdBtnLogin.module.scss";
 
 const cx = classNames.bind(styles);
@@ -16,7 +17,7 @@ function ThirdBtnLogin() {
       await googleSignIn();
       navigate("/");
     } catch (error) {
-      console.log(error);
+      toastMessage("error", error.message);
     }
   };
 
