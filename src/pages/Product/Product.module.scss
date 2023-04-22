@@ -14,6 +14,24 @@
     -webkit-box-orient: vertical;
     vertical-align: middle;
   }
+
+  .name{
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .description {
+    margin-top: 6px;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 12;
+    font-size: 12px;
+  }
 }
 
 @media (max-width: 1200px) {

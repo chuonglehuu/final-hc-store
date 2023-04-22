@@ -1,6 +1,9 @@
 import { Dialog } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
@@ -85,7 +88,7 @@ const ProductDetail = () => {
 
       const filterProducts = temp
         .filter((item) => item.id !== product.id)
-        .slice(0, 3);
+        .slice(0, 2);
       setProducts(filterProducts);
     });
   }, [product]);
@@ -168,44 +171,80 @@ const ProductDetail = () => {
               Similar products
             </Typography>
           </Grid>
-          {products.map((ele) => (
-            <Grid
-              onClick={() =>
-                navigate("/product/detail", {
-                  state: ele,
-                })
-              }
-              item
-              xs={4}
-              key={ele.id}
-              sx={{
-                ":hover": {
-                  boxShadow: 20, // theme.shadows[20]
-                  cursor: "pointer",
-                },
-                paddingRight: "8px",
-                paddingBottom: "8px"
-              }}
-            >
-              <img
-                src={ele.url_img}
-                alt="Sản phẩm 1"
-                style={{ width: "100%", height: 200 }}
-              />
-              <Typography variant="subtitle1" mt={2}>
-                {ele.name}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" mt={1}>
-                {ele.type}
-              </Typography>
-              <Typography variant="h6" mt={1}>
-                {Number(ele.new_price).toLocaleString("en-US")}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" mt={1}>
-                <div className={cx("style-display")}>{ele.description}</div>
-              </Typography>
-            </Grid>
-          ))}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "100%",
+              marginLeft: "12px",
+            }}
+          >
+            {products.map((ele) => (
+              <Card
+                key={ele.id}
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "stretch",
+                  maxWidth: 540,
+                  height: 340,
+                  marginBottom: "24px",
+                  ":hover": {
+                    boxShadow: 20, // theme.shadows[20]
+                    cursor: "pointer",
+                  },
+                  padding: "12px",
+                }}
+                style={{ border: "1px solid #999" }}
+                onClick={() =>
+                  navigate("/product/detail", {
+                    state: ele,
+                  })
+                }
+              >
+                <CardMedia
+                  sx={{
+                    flex: { xs: "none", md: "5 0 0" },
+                    height: { xs: 140, md: "100%" },
+                    maxHeight: { xs: 140, md: "100%" },
+                    width: { xs: "100%", md: "auto" },
+                  }}
+                  image={ele.url_img}
+                  title="Product image"
+                />
+                <CardContent
+                  sx={{
+                    flex: "5 0 0",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    padding: "16px",
+                  }}
+                >
+                  <div className={cx("name")}>{ele.name}</div>
+                  <Typography variant="body2" color="text.secondary">
+                    <span>Category: {ele.type}</span>
+                  </Typography>
+                  <Grid
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ProductPrice variant="h6">
+                      {Number(ele.new_price).toLocaleString("en-US")} VNĐ
+                    </ProductPrice>
+                    <OldPrice>
+                      {Number(ele.old_price).toLocaleString("en-US")} VNĐ
+                    </OldPrice>
+                  </Grid>
+                  <div className={cx("description")}>{ele.description}</div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </Grid>
       </Grid>
       <Dialog

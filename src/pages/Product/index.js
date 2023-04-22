@@ -142,39 +142,25 @@ function Product() {
                   padding: "16px",
                 }}
               >
-                <div>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {item.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    <span>{item.category}</span>
-                  </Typography>
-                  <Grid
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <ProductPrice variant="h6">
-                      {Number(item.new_price).toLocaleString("en-US")} VNĐ
-                    </ProductPrice>
-                    <OldPrice>
-                      {Number(item.old_price).toLocaleString("en-US")} VNĐ
-                    </OldPrice>
-                  </Grid>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{
-                      height: "50%",
-                      overflow: "hidden",
-                      marginTop: "6px",
-                    }}
-                  >
-                    <span>{item.description}</span>
-                  </Typography>
-                </div>
+                <div className={cx("name")}>{item.name}</div>
+                <Typography variant="body2" color="text.secondary">
+                  <span>Category: {item.type}</span>
+                </Typography>
+                <Grid
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <ProductPrice variant="h6">
+                    {Number(item.new_price).toLocaleString("en-US")} VNĐ
+                  </ProductPrice>
+                  <OldPrice>
+                    {Number(item.old_price).toLocaleString("en-US")} VNĐ
+                  </OldPrice>
+                </Grid>
+                <div className={cx("description")}>{item.description}</div>
               </CardContent>
             </Card>
           ))}
