@@ -38,6 +38,7 @@ function AddCategory({ setOpen }) {
       navigate("/admin");
       setRole(0);
       setOpen(false);
+      toastMessage("success", "Create manager successfully");
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         toastMessage("error", "The email address has been used");

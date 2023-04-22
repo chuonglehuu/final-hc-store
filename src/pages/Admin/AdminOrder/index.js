@@ -15,6 +15,7 @@ import classNames from "classnames/bind";
 import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../../../firebase/config";
+import { toastMessage } from "../../../utils/toast";
 import styles from "./AdminOrder.module.scss";
 
 const cx = classNames.bind(styles);
@@ -56,16 +57,26 @@ function AdminOrder() {
 
   async function acceptOrder(id) {
     const docRef = doc(db, "orders", id);
-    await updateDoc(docRef, {
-      status: "accepted",
-    });
+    try {
+      await updateDoc(docRef, {
+        status: "accepted",
+      });
+      toastMessage("success", "Accepted Order");
+    } catch (error) {
+      toastMessage("error", "Failed");
+    }
   }
 
   async function cancelOrder(id) {
     const docRef = doc(db, "orders", id);
-    await updateDoc(docRef, {
-      status: "canceled",
-    });
+    try {
+      await updateDoc(docRef, {
+        status: "canceled",
+      });
+      toastMessage("success", "Canceled Order");
+    } catch (error) {
+      toastMessage("error", "Failed");
+    }
   }
 
   return (

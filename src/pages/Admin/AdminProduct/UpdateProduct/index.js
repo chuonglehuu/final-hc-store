@@ -40,6 +40,7 @@ function UpdateProduct() {
     try {
       await updateProduct(id, name, type, desc, price, promo, new_price);
       navigate("/manager");
+      toastMessage("success", "Update product successfully");
     } catch (error) {
       toastMessage("error", error.message);
     }

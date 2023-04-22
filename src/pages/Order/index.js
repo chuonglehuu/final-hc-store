@@ -16,6 +16,7 @@ import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { UserAuth } from "../../context/AuthContext";
 import { db } from "../../firebase/config";
+import { toastMessage } from "../../utils/toast";
 import styles from "./Order.module.scss";
 
 const cx = classNames.bind(styles);
@@ -67,9 +68,14 @@ function Order() {
 
   async function acceptOrder(id) {
     const docRef = doc(db, "orders", id);
-    await updateDoc(docRef, {
-      status: "received",
-    });
+    try {
+      await updateDoc(docRef, {
+        status: "received",
+      });
+      toastMessage("success", "Received");
+    } catch (error) {
+      toastMessage("error", "Failed");
+    }
   }
 
   return (

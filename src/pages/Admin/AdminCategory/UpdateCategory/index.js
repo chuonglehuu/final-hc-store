@@ -21,6 +21,7 @@ function UpdateProduct() {
     try {
       await updateCategory(id, name, description);
       navigate("/manager/categories");
+      toastMessage("success", "Update category successfully");
     } catch (error) {
       toastMessage("error", error.message);
     }

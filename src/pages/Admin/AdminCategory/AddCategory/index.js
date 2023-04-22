@@ -17,7 +17,7 @@ function AddCategory({ setOpen }) {
     try {
       addCategory(name, description);
       setOpen(false);
-      toastMessage("success", "Create new product successfully");
+      toastMessage("success", "Create new category successfully");
     } catch (error) {
       toastMessage("error", error.message);
     }
