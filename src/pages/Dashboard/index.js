@@ -9,9 +9,11 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
+import { collection, onSnapshot } from "firebase/firestore";
 import _ from "lodash";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
+import { db } from "../../firebase/config";
 import { UserAuth } from "../../context/AuthContext";
 
 ChartJS.register(
@@ -56,7 +58,7 @@ export const data = {
   datasets: [
     {
       label: "Dataset 1",
-      data: _.times(labels.length, () => _.random(-1000, 1000)),
+      data: _.times(labels.length, () => _.random(0, 1000)),
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
@@ -65,6 +67,22 @@ export const data = {
 
 const Dashboard = () => {
   const { role } = UserAuth();
+  const [users, setUsers] = useState([]);
+  const [managers, setManagers] = useState([]);
+
+  useEffect(() => {
+    onSnapshot(collection(db, "users"), (snapshot) => {
+      const listUsers = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      const filterUsers = listUsers.filter((item) => item.role === 2);
+      const filterManagers = listUsers.filter((item) => item.role === 1);
+      setUsers(filterUsers);
+      setManagers(filterManagers);
+    });
+  }, []);
+
   return (
     <Grid container spacing={2}>
       {role === 0 && (
@@ -76,7 +94,7 @@ const Dashboard = () => {
                   Users
                 </Typography>
                 <Typography variant="h3" component="h1">
-                  1000
+                  {users?.length}
                 </Typography>
               </CardContent>
             </Card>
@@ -88,7 +106,7 @@ const Dashboard = () => {
                   Managers
                 </Typography>
                 <Typography variant="h3" component="h1">
-                  50
+                  {managers?.length}
                 </Typography>
               </CardContent>
             </Card>
