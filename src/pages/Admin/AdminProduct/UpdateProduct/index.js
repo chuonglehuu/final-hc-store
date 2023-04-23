@@ -27,18 +27,45 @@ function UpdateProduct() {
   const [name, setName] = useState("" || data.name);
   const [category, setCategory] = useState(data.type);
   const [desc, setDesc] = useState(data.desc);
-  const [price, setPrice] = useState(data.price);
+  const [price, setPrice] = useState(
+    parseInt(data.price.replace(/,/g, "")).toLocaleString("en-US")
+  );
   const [promo, setPromo] = useState(data.promo);
-  const [currentPrice, setCurrentPrice] = useState(data.new_price);
+  const [currentPrice, setCurrentPrice] = useState(
+    parseInt(data.new_price.replace(/,/g, "")).toLocaleString("en-US")
+  );
+
+  const handleValueChange = (event) => {
+    const input = event.target.value;
+    const number = parseInt(input.replace(/[^0-9]/g, ""), 10);
+    const formatted = number.toLocaleString("en-US");
+    setPrice(formatted);
+  };
 
   useEffect(() => {
-    const total = price - (price * promo) / 100;
-    setCurrentPrice(total);
+    const newPrice = parseInt(price.replace(/,/g, ""));
+
+    const total = newPrice - (newPrice * promo) / 100;
+
+    const totalFormat = total.toLocaleString("en-US");
+
+    setCurrentPrice(totalFormat);
   }, [promo, price]);
 
   const update = async (id, name, type, desc, price, promo, new_price) => {
+    const newPrice = parseInt(price.replace(/,/g, ""));
+    const newCurrentPrice = parseInt(new_price.replace(/,/g, ""));
+
     try {
-      await updateProduct(id, name, type, desc, price, promo, new_price);
+      await updateProduct(
+        id,
+        name,
+        type,
+        desc,
+        newPrice,
+        promo,
+        newCurrentPrice
+      );
       navigate("/manager");
       toastMessage("success", "Update product successfully");
     } catch (error) {
@@ -106,14 +133,12 @@ function UpdateProduct() {
 
           <TextField
             value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            onChange={handleValueChange}
             id="outlined-basic"
             label="Price"
             variant="outlined"
             sx={{ width: "28%", marginTop: "20px" }}
             required
-            type="number"
-            min="0"
           />
           <TextField
             value={promo}
@@ -134,7 +159,6 @@ function UpdateProduct() {
             variant="outlined"
             sx={{ width: "25%", marginTop: "20px", marginLeft: 1 }}
             required
-            type="number"
           />
           <Button
             sx={{ width: "80%", marginTop: 2 }}

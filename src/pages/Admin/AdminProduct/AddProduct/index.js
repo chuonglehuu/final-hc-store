@@ -29,8 +29,18 @@ function AddProduct({ setOpen }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newPrice = parseInt(price.replace(/,/g, ""));
+    const newCurrentPrice = parseInt(currentPrice.replace(/,/g, ""));
     try {
-      addProduct(name, category, des, price, promo, currentPrice, imgUpload);
+      addProduct(
+        name,
+        category,
+        des,
+        newPrice,
+        promo,
+        newCurrentPrice,
+        imgUpload
+      );
       setOpen(false);
       toastMessage("success", "Create new product successfully");
     } catch (error) {
@@ -38,9 +48,21 @@ function AddProduct({ setOpen }) {
     }
   };
 
+  const handleValueChange = (event) => {
+    const input = event.target.value;
+    const number = parseInt(input.replace(/[^0-9]/g, ""), 10);
+    const formatted = number.toLocaleString("en-US");
+    setPrice(formatted);
+  };
+
   useEffect(() => {
-    const total = price - (price * promo) / 100;
-    setCurrentPrice(total);
+    const newPrice = parseInt(price.replace(/,/g, ""));
+
+    const total = newPrice - (newPrice * promo) / 100;
+
+    const totalFormat = total.toLocaleString("en-US");
+
+    setCurrentPrice(totalFormat);
   }, [promo, price]);
 
   useEffect(() => {
@@ -102,15 +124,14 @@ function AddProduct({ setOpen }) {
           />
           <TextField
             value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            onChange={handleValueChange}
             id="outlined-basic"
             label="Price"
             variant="outlined"
             sx={{ width: "28%", marginTop: "20px" }}
             required
-            type="number"
-            min="0"
           />
+
           <TextField
             value={promo}
             onChange={(e) => setPromo(e.target.value)}
@@ -130,7 +151,10 @@ function AddProduct({ setOpen }) {
             variant="outlined"
             sx={{ width: "25%", marginTop: "20px", marginLeft: 1 }}
             required
-            type="number"
+            inputProps={{
+              pattern: "[0-9]*",
+              inputMode: "numeric",
+            }}
           />
           <input
             className={styles.input_img}
