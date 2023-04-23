@@ -39,7 +39,7 @@ function ConfirmAddress({
         productName,
         productPrice
       );
-      toastMessage("success", "Đã đặt hàng thành công");
+      toastMessage("success", "Ordered successfully");
       setOpen(false);
     } catch (e) {
       toastMessage("error", e.message);

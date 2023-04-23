@@ -2,7 +2,9 @@ import BookmarkAddedOutlinedIcon from "@mui/icons-material/BookmarkAddedOutlined
 import { Button, TextField } from "@mui/material";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import classNames from "classnames/bind";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { useState } from "react";
+import { db } from "../../../../firebase/config";
 import { addCategory } from "../../../../firebase/service";
 import { toastMessage } from "../../../../utils/toast";
 import styles from "./AddCategory.module.scss";
@@ -14,12 +16,20 @@ function AddCategory({ setOpen }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      addCategory(name, description);
-      setOpen(false);
-      toastMessage("success", "Create new category successfully");
-    } catch (error) {
-      toastMessage("error", error.message);
+    const docRef = collection(db, "categories");
+    const querySnapshot = await getDocs(
+      query(docRef, where("name", "==", name))
+    );
+    if (!querySnapshot.empty) {
+      return toastMessage("error", `Category with name '${name}' already exists.`);
+    } else {
+      try {
+        addCategory(name, description);
+        setOpen(false);
+        toastMessage("success", "Create new category successfully");
+      } catch (error) {
+        toastMessage("error", error.message);
+      }
     }
   };
 
