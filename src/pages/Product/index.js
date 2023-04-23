@@ -37,8 +37,9 @@ function Product() {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("all");
   const [categories, setCategories] = useState([]);
+  const [sortProducts, setSortProducts] = useState([]);
 
-  const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(sortProducts.length / ITEMS_PER_PAGE);
 
   useEffect(() => {
     onSnapshot(collection(db, "categories"), (snapshot) => {
@@ -66,15 +67,20 @@ function Product() {
           temp.push({ ...data, id });
         }
       }
-      if (filter === "all") {
-        setProducts(temp);
-      }
-      if (filter !== "all") {
-        const newArr = temp.filter((item) => item.type === filter);
-        setProducts(newArr);
-      }
+      setProducts(temp);
     });
-  }, [filter]);
+  }, []);
+
+  useEffect(() => {
+    if (filter === "all") {
+      setSortProducts(products);
+    }
+    if (filter !== "all") {
+      const newArr = products.filter((item) => item.type === filter);
+      setSortProducts(newArr);
+    }
+    setCurrentPage(1);
+  }, [products, filter]);
 
   return (
     <>
@@ -95,7 +101,7 @@ function Product() {
         </Select>
       </FormControl>
       <div className={cx("main")}>
-        {products
+        {sortProducts
           .slice(
             (currentPage - 1) * ITEMS_PER_PAGE,
             currentPage * ITEMS_PER_PAGE
