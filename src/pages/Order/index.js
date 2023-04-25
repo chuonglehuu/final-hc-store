@@ -23,7 +23,7 @@ const cx = classNames.bind(styles);
 
 function Order() {
   const [orders, setOrders] = useState([]);
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState("All");
   const { user } = UserAuth();
 
   useEffect(() => {
@@ -37,29 +37,29 @@ function Order() {
         (item) => item.emailUser === user.email
       );
 
-      if (filter === "all") setOrders(filterOrders);
+      if (filter === "All") setOrders(filterOrders);
 
-      if (filter === "pending") {
-        const newArr = filterOrders.filter((item) => item.status === "pending");
+      if (filter === "Pending") {
+        const newArr = filterOrders.filter((item) => item.status === "Pending");
         setOrders(newArr);
       }
 
-      if (filter === "accepted") {
+      if (filter === "Accepted") {
         const newArr = filterOrders.filter(
-          (item) => item.status === "accepted"
+          (item) => item.status === "Accepted"
         );
         setOrders(newArr);
       }
 
-      if (filter === "canceled") {
+      if (filter === "Canceled") {
         const newArr = filterOrders.filter(
-          (item) => item.status === "canceled"
+          (item) => item.status === "Canceled"
         );
         setOrders(newArr);
       }
-      if (filter === "received") {
+      if (filter === "Received") {
         const newArr = filterOrders.filter(
-          (item) => item.status === "received"
+          (item) => item.status === "Received"
         );
         setOrders(newArr);
       }
@@ -70,7 +70,7 @@ function Order() {
     const docRef = doc(db, "orders", id);
     try {
       await updateDoc(docRef, {
-        status: "received",
+        status: "Received",
       });
       toastMessage("success", "Received");
     } catch (error) {
@@ -92,11 +92,11 @@ function Order() {
             label="Filter by"
             onChange={(e) => setFilter(e.target.value)}
           >
-            <MenuItem value="all">All</MenuItem>
-            <MenuItem value="pending">Pending</MenuItem>
-            <MenuItem value="accepted">Accepted</MenuItem>
-            <MenuItem value="canceled">Canceled</MenuItem>
-            <MenuItem value="received">Success</MenuItem>
+            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="Pending">Pending</MenuItem>
+            <MenuItem value="Accepted">Accepted</MenuItem>
+            <MenuItem value="Canceled">Canceled</MenuItem>
+            <MenuItem value="Received">Success</MenuItem>
           </Select>
         </FormControl>
 
@@ -128,7 +128,7 @@ function Order() {
                     {Number(data.productPrice).toLocaleString("en-US")}
                   </TableCell>
                   <TableCell>{data.status}</TableCell>
-                  {data.status === "accepted" && (
+                  {data.status === "Accepted" && (
                     <TableCell>
                       <Button
                         onClick={() => {

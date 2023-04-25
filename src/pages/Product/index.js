@@ -35,7 +35,7 @@ function Product() {
 
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState("All");
   const [categories, setCategories] = useState([]);
   const [sortProducts, setSortProducts] = useState([]);
 
@@ -72,10 +72,10 @@ function Product() {
   }, []);
 
   useEffect(() => {
-    if (filter === "all") {
+    if (filter === "All") {
       setSortProducts(products);
     }
-    if (filter !== "all") {
+    if (filter !== "All") {
       const newArr = products.filter((item) => item.type === filter);
       setSortProducts(newArr);
     }
@@ -93,7 +93,7 @@ function Product() {
           label="Filter by"
           onChange={(e) => setFilter(e.target.value)}
         >
-          {[{ name: "all", id: "all-id" }].concat(categories).map((item) => (
+          {[{ name: "All", id: "all-id" }].concat(categories).map((item) => (
             <MenuItem key={item.id} value={item.name}>
               {item.name}
             </MenuItem>
@@ -111,6 +111,7 @@ function Product() {
               key={item.id}
               sx={{
                 display: "flex",
+                flexDirection: "row",
                 justifyContent: "flex-start",
                 alignItems: "stretch",
                 maxWidth: 540,
@@ -120,7 +121,7 @@ function Product() {
                   boxShadow: 20, // theme.shadows[20]
                   cursor: "pointer",
                 },
-                padding: "12px",
+                padding: "6px",
               }}
               style={{ border: "1px solid #999" }}
               onClick={() =>
@@ -129,19 +130,20 @@ function Product() {
                 })
               }
             >
-              <CardMedia
-                sx={{
-                  flex: { xs: "none", md: "5 0 0" },
-                  height: { xs: 140, md: "100%" },
-                  maxHeight: { xs: 140, md: "100%" },
-                  width: { xs: "100%", md: "auto" },
-                }}
-                image={item.url_img}
-                title="Product image"
-              />
+              <div style={{flex: 1}}>
+                <CardMedia
+                  sx={{
+                    height: { xs: 140, md: "100%" },
+                    maxHeight: { xs: 140, md: "100%" },
+                    width: { xs: "100%", md: "auto" },
+                  }}
+                  image={item.url_img}
+                  title="Product image"
+                />
+              </div>
               <CardContent
                 sx={{
-                  flex: "5 0 0",
+                  flex: 1,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",

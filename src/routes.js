@@ -15,16 +15,15 @@ import UpdateProduct from "./pages/Admin/AdminProduct/UpdateProduct";
 import AdminUser from "./pages/Admin/AdminUser";
 import UpdateManager from "./pages/Admin/AdminUser/UpdateManager";
 import Chat from "./pages/Chat";
+import Dashboard from "./pages/Dashboard";
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import NotFound from "./pages/NotFound";
 import Order from "./pages/Order";
 import Product from "./pages/Product";
 import ProductDetail from "./pages/ProductDetail";
 import Register from "./pages/Register";
 import UploadUser from "./pages/UploadUser";
-import Dashboard from "./pages/Dashboard";
 
 const USER_PATHS = [
   "/",
@@ -122,11 +121,11 @@ export default function Router() {
     },
     {
       path: "/login",
-      element: !user ? <Login /> : <NotFound />,
+      element: !user && <Login />,
     },
     {
       path: "/register",
-      element: !user ? <Register /> : <NotFound />,
+      element: !user && <Register />,
     },
     {
       path: "/about",
@@ -154,14 +153,11 @@ export default function Router() {
     },
     {
       path: "/chat",
-      element:
-        role === 0 || role === 2 ? (
-          <DefaultLayout>
-            <Chat />
-          </DefaultLayout>
-        ) : (
-          <NotFound />
-        ),
+      element: (role === 0 || role === 2) && (
+        <DefaultLayout>
+          <Chat />
+        </DefaultLayout>
+      ),
     },
     {
       path: "/forgot-password",
@@ -181,113 +177,83 @@ export default function Router() {
     },
     {
       path: "/orders",
-      element:
-        role === 2 ? (
-          <DefaultLayout>
-            <Order />
-          </DefaultLayout>
-        ) : (
-          <NotFound />
-        ),
+      element: role === 2 && (
+        <DefaultLayout>
+          <Order />
+        </DefaultLayout>
+      ),
     },
     {
       path: "/admin",
-      element:
-        role === 0 ? (
-          <AdminLayout>
-            <AdminUser />
-          </AdminLayout>
-        ) : (
-          <NotFound />
-        ),
+      element: role === 0 && (
+        <AdminLayout>
+          <AdminUser />
+        </AdminLayout>
+      ),
     },
     {
       path: "/admin/update-manager",
-      element:
-        role === 0 ? (
-          <AdminLayout>
-            <UpdateManager />
-          </AdminLayout>
-        ) : (
-          <NotFound />
-        ),
+      element: role === 0 && (
+        <AdminLayout>
+          <UpdateManager />
+        </AdminLayout>
+      ),
     },
     {
       path: "/admin/dashboard",
-      element:
-        role === 0 ? (
-          <AdminLayout>
-            <Dashboard />
-          </AdminLayout>
-        ) : (
-          <NotFound />
-        ),
+      element: role === 0 && (
+        <AdminLayout>
+          <Dashboard />
+        </AdminLayout>
+      ),
     },
     {
       path: "/manager",
-      element:
-        role === 1 ? (
-          <AdminLayout>
-            <AdminProduct />
-          </AdminLayout>
-        ) : (
-          <NotFound />
-        ),
+      element: role === 1 && (
+        <AdminLayout>
+          <AdminProduct />
+        </AdminLayout>
+      ),
     },
     {
       path: "/manager/categories",
-      element:
-        role === 1 ? (
-          <AdminLayout>
-            <AdminCategory />
-          </AdminLayout>
-        ) : (
-          <NotFound />
-        ),
+      element: role === 1 && (
+        <AdminLayout>
+          <AdminCategory />
+        </AdminLayout>
+      ),
     },
     {
       path: "/manager/update-product",
-      element:
-        role === 1 ? (
-          <AdminLayout>
-            <UpdateProduct />
-          </AdminLayout>
-        ) : (
-          <NotFound />
-        ),
+      element: role === 1 && (
+        <AdminLayout>
+          <UpdateProduct />
+        </AdminLayout>
+      ),
     },
     {
       path: "/manager/update-category",
-      element:
-        role === 1 ? (
-          <AdminLayout>
-            <UpdateCategory />
-          </AdminLayout>
-        ) : (
-          <NotFound />
-        ),
+      element: role === 1 && (
+        <AdminLayout>
+          <UpdateCategory />
+        </AdminLayout>
+      ),
     },
     {
       path: "/manager/dashboard",
-      element:
-        role === 1 ? (
-          <AdminLayout>
-            <Dashboard />
-          </AdminLayout>
-        ) : (
-          <NotFound />
-        ),
+      element: role === 1 && (
+        <AdminLayout>
+          <Dashboard />
+        </AdminLayout>
+      ),
     },
     {
       path: "/manager/orders",
-      element:
-        role === 1 ? (
-          <AdminLayout>
-            <AdminOrder />
-          </AdminLayout>
-        ) : (
-          <NotFound />
-        ),
+      element: role === 1 && (
+        <AdminLayout>
+          <AdminOrder />
+        </AdminLayout>
+      ),
     },
   ]);
 }

@@ -41,11 +41,11 @@ const ProductCategory = styled(Typography)({
 
 const ProductPrice = styled(Typography)({
   fontWeight: "bold",
-  fontSize: "24px",
+  fontSize: "16px",
 });
 
 const OldPrice = styled(Typography)({
-  fontSize: "20px",
+  fontSize: "12px",
   marginLeft: "24px",
   fontStyle: "italic",
   color: "gray",
@@ -87,7 +87,7 @@ const ProductDetail = () => {
       }
 
       const filterProducts = temp
-        .filter((item) => item.id !== product.id)
+        .filter((item) => item.id !== product.id && item.type === product.type)
         .slice(0, 2);
       setProducts(filterProducts);
     });

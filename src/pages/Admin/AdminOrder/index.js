@@ -22,7 +22,7 @@ const cx = classNames.bind(styles);
 
 function AdminOrder() {
   const [orders, setOrders] = useState([]);
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState("All");
 
   useEffect(() => {
     onSnapshot(collection(db, "orders"), (snapshot) => {
@@ -31,25 +31,25 @@ function AdminOrder() {
         id: doc.id,
       }));
 
-      if (filter === "all") setOrders(listOrders);
+      if (filter === "All") setOrders(listOrders);
 
-      if (filter === "pending") {
-        const newArr = listOrders.filter((item) => item.status === "pending");
+      if (filter === "Pending") {
+        const newArr = listOrders.filter((item) => item.status === "Pending");
         setOrders(newArr);
       }
 
-      if (filter === "accepted") {
-        const newArr = listOrders.filter((item) => item.status === "accepted");
+      if (filter === "Accepted") {
+        const newArr = listOrders.filter((item) => item.status === "Accepted");
         setOrders(newArr);
       }
 
-      if (filter === "canceled") {
-        const newArr = listOrders.filter((item) => item.status === "canceled");
+      if (filter === "Canceled") {
+        const newArr = listOrders.filter((item) => item.status === "Canceled");
         setOrders(newArr);
       }
 
-      if (filter === "received") {
-        const newArr = listOrders.filter((item) => item.status === "received");
+      if (filter === "Received") {
+        const newArr = listOrders.filter((item) => item.status === "Received");
         setOrders(newArr);
       }
     });
@@ -59,7 +59,7 @@ function AdminOrder() {
     const docRef = doc(db, "orders", id);
     try {
       await updateDoc(docRef, {
-        status: "accepted",
+        status: "Accepted",
       });
       toastMessage("success", "Accepted Order");
     } catch (error) {
@@ -71,7 +71,7 @@ function AdminOrder() {
     const docRef = doc(db, "orders", id);
     try {
       await updateDoc(docRef, {
-        status: "canceled",
+        status: "Canceled",
       });
       toastMessage("success", "Canceled Order");
     } catch (error) {
@@ -93,11 +93,11 @@ function AdminOrder() {
             label="Filter by"
             onChange={(e) => setFilter(e.target.value)}
           >
-            <MenuItem value="all">All</MenuItem>
-            <MenuItem value="pending">Pending</MenuItem>
-            <MenuItem value="accepted">Accepted</MenuItem>
-            <MenuItem value="canceled">Canceled</MenuItem>
-            <MenuItem value="received">Success</MenuItem>
+            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="Pending">Pending</MenuItem>
+            <MenuItem value="Accepted">Accepted</MenuItem>
+            <MenuItem value="Canceled">Canceled</MenuItem>
+            <MenuItem value="Received">Success</MenuItem>
           </Select>
         </FormControl>
 
@@ -129,9 +129,9 @@ function AdminOrder() {
                     {Number(data.productPrice).toLocaleString("en-US")}
                   </TableCell>
                   <TableCell>
-                    {data.status === "received" ? "Success" : data.status}
+                    {data.status === "Received" ? "Success" : data.status}
                   </TableCell>
-                  {data.status === "pending" && (
+                  {data.status === "Pending" && (
                     <TableCell>
                       <Button
                         onClick={() => {

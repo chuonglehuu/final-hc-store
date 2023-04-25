@@ -113,7 +113,7 @@ export const addOrder = async (
     productName: productName,
     productPrice: productPrice,
     create_at: Timestamp.fromDate(new Date()),
-    status: "pending",
+    status: "Pending",
   });
 };
 
