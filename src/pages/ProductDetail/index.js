@@ -52,7 +52,7 @@ const OldPrice = styled(Typography)({
 
 const ProductDetail = () => {
   const location = useLocation();
-  const { user, userDetail, role } = UserAuth();
+  const { user, userDetail, role, productsContext } = UserAuth();
 
   const [openConfirmAddress, setOpenConfirmAddress] = useState(false);
   const [emailUser, setEmailUser] = useState("");
@@ -174,11 +174,17 @@ const ProductDetail = () => {
                     padding: "12px",
                   }}
                   style={{ border: "1px solid #999" }}
-                  onClick={() =>
+                  onClick={() => {
+                    const filterProducts = productsContext
+                      .filter(
+                        (product) =>
+                          product.id !== ele.id && product.type === ele.type
+                      )
+                      .slice(0, 2);
                     navigate("/product/detail", {
-                      state: ele,
-                    })
-                  }
+                      state: { item: ele, productsSimilar: filterProducts },
+                    });
+                  }}
                 >
                   <CardMedia
                     sx={{

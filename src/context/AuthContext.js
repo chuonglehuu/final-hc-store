@@ -24,6 +24,7 @@ const AuthContext = createContext();
 
 export function AuthContextProvider({ children }) {
   const [user, setUser] = useState({});
+  const [productsContext, setProductsContext] = useState([]);
   const [userDetail, setUserDetail] = useState({});
   const [role, setRole] = useState();
 
@@ -92,6 +93,8 @@ export function AuthContextProvider({ children }) {
         setRole,
         userDetail,
         setUserDetail,
+        productsContext,
+        setProductsContext,
       }}
     >
       {children}

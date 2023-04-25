@@ -1,14 +1,16 @@
-// .wrapper {
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-// }
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
 .container {
   width: 1150px;
   display: flex;
   justify-content: space-around;
   margin: 0 auto;
-  padding-bottom: 32px
+  padding-bottom: 32px;
+  flex: 1;
 }
 .content {
   width: 100%;

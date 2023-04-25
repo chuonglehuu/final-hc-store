@@ -11,6 +11,7 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
+import { UserAuth } from "../../context/AuthContext";
 import { db, storage } from "../../firebase/config";
 import styles from "./Product.module.scss";
 
@@ -33,6 +34,7 @@ const OldPrice = styled(Typography)({
 
 function Product() {
   const navigate = useNavigate();
+  const { setProductsContext } = UserAuth();
 
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -69,6 +71,7 @@ function Product() {
         }
       }
       setProducts(temp);
+      setProductsContext(temp)
     });
   }, []);
 
