@@ -14,6 +14,7 @@ import { grey, red } from "@mui/material/colors";
 import classNames from "classnames/bind";
 import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { db } from "../../../firebase/config";
 import { toastMessage } from "../../../utils/toast";
 import styles from "./AdminOrder.module.scss";
@@ -80,97 +81,103 @@ function AdminOrder() {
   }
 
   return (
-    <div className={cx("main")}>
-      <div className={cx("content")}>
-        <h2 className={cx("title")}>List of Orders</h2>
+    <div>
+      <Helmet>
+        <title>Order Manager</title>
+        <meta name="description" content="" />
+      </Helmet>
+      <div className={cx("main")}>
+        <div className={cx("content")}>
+          <h2 className={cx("title")}>List of Orders</h2>
 
-        <FormControl sx={{ width: "200px" }}>
-          <InputLabel id="demo-simple-select-label">Filter by</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={filter}
-            label="Filter by"
-            onChange={(e) => setFilter(e.target.value)}
-          >
-            <MenuItem value="All">All</MenuItem>
-            <MenuItem value="Pending">Pending</MenuItem>
-            <MenuItem value="Accepted">Accepted</MenuItem>
-            <MenuItem value="Canceled">Canceled</MenuItem>
-            <MenuItem value="Received">Success</MenuItem>
-          </Select>
-        </FormControl>
+          <FormControl sx={{ width: "200px" }}>
+            <InputLabel id="demo-simple-select-label">Filter by</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={filter}
+              label="Filter by"
+              onChange={(e) => setFilter(e.target.value)}
+            >
+              <MenuItem value="All">All</MenuItem>
+              <MenuItem value="Pending">Pending</MenuItem>
+              <MenuItem value="Accepted">Accepted</MenuItem>
+              <MenuItem value="Canceled">Canceled</MenuItem>
+              <MenuItem value="Received">Success</MenuItem>
+            </Select>
+          </FormControl>
 
-        <div className={cx("table")}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell className={cx("style-col")}>Orderer</TableCell>
-                <TableCell className={cx("style-col")}>Phone</TableCell>
-                <TableCell className={cx("style-col")}>Address</TableCell>
-                <TableCell className={cx("style-col")}>Product</TableCell>
-                <TableCell className={cx("style-col")}>Price</TableCell>
-                <TableCell className={cx("style-col")}>Status</TableCell>
-                <TableCell className={cx("style-col")}>Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {orders.map((data, index) => (
-                <TableRow key={index}>
-                  <TableCell>{data.userName}</TableCell>
-                  <TableCell>{data.userPhone}</TableCell>
-                  <TableCell>{data.address}</TableCell>
-                  <TableCell style={{ maxWidth: "300px" }}>
-                    <div className={cx("style-display")}>
-                      {data.productName}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {Number(data.productPrice).toLocaleString("en-US")}
-                  </TableCell>
-                  <TableCell>
-                    {data.status === "Received" ? "Success" : data.status}
-                  </TableCell>
-                  {data.status === "Pending" && (
-                    <TableCell>
-                      <Button
-                        onClick={() => {
-                          acceptOrder(data.id);
-                        }}
-                        variant="contained"
-                        size="small"
-                        sx={{
-                          marginRight: 1,
-                          backgroundColor: grey[500],
-                          "&:hover": {
-                            backgroundColor: grey[700],
-                          },
-                        }}
-                      >
-                        Accept
-                      </Button>
-
-                      <Button
-                        onClick={() => {
-                          cancelOrder(data.id);
-                        }}
-                        variant="contained"
-                        size="small"
-                        sx={{
-                          backgroundColor: red[500],
-                          "&:hover": {
-                            backgroundColor: red[700],
-                          },
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    </TableCell>
-                  )}
+          <div className={cx("table")}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell className={cx("style-col")}>Orderer</TableCell>
+                  <TableCell className={cx("style-col")}>Phone</TableCell>
+                  <TableCell className={cx("style-col")}>Address</TableCell>
+                  <TableCell className={cx("style-col")}>Product</TableCell>
+                  <TableCell className={cx("style-col")}>Price</TableCell>
+                  <TableCell className={cx("style-col")}>Status</TableCell>
+                  <TableCell className={cx("style-col")}>Action</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHead>
+              <TableBody>
+                {orders.map((data, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{data.userName}</TableCell>
+                    <TableCell>{data.userPhone}</TableCell>
+                    <TableCell>{data.address}</TableCell>
+                    <TableCell style={{ maxWidth: "300px" }}>
+                      <div className={cx("style-display")}>
+                        {data.productName}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {Number(data.productPrice).toLocaleString("en-US")}
+                    </TableCell>
+                    <TableCell>
+                      {data.status === "Received" ? "Success" : data.status}
+                    </TableCell>
+                    {data.status === "Pending" && (
+                      <TableCell>
+                        <Button
+                          onClick={() => {
+                            acceptOrder(data.id);
+                          }}
+                          variant="contained"
+                          size="small"
+                          sx={{
+                            marginRight: 1,
+                            backgroundColor: grey[500],
+                            "&:hover": {
+                              backgroundColor: grey[700],
+                            },
+                          }}
+                        >
+                          Accept
+                        </Button>
+
+                        <Button
+                          onClick={() => {
+                            cancelOrder(data.id);
+                          }}
+                          variant="contained"
+                          size="small"
+                          sx={{
+                            backgroundColor: red[500],
+                            "&:hover": {
+                              backgroundColor: red[700],
+                            },
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       </div>
     </div>

@@ -14,6 +14,7 @@ import {
   query,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { UserAuth } from "../../context/AuthContext";
 import { db } from "../../firebase/config";
 import { addMessage } from "../../firebase/service";
@@ -247,70 +248,76 @@ function Chat() {
   }, [listChatWithoutAdmin]);
 
   return (
-    <Box sx={{ height: "92vh", flexGrow: 1, marginTop: "2px" }}>
-      <Grid container spacing={2}>
-        <Grid item xs={3}>
-          <Box sx={{ height: "100%", bgcolor: "#f5f5f5" }}>
-            <List sx={{ height: "100%" }}>
-              {users.map((user) => (
-                <ListItem
-                  button
-                  key={user.uid}
-                  onClick={() => onSelect(user.uid)}
-                  sx={{
-                    border: "1px solid gray",
-                    marginBottom: "8px",
-                    borderRadius: "6px",
-                  }}
-                >
-                  <ListItemAvatar>
-                    <Avatar alt="User 1" src="/static/images/avatar/1.jpg" />
-                  </ListItemAvatar>
-                  <ListItemText primary={user?.fullname} />
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-        </Grid>
-        <Grid item xs={9}>
-          <Box sx={{ height: "90vh", bgcolor: "#fff" }}>
-            {/* Đoạn chat */}
-            <Box
-              sx={{ p: 2, height: "calc(100% - 76px)", overflowY: "scroll" }}
-            >
-              {messagesFormat.map((message, index) => (
-                <div key={message.id}>
-                  <strong>{message.senderName}</strong>: {message.text}
-                </div>
-              ))}
+    <div>
+      <Helmet>
+        <title>Chat</title>
+        <meta name="description" content="" />
+      </Helmet>
+      <Box sx={{ height: "92vh", flexGrow: 1, marginTop: "2px" }}>
+        <Grid container spacing={2}>
+          <Grid item xs={3}>
+            <Box sx={{ height: "100%", bgcolor: "#f5f5f5" }}>
+              <List sx={{ height: "100%" }}>
+                {users.map((user) => (
+                  <ListItem
+                    button
+                    key={user.uid}
+                    onClick={() => onSelect(user.uid)}
+                    sx={{
+                      border: "1px solid gray",
+                      marginBottom: "8px",
+                      borderRadius: "6px",
+                    }}
+                  >
+                    <ListItemAvatar>
+                      <Avatar alt="User 1" src="/static/images/avatar/1.jpg" />
+                    </ListItemAvatar>
+                    <ListItemText primary={user?.fullname} />
+                  </ListItem>
+                ))}
+              </List>
             </Box>
-            {/* Ô input */}
-            <Box
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <TextareaAutosize
-                aria-label="minimum height"
-                minRows={3}
-                placeholder="Nhập tin nhắn của bạn..."
-                value={inputValue}
-                onChange={(event) => setInputValue(event.target.value)}
-                style={{ width: "100%", resize: "none", padding: "6px" }}
-                onKeyDown={handleKeyDown}
-              />
-              <Box sx={{ mt: 1, ml: 2 }}>
-                <Button variant="contained" onClick={handleSendMessage}>
-                  Gửi
-                </Button>
+          </Grid>
+          <Grid item xs={9}>
+            <Box sx={{ height: "90vh", bgcolor: "#fff" }}>
+              {/* Đoạn chat */}
+              <Box
+                sx={{ p: 2, height: "calc(100% - 76px)", overflowY: "scroll" }}
+              >
+                {messagesFormat.map((message, index) => (
+                  <div key={message.id}>
+                    <strong>{message.senderName}</strong>: {message.text}
+                  </div>
+                ))}
+              </Box>
+              {/* Ô input */}
+              <Box
+                sx={{
+                  p: 2,
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                <TextareaAutosize
+                  aria-label="minimum height"
+                  minRows={3}
+                  placeholder="Nhập tin nhắn của bạn..."
+                  value={inputValue}
+                  onChange={(event) => setInputValue(event.target.value)}
+                  style={{ width: "100%", resize: "none", padding: "6px" }}
+                  onKeyDown={handleKeyDown}
+                />
+                <Box sx={{ mt: 1, ml: 2 }}>
+                  <Button variant="contained" onClick={handleSendMessage}>
+                    Gửi
+                  </Button>
+                </Box>
               </Box>
             </Box>
-          </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </div>
   );
 }
 

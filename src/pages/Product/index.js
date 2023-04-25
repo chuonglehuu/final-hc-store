@@ -9,6 +9,7 @@ import classNames from "classnames/bind";
 import { collection, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { db, storage } from "../../firebase/config";
 import styles from "./Product.module.scss";
@@ -19,12 +20,12 @@ const ITEMS_PER_PAGE = 4;
 
 const ProductPrice = styled(Typography)({
   fontWeight: "bold",
-  fontSize: "16px",
+  fontSize: "15px",
 });
 
 const OldPrice = styled(Typography)({
   fontSize: "12px",
-  marginLeft: "24px",
+  marginLeft: "12px",
   fontStyle: "italic",
   color: "gray",
   textDecoration: "line-through",
@@ -83,7 +84,11 @@ function Product() {
   }, [products, filter]);
 
   return (
-    <>
+    <div>
+      <Helmet>
+        <title>Products</title>
+        <meta name="description" content="" />
+      </Helmet>
       <FormControl sx={{ width: "200px", marginTop: "12px" }}>
         <InputLabel id="demo-simple-select-label">Filter by</InputLabel>
         <Select
@@ -124,13 +129,19 @@ function Product() {
                 padding: "6px",
               }}
               style={{ border: "1px solid #999" }}
-              onClick={() =>
+              onClick={() => {
+                const filterProducts = products
+                  .filter(
+                    (product) =>
+                      product.id !== item.id && product.type === item.type
+                  )
+                  .slice(0, 2);
                 navigate("/product/detail", {
-                  state: item,
-                })
-              }
+                  state: { item: item, productsSimilar: filterProducts },
+                });
+              }}
             >
-              <div style={{flex: 1}}>
+              <div style={{ flex: 1 }}>
                 <CardMedia
                   sx={{
                     height: { xs: 140, md: "100%" },
@@ -141,35 +152,37 @@ function Product() {
                   title="Product image"
                 />
               </div>
-              <CardContent
-                sx={{
-                  flex: 1,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  padding: "16px",
-                }}
-              >
-                <div className={cx("name")}>{item.name}</div>
-                <Typography variant="body2" color="text.secondary">
-                  <span>Category: {item.type}</span>
-                </Typography>
-                <Grid
+              <div style={{ flex: 1 }}>
+                <CardContent
                   sx={{
+                    flex: 1,
                     display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    padding: "16px",
                   }}
                 >
-                  <ProductPrice variant="h6">
-                    {Number(item.new_price).toLocaleString("en-US")} VNĐ
-                  </ProductPrice>
-                  <OldPrice>
-                    {Number(item.old_price).toLocaleString("en-US")} VNĐ
-                  </OldPrice>
-                </Grid>
-                <div className={cx("description")}>{item.description}</div>
-              </CardContent>
+                  <div className={cx("name")}>{item.name}</div>
+                  <Typography variant="body2" color="text.secondary">
+                    <span>Category: {item.type}</span>
+                  </Typography>
+                  <Grid
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ProductPrice variant="h6">
+                      {Number(item.new_price).toLocaleString("en-US")} VNĐ
+                    </ProductPrice>
+                    <OldPrice>
+                      {Number(item.old_price).toLocaleString("en-US")} VNĐ
+                    </OldPrice>
+                  </Grid>
+                  <div className={cx("description")}>{item.description}</div>
+                </CardContent>
+              </div>
             </Card>
           ))}
         <div className={cx("pagination")}>
@@ -188,7 +201,7 @@ function Product() {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

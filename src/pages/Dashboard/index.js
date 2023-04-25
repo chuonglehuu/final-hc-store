@@ -13,8 +13,9 @@ import { collection, onSnapshot } from "firebase/firestore";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-import { db } from "../../firebase/config";
+import { Helmet } from "react-helmet";
 import { UserAuth } from "../../context/AuthContext";
+import { db } from "../../firebase/config";
 
 ChartJS.register(
   CategoryScale,
@@ -84,46 +85,52 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <Grid container spacing={2}>
-      {role === 0 && (
-        <>
-          <Grid item xs={12} sm={6} md={6} lg={6}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" component="h2" gutterBottom>
-                  Users
-                </Typography>
-                <Typography variant="h3" component="h1">
-                  {users?.length}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={6}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" component="h2" gutterBottom>
-                  Managers
-                </Typography>
-                <Typography variant="h3" component="h1">
-                  {managers?.length}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        </>
-      )}
-      <Grid item xs={12}>
-        <Card>
-          <CardContent>
-            <Typography variant="h6" component="h2" gutterBottom>
-              Revenue
-            </Typography>
-            <Line options={options} data={data} />{" "}
-          </CardContent>
-        </Card>
+    <div>
+      <Helmet>
+        <title>Dashboard</title>
+        <meta name="description" content="" />
+      </Helmet>
+      <Grid container spacing={2}>
+        {role === 0 && (
+          <>
+            <Grid item xs={12} sm={6} md={6} lg={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" component="h2" gutterBottom>
+                    Users
+                  </Typography>
+                  <Typography variant="h3" component="h1">
+                    {users?.length}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={6} lg={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" component="h2" gutterBottom>
+                    Managers
+                  </Typography>
+                  <Typography variant="h3" component="h1">
+                    {managers?.length}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </>
+        )}
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" component="h2" gutterBottom>
+                Revenue
+              </Typography>
+              <Line options={options} data={data} />{" "}
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 };
 

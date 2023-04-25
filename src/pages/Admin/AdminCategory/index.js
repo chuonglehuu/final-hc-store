@@ -23,6 +23,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../../firebase/config";
 import { toastMessage } from "../../../utils/toast";
@@ -96,123 +97,129 @@ function AdminCategory() {
   }
 
   return (
-    <div className={cx("main")}>
-      <div className={cx("content")}>
-        <h2 className={cx("title")}>List of Categories</h2>
-        <div className={cx("add-btn")}>
-          <Button
-            variant="contained"
-            startIcon={<ControlPointOutlinedIcon />}
-            onClick={() => {
-              handleOpenAdd();
-            }}
-          >
-            Add Category
-          </Button>
-          <Dialog
-            open={open}
-            onClose={() => {
-              handleCloseAdd();
-            }}
-          >
-            <AddCategory setOpen={setOpen} />
-          </Dialog>
-        </div>
-        <div className={cx("table")}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell className={cx("style-col")}>Name</TableCell>
-                <TableCell className={cx("style-col")}>Description</TableCell>
-                <TableCell className={cx("style-col")}>Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {categories.map((data, index) => (
-                <TableRow key={index}>
-                  <TableCell style={{ maxWidth: "200px" }}>
-                    <div className={cx("style-display")}>{data.name}</div>
-                  </TableCell>
-                  <TableCell style={{ maxWidth: "300px" }}>
-                    <div className={cx("style-display")}>
-                      {data.description}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      onClick={() => {
-                        updateCategory(data.id, data.name, data.description);
-                      }}
-                      variant="contained"
-                      startIcon={<ModeEditOutlineOutlinedIcon />}
-                      size="small"
-                      sx={{
-                        marginRight: 1,
-                        backgroundColor: grey[500],
-                        "&:hover": {
-                          backgroundColor: grey[700],
-                        },
-                      }}
-                    >
-                      Edit
-                    </Button>
-
-                    <Button
-                      onClick={() => handleOpenDel(data.id, data.name)}
-                      variant="contained"
-                      startIcon={<DeleteOutlineOutlinedIcon />}
-                      size="small"
-                      sx={{
-                        backgroundColor: red[500],
-                        "&:hover": {
-                          backgroundColor: red[700],
-                        },
-                      }}
-                    >
-                      Delete
-                    </Button>
-                    <Dialog
-                      open={del}
-                      onClose={handleCloseDel}
-                      style={{ height: "500px" }}
-                    >
-                      <h4
-                        style={{
-                          width: "400px",
-                          height: "50px",
-                          fontSize: "22px",
-                          textAlign: "center",
-                          lineHeight: "50px",
+    <div>
+      <Helmet>
+        <title>Category Manager</title>
+        <meta name="description" content="" />
+      </Helmet>
+      <div className={cx("main")}>
+        <div className={cx("content")}>
+          <h2 className={cx("title")}>List of Categories</h2>
+          <div className={cx("add-btn")}>
+            <Button
+              variant="contained"
+              startIcon={<ControlPointOutlinedIcon />}
+              onClick={() => {
+                handleOpenAdd();
+              }}
+            >
+              Add Category
+            </Button>
+            <Dialog
+              open={open}
+              onClose={() => {
+                handleCloseAdd();
+              }}
+            >
+              <AddCategory setOpen={setOpen} />
+            </Dialog>
+          </div>
+          <div className={cx("table")}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell className={cx("style-col")}>Name</TableCell>
+                  <TableCell className={cx("style-col")}>Description</TableCell>
+                  <TableCell className={cx("style-col")}>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {categories.map((data, index) => (
+                  <TableRow key={index}>
+                    <TableCell style={{ maxWidth: "200px" }}>
+                      <div className={cx("style-display")}>{data.name}</div>
+                    </TableCell>
+                    <TableCell style={{ maxWidth: "300px" }}>
+                      <div className={cx("style-display")}>
+                        {data.description}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={() => {
+                          updateCategory(data.id, data.name, data.description);
+                        }}
+                        variant="contained"
+                        startIcon={<ModeEditOutlineOutlinedIcon />}
+                        size="small"
+                        sx={{
+                          marginRight: 1,
+                          backgroundColor: grey[500],
+                          "&:hover": {
+                            backgroundColor: grey[700],
+                          },
                         }}
                       >
-                        Do you want to delete this category?
-                      </h4>
-                      <DialogActions
-                        style={{ display: "block", margin: "20px  auto" }}
+                        Edit
+                      </Button>
+
+                      <Button
+                        onClick={() => handleOpenDel(data.id, data.name)}
+                        variant="contained"
+                        startIcon={<DeleteOutlineOutlinedIcon />}
+                        size="small"
+                        sx={{
+                          backgroundColor: red[500],
+                          "&:hover": {
+                            backgroundColor: red[700],
+                          },
+                        }}
                       >
-                        <Button
-                          onClick={() => {
-                            deleteCategory();
-                          }}
-                          variant="contained"
-                          startIcon={<DeleteOutlineOutlinedIcon />}
-                          size="small"
-                          sx={{
-                            backgroundColor: red[500],
-                            "&:hover": {
-                              backgroundColor: red[700],
-                            },
+                        Delete
+                      </Button>
+                      <Dialog
+                        open={del}
+                        onClose={handleCloseDel}
+                        style={{ height: "500px" }}
+                      >
+                        <h4
+                          style={{
+                            width: "400px",
+                            height: "50px",
+                            fontSize: "22px",
+                            textAlign: "center",
+                            lineHeight: "50px",
                           }}
                         >
-                          Delete
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                          Do you want to delete this category?
+                        </h4>
+                        <DialogActions
+                          style={{ display: "block", margin: "20px  auto" }}
+                        >
+                          <Button
+                            onClick={() => {
+                              deleteCategory();
+                            }}
+                            variant="contained"
+                            startIcon={<DeleteOutlineOutlinedIcon />}
+                            size="small"
+                            sx={{
+                              backgroundColor: red[500],
+                              "&:hover": {
+                                backgroundColor: red[700],
+                              },
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       </div>
     </div>
