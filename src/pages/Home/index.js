@@ -1,13 +1,42 @@
 import classNames from "classnames/bind";
-import React from "react";
+import { collection, onSnapshot } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
+import React, { useEffect } from "react";
 import Reveal, { Fade } from "react-awesome-reveal";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import images from "../../assets/Image";
+import { UserAuth } from "../../context/AuthContext";
+import { db, storage } from "../../firebase/config";
 import styles from "./Home.module.scss";
 
 const cx = classNames.bind(styles);
 function Home() {
+  const { setProductsContext } = UserAuth();
+
+  useEffect(() => {
+    onSnapshot(collection(db, "products"), async (snapshot) => {
+      const temp = [];
+      for (const doc of snapshot.docs) {
+        const data = doc.data();
+        const id = doc.id;
+
+        if (data.url_img) {
+          const url = await getDownloadURL(
+            ref(storage, `products/${data.url_img}`)
+          );
+
+          temp.push({ ...data, id, url_img: url });
+        }
+        if (!data.url_img) {
+          temp.push({ ...data, id });
+        }
+      }
+      setProductsContext(temp);
+      localStorage.setItem("products", JSON.stringify(temp));
+    });
+  }, []);
+
   return (
     <div>
       <Helmet>

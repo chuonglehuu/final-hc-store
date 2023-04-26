@@ -7,12 +7,11 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import classNames from "classnames/bind";
 import { collection, onSnapshot } from "firebase/firestore";
-import { getDownloadURL, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
-import { db, storage } from "../../firebase/config";
+import { db } from "../../firebase/config";
 import styles from "./Product.module.scss";
 
 const cx = classNames.bind(styles);
@@ -34,9 +33,9 @@ const OldPrice = styled(Typography)({
 
 function Product() {
   const navigate = useNavigate();
-  const { setProductsContext } = UserAuth();
+  const { productsContext } = UserAuth();
+  const productStorage = localStorage.getItem("products");
 
-  const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("All");
   const [categories, setCategories] = useState([]);
@@ -53,38 +52,29 @@ function Product() {
   }, []);
 
   useEffect(() => {
-    onSnapshot(collection(db, "products"), async (snapshot) => {
-      const temp = [];
-      for (const doc of snapshot.docs) {
-        const data = doc.data();
-        const id = doc.id;
-
-        if (data.url_img) {
-          const url = await getDownloadURL(
-            ref(storage, `products/${data.url_img}`)
-          );
-
-          temp.push({ ...data, id, url_img: url });
-        }
-        if (!data.url_img) {
-          temp.push({ ...data, id });
-        }
-      }
-      setProducts(temp);
-      setProductsContext(temp)
-    });
-  }, []);
-
-  useEffect(() => {
-    if (filter === "All") {
-      setSortProducts(products);
-    }
-    if (filter !== "All") {
-      const newArr = products.filter((item) => item.type === filter);
-      setSortProducts(newArr);
-    }
     setCurrentPage(1);
-  }, [products, filter]);
+    if (productStorage) {
+      if (filter === "All") {
+        return setSortProducts(JSON.parse(productStorage));
+      }
+      if (filter !== "All") {
+        const newArr = JSON.parse(productStorage).filter(
+          (item) => item.type === filter
+        );
+        return setSortProducts(newArr);
+      }
+    }
+
+    if (productsContext) {
+      if (filter === "All") {
+        return setSortProducts(productsContext);
+      }
+      if (filter !== "All") {
+        const newArr = productsContext.filter((item) => item.type === filter);
+        return setSortProducts(newArr);
+      }
+    }
+  }, [productsContext, filter, productStorage]);
 
   return (
     <div>
@@ -133,7 +123,7 @@ function Product() {
               }}
               style={{ border: "1px solid #999" }}
               onClick={() => {
-                const filterProducts = products
+                const filterProducts = productsContext
                   .filter(
                     (product) =>
                       product.id !== item.id && product.type === item.type
