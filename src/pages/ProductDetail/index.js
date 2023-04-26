@@ -21,6 +21,8 @@ const ProductImage = styled("img")({
   width: "100%",
   height: "auto",
   border: "1px solid #ccc",
+  padding: "6px 0px",
+  borderRadius: "6px",
 });
 
 const ProductDetails = styled("div")({

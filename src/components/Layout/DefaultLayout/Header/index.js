@@ -62,7 +62,9 @@ function Header() {
           <div className={cx("user-logout")}>
             <div className={cx("info-user")}>
               <span>Welcome</span>
-              <span>{userDetail?.fullname}</span>
+              <span style={{ fontSize: "18px", fontWeight: "bold", marginRight: "12px" }}>
+                {userDetail?.fullname}
+              </span>
             </div>
             <div className={cx("logout")}>
               <button onClick={handleLogout}>Logout</button>

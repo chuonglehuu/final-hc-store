@@ -3,8 +3,8 @@ import classNames from "classnames/bind";
 import { useNavigate } from "react-router-dom";
 import images from "../../../../assets/Image";
 import { UserAuth } from "../../../../context/AuthContext";
-import styles from "./Header.module.scss";
 import { toastMessage } from "../../../../utils/toast";
+import styles from "./Header.module.scss";
 
 const cx = classNames.bind(styles);
 
@@ -39,7 +39,17 @@ function Header() {
             </a>
           </div>
           <div className={cx("button-logout")}>
-            <span>Welcome {userDetail.fullname}!</span>
+            <span>
+              Welcome{" "}
+              <span
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                }}
+              >
+                {userDetail.fullname}
+              </span>
+            </span>
             {userDetail.role === 0 && (
               <div className={cx("button-chat")} onClick={navigateChatPage}>
                 <ChatIcon />
