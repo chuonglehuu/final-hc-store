@@ -42,6 +42,7 @@ const DEFAULT_PATHS = [
   "/orders",
   "/product/detail",
   "/upload-user",
+  "/forgot-password",
 ];
 const PATHS = ["/", "/about", "/product", "/login", "/register"];
 const MANAGER_PATHS = [
@@ -101,7 +102,11 @@ export default function Router() {
       navigate("/admin");
     }
 
-    if (role === 2 && !USER_PATHS.includes(location.pathname)) {
+    if (
+      role === 2 &&
+      !USER_PATHS.includes(location.pathname) &&
+      !DEFAULT_PATHS.includes(location.pathname)
+    ) {
       navigate("/");
     }
 
@@ -162,17 +167,17 @@ export default function Router() {
     {
       path: "/forgot-password",
       element: (
-        <HomeOnly>
+        <DefaultLayout>
           <ForgotPassword />
-        </HomeOnly>
+        </DefaultLayout>
       ),
     },
     {
       path: "/upload-user",
       element: (
-        <HomeOnly>
+        <DefaultLayout>
           <UploadUser />
-        </HomeOnly>
+        </DefaultLayout>
       ),
     },
     {

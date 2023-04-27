@@ -15,7 +15,8 @@ function ForgotPassword() {
     e.preventDefault();
     try {
       await forgotPassword(email);
-      console.log("send your email");
+      toastMessage("success", "Please check your email to continue");
+
     } catch (error) {
       toastMessage("error", error.message);
     }
