@@ -1,28 +1,33 @@
-import { createContext, useContext, useEffect, useState } from "react";
 import {
-  setDoc,
-  doc,
-  query,
-  collection,
-  where,
-  getDocs,
-  Timestamp,
-} from "firebase/firestore";
-import { auth, db } from "../firebase/config";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
   GoogleAuthProvider,
-  signInWithPopup,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
   sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
 } from "firebase/auth";
+import {
+  Timestamp,
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
+import { createContext, useContext, useEffect, useState } from "react";
+import { auth, db } from "../firebase/config";
+import { createConversation } from "../firebase/service";
 
 const AuthContext = createContext();
 
 export function AuthContextProvider({ children }) {
   const [user, setUser] = useState({});
+  const [productsContext, setProductsContext] = useState([]);
+  const [userDetail, setUserDetail] = useState({});
+  const [role, setRole] = useState();
+
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
@@ -55,9 +60,17 @@ export function AuthContextProvider({ children }) {
         createAt: Timestamp.fromDate(new Date()),
         listCart_ID: "",
         receipt_ID: "",
+        role: 2,
+        address: "",
       });
+
+      await createConversation(
+        [user.uid, "DpN1SsnTCXbAacR802db2dDCAv73"],
+        user.uid
+      );
     }
   }
+
   useEffect(() => {
     const unSubcribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -66,9 +79,23 @@ export function AuthContextProvider({ children }) {
       unSubcribe();
     };
   });
+
   return (
     <AuthContext.Provider
-      value={{ signUp, logIn, logOut, googleSignIn, forgotPassword, user }}
+      value={{
+        signUp,
+        logIn,
+        logOut,
+        googleSignIn,
+        forgotPassword,
+        user,
+        role,
+        setRole,
+        userDetail,
+        setUserDetail,
+        productsContext,
+        setProductsContext,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,0 +1,28 @@
+  .style-display {
+    max-height: 72px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    vertical-align: middle;
+  }
+
+  .name{
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 18px;
+    font-weight: 600;
+    padding-bottom: 12px;
+  }
+
+  .description {
+    margin-top: 6px;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 8;
+    font-size: 12px;
+  }

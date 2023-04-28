@@ -1,29 +1,25 @@
-import { useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import classNames from "classnames/bind";
 import { useNavigate } from "react-router-dom";
-import styles from "./ThirdBtnLogin.module.scss";
 import { UserAuth } from "../../../../context/AuthContext";
+import { toastMessage } from "../../../../utils/toast";
+import styles from "./ThirdBtnLogin.module.scss";
 
 const cx = classNames.bind(styles);
 
 function ThirdBtnLogin() {
   const navigate = useNavigate();
-  const { googleSignIn, user } = UserAuth();
+  const { googleSignIn } = UserAuth();
   const handleGoogleSignIn = async () => {
     try {
       await googleSignIn();
+      navigate("/");
     } catch (error) {
-      console.log(error);
+      toastMessage("error", error.message);
     }
   };
-  useEffect(() => {
-    if (user != null) {
-      navigate("/upload-user");
-    }
-  }, [user]);
 
   return (
     <div className={cx("btn")}>

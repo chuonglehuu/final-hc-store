@@ -1,22 +1,24 @@
-import React from "react";
 import classNames from "classnames/bind";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import styles from "./Header.module.scss";
 import images from "../../../../assets/Image";
 import { UserAuth } from "../../../../context/AuthContext";
+import { toastMessage } from "../../../../utils/toast";
+import styles from "./Header.module.scss";
 
 const cx = classNames.bind(styles);
 
 function Header() {
-  const { user, logOut } = UserAuth();
+  const { user, logOut, role, userDetail } = UserAuth();
+
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
       await logOut();
       navigate("/");
     } catch (error) {
-      alert(error);
+      toastMessage("error", error.message);
     }
   };
   return (
@@ -32,18 +34,37 @@ function Header() {
           <Link to="/product">
             <div className={cx("item")}>Product</div>
           </Link>
-          <Link to="/social">
-            <div className={cx("item")}>Social</div>
-          </Link>
-          <Link to="/about">
-            <div className={cx("item")}>About Us</div>
-          </Link>
+
+          {user && role === 1 && (
+            <Link to="/manager/dashboard">
+              <div className={cx("item")}>Dashboard</div>
+            </Link>
+          )}
+
+          {user && role === 0 && (
+            <Link to="/admin/dashboard">
+              <div className={cx("item")}>Dashboard</div>
+            </Link>
+          )}
+
+          {user && (role === 0 || role === 2) && (
+            <Link to="/chat">
+              <div className={cx("item")}>Chat</div>
+            </Link>
+          )}
+          {user && role === 2 && (
+            <Link to="/orders">
+              <div className={cx("item")}>Orders</div>
+            </Link>
+          )}
         </div>
-        {user?.email ? (
+        {user && userDetail ? (
           <div className={cx("user-logout")}>
             <div className={cx("info-user")}>
               <span>Welcome</span>
-              <span>{user.email}</span>
+              <span style={{ fontSize: "18px", fontWeight: "bold", marginRight: "12px" }}>
+                {userDetail?.fullname}
+              </span>
             </div>
             <div className={cx("logout")}>
               <button onClick={handleLogout}>Logout</button>

@@ -1,0 +1,26 @@
+.main {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    .content {
+      .title {
+        text-align: center;
+      }
+      .add-btn {
+        margin: 20px;
+        float: right;
+      }
+      .style-col {
+        font-weight: 600;
+      }
+      .style-display {
+        max-height: 72px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        vertical-align: middle;
+      }
+    }
+  }
